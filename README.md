@@ -1,4 +1,5 @@
 # LawOfTheJungle
+<<<<<<< HEAD
 ##Recourse
 - snake game: 
 	http://blog.csdn.net/biaobiaoqi/article/details/6618313
