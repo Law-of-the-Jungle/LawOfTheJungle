@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
+/***
+ * This the main activity for welcome and setting etc
+ */
 public class MainActivity extends Activity {
 
     @Override
