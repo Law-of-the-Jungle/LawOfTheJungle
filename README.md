@@ -1,8 +1,13 @@
 # LawOfTheJungle
 This is a android game
 ## Class Architecture
+## Versions
+### Version v0.01
+- Basic scheme and demo. Defined the structure of whole game.
+- Using a thread for game main loop.
+- Using surfaceview for drawing.
 
-##Recourse
+## Recourse
 - snake game: 
 	http://blog.csdn.net/biaobiaoqi/article/details/6618313
  	
