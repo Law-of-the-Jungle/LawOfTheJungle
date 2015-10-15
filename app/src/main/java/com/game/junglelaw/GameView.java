@@ -15,17 +15,19 @@ import android.view.SurfaceView;
  * PlayGround class in its constructor for drawing.
  */
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
-    private Thread playground;
+    private PlayGround playground;
     private float player_x,player_y;
     private SurfaceHolder holder;
+    private String TAG="GameView";
 
     public GameView(Context context) {
         super(context);
-        playground=new Thread(new PlayGround(this));
+        playground=new PlayGround(this);
         player_x=50;
         player_y=50;
         holder=getHolder();
         holder.addCallback(this);
+        Log.d(TAG,"GameView created");
     }
 
     @Override
@@ -33,7 +35,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         if(event.getAction()==MotionEvent.ACTION_DOWN){
             player_x=event.getX();
             player_y=event.getY();
-            Log.d("x:y",Float.toString(player_x)+":"+Float.toString(player_y));
+            Log.d(TAG,Float.toString(player_x)+":"+Float.toString(player_y));
 
         }
         return super.onTouchEvent(event);
@@ -42,19 +44,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     protected void onDraw(Canvas canvas) {
-        //Log.d("draw","drawing");
         Paint p=new Paint();
         p.setColor(Color.BLACK);
         canvas.drawColor(Color.WHITE);
         canvas.drawCircle(player_x,player_y,100,p);
-        //player_x+=10;
-        Log.d("draw","after draw");
+
 
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        Log.d("created","surfaceview created");
+        Log.d(TAG,"Surfaceview created");
+        playground.setRunState(true);
         playground.start();
 
 
@@ -62,16 +63,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
-        Log.d("changed","changed");
+        Log.d(TAG,"Surfaceview changed");
 
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-        Log.d("destroyed","destroyed");
+        Log.d(TAG,"Surfaceview destroyed");
         boolean retry = true;
         while (retry) {
             try {
+                playground.setRunState(false);
                 playground.join();
                 retry = false;
             } catch (InterruptedException e) {
