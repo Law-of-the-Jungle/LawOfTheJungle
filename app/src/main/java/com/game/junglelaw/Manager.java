@@ -1,6 +1,6 @@
 package com.game.junglelaw;
 
-import com.game.junglelaw.circle.*;
+import com.game.junglelaw.circlecc.*;
 import java.util.Random;
 
 /**
