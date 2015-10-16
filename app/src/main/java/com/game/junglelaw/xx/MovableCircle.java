@@ -1,6 +1,5 @@
-package com.game.junglelaw.circle;
+package com.game.junglelaw.xx;
 
-import android.graphics.Point;
 import android.graphics.PointF;
 
 /**
