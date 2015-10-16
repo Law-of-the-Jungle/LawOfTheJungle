@@ -1,4 +1,4 @@
-package com.game.junglelaw.circlecc;
+package com.game.junglelaw.circle;
 
 /**
  * Created by apple on 10/15/15.
