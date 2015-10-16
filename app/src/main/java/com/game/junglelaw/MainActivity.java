@@ -2,6 +2,7 @@ package com.game.junglelaw;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -11,6 +12,7 @@ import android.view.Window;
  */
 public class MainActivity extends Activity {
 
+    private String TAG="MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +22,27 @@ public class MainActivity extends Activity {
         setContentView(gv);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG,"OnResume");
+        GameView gv=new GameView(this);
+        setContentView(gv);
+    }
+
+    @Override
+    protected void onPause() {
+        /*On pause is called when home button is call*/
+        super.onPause();
+        Log.d(TAG,"OnPause");
+    }
+
+    @Override
+    protected void onStop() {
+        /*Called after onPause*/
+        super.onStop();
+        Log.d(TAG,"onStop");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

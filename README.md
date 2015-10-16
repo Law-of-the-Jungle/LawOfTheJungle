@@ -2,6 +2,7 @@
 This is a android game
 ## Class Architecture
 ## Versions
+
 ### Version v0.01
 - Current Version Feature
 	- Basic scheme and demo. Defined the structure of whole game.
@@ -10,6 +11,7 @@ This is a android game
 - Next Version Feature:
 	- Clean and repair.
 	- Talk about the structure.
+
 ### Version v0.02
 - Current Version Feature
 	- Revised the log format of previous version.
