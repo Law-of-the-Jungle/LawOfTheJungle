@@ -1,4 +1,4 @@
-package com.game.junglelaw.xx;
+package com.game.junglelaw.circle;
 
 import android.graphics.Canvas;
 import android.graphics.PointF;
