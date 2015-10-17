@@ -17,6 +17,11 @@ public class PlayGround extends Thread{
     private SurfaceHolder viewholder;
     private boolean RunState;
     private String TAG="PlayGround";
+
+
+
+
+
     //public float player_x,player_y;//wrap this into method and seal it,now is just draft
     public PlayGround(GameView view){
         this.view=view;
@@ -33,8 +38,9 @@ public class PlayGround extends Thread{
         try{
             c=viewholder.lockCanvas();
             synchronized (viewholder){
-                if(c!=null)
+                if(c!=null){
                     view.onDraw(c);
+                }
             }
         }finally {
             if (c != null)

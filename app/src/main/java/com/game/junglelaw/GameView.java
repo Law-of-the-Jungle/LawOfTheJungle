@@ -4,10 +4,22 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.PointF;
+import android.nfc.Tag;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
+
+import com.game.junglelaw.Circle.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * This class is used for rendering the view of game drawing the points in the PlayGround class
@@ -16,47 +28,96 @@ import android.view.SurfaceView;
  */
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private PlayGround playground;
-    private float player_x,player_y;
+
+    private int Screen_height,Screen_width;
+    private PointF center;
+
     private SurfaceHolder holder;
     private String TAG="GameView";
+
+
+    //we need to get the relative location of points to the playerCircle
+    //then check if these circle could appear on map or not
+    //Draw the circle with location of screen
+
+    /* Testing Data */
+    public PlayerCircle player;//User information
+    private int map_height,map_width;
+    List<StaticCricle> SCircle;
+
+
+    /**-----------**/
+
 
     public GameView(Context context) {
         super(context);
         playground=new PlayGround(this);
-        player_x=50;
-        player_y=50;
+
         holder=getHolder();
         holder.addCallback(this);
+
+
+
         Log.d(TAG,"GameView created");
     }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if(event.getAction()==MotionEvent.ACTION_DOWN){
-            player_x=event.getX();
-            player_y=event.getY();
-            Log.d(TAG,Float.toString(player_x)+":"+Float.toString(player_y));
-
-        }
-        return super.onTouchEvent(event);
-    }
-
-
     @Override
     protected void onDraw(Canvas canvas) {
+        Random rand= new Random(255);
         Paint p=new Paint();
         p.setColor(Color.BLACK);
         canvas.drawColor(Color.WHITE);
-        canvas.drawCircle(player_x,player_y,100,p);
+        canvas.drawCircle(center.x,center.y,100,p);
+        for(int i=0;i<SCircle.size();i++){
+            StaticCricle sc=SCircle.get(i);
+            if(inScreen(sc)){
+                PointF circle_center= RelativeCenterLocation(sc);
+                p.setColor(Color.argb(255,rand.nextInt(),rand.nextInt(),rand.nextInt()));
+                canvas.drawCircle(sc.x, sc.y, sc.getRadius(),p);
+            }
+        }
+
+
+    }
+    @Override
+    public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        Log.d(TAG,"Surfaceview created");
+        Canvas canvas= surfaceHolder.lockCanvas();
+        Screen_width=canvas.getWidth();
+        Screen_height=canvas.getHeight();
+        center=new PointF(Screen_width/2,Screen_height/2);//Get center of the canvas
+
+
+        Log.d(TAG,"height:width="+Integer.toString(Screen_width)+":"+Integer.toString(Screen_height));
+        //define map size
+        map_height=6*Screen_height;
+        map_width=6*Screen_width;
+
+        //give circles for testing,every 500 pix adding one static circle
+        SCircle= new ArrayList<StaticCricle>();
+        for(int i=0;i<map_width/500;i++)
+            for(int j=0;j<map_height/500;j++)
+                SCircle.add(new StaticCricle(i*500,j*500,10,0));
+        surfaceHolder.unlockCanvasAndPost(canvas);
+        playground.setRunState(true);
+        playground.start();
 
 
     }
 
-    @Override
-    public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        Log.d(TAG,"Surfaceview created");
-        playground.setRunState(true);
-        playground.start();
+    boolean inScreen(StaticCricle sc){
+        float difx,dify;
+        difx=sc.x-center.x;
+        dify=sc.y-center.y;
+        if(Screen_width/2+sc.getRadius()>Math.abs(difx) & Screen_height/2+sc.getRadius()>Math.abs(dify))
+            return true;
+        else
+            return false;
+
+    }
+    public PointF RelativeCenterLocation(StaticCricle sc){
+        PointF origin=new PointF(center.x-Screen_width,center.y-Screen_height);
+        float x=sc.x-origin.x,y=sc.y-origin.y;
+        return new PointF(x,y);
 
 
     }
@@ -66,7 +127,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         Log.d(TAG,"Surfaceview changed");
 
     }
-
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         Log.d(TAG,"Surfaceview destroyed");
@@ -80,5 +140,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             }
         }
 
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction()==MotionEvent.ACTION_DOWN){
+            //player_x=event.getX();
+            //player_y=event.getY();
+            //Log.d(TAG,Float.toString(player_x)+":"+Float.toString(player_y));
+            //player.setDirection(event.getX(),event.getY());
+
+        }
+        return super.onTouchEvent(event);
     }
 }

@@ -1,4 +1,4 @@
-package com.game.junglelaw.circle;
+package com.game.junglelaw.Circle;
 
 import android.graphics.PointF;
 
@@ -8,9 +8,11 @@ import android.graphics.PointF;
 public class MovableCircle extends AbstractCircle {
 
     private PointF direction; // direction vector size should be 1 (i.e. has a unit distance)
+    private float speed;
 
     protected MovableCircle(float x, float y, float radius, int color) {
         super(x, y, radius, color);
+        speed=10;
     }
 
     public void setDirection(float newX, float newY) {
@@ -23,8 +25,8 @@ public class MovableCircle extends AbstractCircle {
 
     /** Moves forward to the direction by one unit distance */
     public void moveToDirection() {
-        x = direction.x;
-        y = direction.y;
+        x = x+speed*direction.x;
+        y = y+speed*direction.y;
     }
 
     /**
