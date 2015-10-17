@@ -17,7 +17,7 @@ public class PlayGround extends Thread{
     private SurfaceHolder viewholder;
     private boolean RunState;
     private String TAG="PlayGround";
-
+    static final long FPS=40;
 
 
 
@@ -53,8 +53,20 @@ public class PlayGround extends Thread{
     @Override
     public void run() {
         Log.d(TAG,"Start main loop...");
+        long startTime;
+        long sleepTime;
+        long ticksPS=1000/FPS;
         while(RunState){
-           render();
+            startTime = System.currentTimeMillis();
+            render();
+            sleepTime=(System.currentTimeMillis()-startTime);
+            Log.d(TAG,"SleepTime:"+Long.toString(sleepTime));
+            try {
+                if (sleepTime > 0)
+                    sleep(sleepTime);
+                else
+                    sleep(5);
+            } catch (Exception e) {}
         }
         Log.d(TAG,"Ending main loop...");
     }

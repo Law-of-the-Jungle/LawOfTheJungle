@@ -56,6 +56,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         holder=getHolder();
         holder.addCallback(this);
 
+        player=new PlayerCircle(1000,1000,100,0);
 
 
         Log.d(TAG,"GameView created");
@@ -67,13 +68,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         p.setColor(Color.BLACK);
         canvas.drawColor(Color.WHITE);
         canvas.drawCircle(center.x,center.y,100,p);
+        player.moveToDirection();
         for(int i=0;i<SCircle.size();i++){
             StaticCricle sc=SCircle.get(i);
-            if(inScreen(sc)){
-                PointF circle_center= RelativeCenterLocation(sc);
-                p.setColor(Color.argb(255,rand.nextInt(),rand.nextInt(),rand.nextInt()));
-                canvas.drawCircle(sc.x, sc.y, sc.getRadius(),p);
-            }
+            PointF circle_center= RelativeCenterLocation(sc);
+            p.setColor(Color.argb(255, rand.nextInt(), rand.nextInt(), rand.nextInt()));
+            canvas.drawCircle(circle_center.x, circle_center.y, sc.getRadius(),p);
         }
 
 
@@ -94,9 +94,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
         //give circles for testing,every 500 pix adding one static circle
         SCircle= new ArrayList<StaticCricle>();
-        for(int i=0;i<map_width/500;i++)
-            for(int j=0;j<map_height/500;j++)
-                SCircle.add(new StaticCricle(i*500,j*500,10,0));
+        for(int i=0;i<map_width/200;i++)
+            for(int j=0;j<map_height/200;j++)
+                SCircle.add(new StaticCricle(i*200,j*200,10,0));
         surfaceHolder.unlockCanvasAndPost(canvas);
         playground.setRunState(true);
         playground.start();
@@ -104,18 +104,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     }
 
-    boolean inScreen(StaticCricle sc){
-        float difx,dify;
-        difx=sc.x-center.x;
-        dify=sc.y-center.y;
-        if(Screen_width/2+sc.getRadius()>Math.abs(difx) & Screen_height/2+sc.getRadius()>Math.abs(dify))
-            return true;
-        else
-            return false;
 
-    }
     public PointF RelativeCenterLocation(StaticCricle sc){
-        PointF origin=new PointF(center.x-Screen_width,center.y-Screen_height);
+        PointF origin=new PointF(player.x-Screen_width,player.y-Screen_height);
         float x=sc.x-origin.x,y=sc.y-origin.y;
         return new PointF(x,y);
 
@@ -144,10 +135,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction()==MotionEvent.ACTION_DOWN){
-            //player_x=event.getX();
-            //player_y=event.getY();
-            //Log.d(TAG,Float.toString(player_x)+":"+Float.toString(player_y));
-            //player.setDirection(event.getX(),event.getY());
+            float player_x=event.getX();
+            float player_y=event.getY();
+            //Log.d(TAG,"before="+Float.toString(player.x)+":"+Float.toString(player.y));
+            //Log.d(TAG,"on="+Float.toString(player_x)+":"+Float.toString(player_y));
+            player.setNewDirection(new PointF(event.getX(), event.getY()),center);
+
+            //Log.d(TAG,"after="+Float.toString(player.x)+":"+Float.toString(player.y));
 
         }
         return super.onTouchEvent(event);

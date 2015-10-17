@@ -12,7 +12,6 @@ public abstract class AbstractCircle extends PointF {
 
     private int color;
     private float radius;
-
     protected AbstractCircle(float x, float y, float radius, int color) {
         super(x, y);
         this.radius = radius;
