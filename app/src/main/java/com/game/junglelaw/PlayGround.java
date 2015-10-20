@@ -17,7 +17,7 @@ public class PlayGround extends Thread{
     private SurfaceHolder viewholder;
     private boolean RunState;
     private String TAG="PlayGround";
-    static final long FPS=40;
+    static final long FPS=60;
 
 
 

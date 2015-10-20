@@ -20,10 +20,12 @@ This is a android game
 	- Make the ball moving with cursor.
 	- Build communication between game thread and surface veiw.
 	- Adding Frame control.
+
 ### Version v0.1
 - Current Version Feature
 	- This is a milestone version. Basic function finished.
 	- Moving around the map,without consuming static circles
+	- Optimized a little on points number to be drawed.
 - Next Versioin
 	- Fix the typo,  correct "StaticCricle" -> "StaticCircle"
 	- Adding functions to eat static circles.
