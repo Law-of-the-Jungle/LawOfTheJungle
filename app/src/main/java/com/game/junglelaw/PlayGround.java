@@ -8,6 +8,11 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 
+import com.game.junglelaw.Circle.MovableCircle;
+import com.game.junglelaw.Circle.StaticCircle;
+
+import java.util.List;
+
 /**
  * PlayGround is the main class for controlling how the game is going.
  * It should implement a thread interface

@@ -43,7 +43,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     /* Testing Data */
     public PlayerCircle player;//User information
     private int map_height,map_width;
-    List<StaticCricle> SCircle;
+    //List<StaticCricle> SCircle;
 
 
     /**-----------**/
@@ -69,14 +69,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         canvas.drawColor(Color.WHITE);
         canvas.drawCircle(center.x,center.y,100,p);
         player.moveToDirection();
-        for(int i=0;i<SCircle.size();i++){
+        /*for(int i=0;i<SCircle.size();i++){
             StaticCricle sc=SCircle.get(i);
             if(inScreen(sc)){
                 PointF circle_center= RelativeCenterLocation(sc);
                 p.setColor(sc.getColor());
                 canvas.drawCircle(circle_center.x, circle_center.y, sc.getRadius(),p);
             }
-        }
+        }*/
 
 
     }
@@ -95,11 +95,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         map_width=6*Screen_width;
 
         //give circles for testing,every 500 pix adding one static circle
-        SCircle= new ArrayList<StaticCricle>();
+        /*SCircle= new ArrayList<StaticCricle>();
         Random rand= new Random(255);
         for(int i=0;i<map_width/200;i++)
             for(int j=0;j<map_height/200;j++)
-                SCircle.add(new StaticCricle(i*200,j*200,10,Color.argb(255, rand.nextInt(), rand.nextInt(), rand.nextInt())));
+                SCircle.add(new StaticCricle(i*200,j*200,10,Color.argb(255, rand.nextInt(), rand.nextInt(), rand.nextInt())));*/
         surfaceHolder.unlockCanvasAndPost(canvas);
         playground.setRunState(true);
         playground.start();
@@ -112,7 +112,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         return false;
 
     }
-    public PointF RelativeCenterLocation(StaticCricle sc){
+    public PointF RelativeCenterLocation(StaticCircle sc){
         PointF origin=new PointF(player.x-Screen_width/2,player.y-Screen_height/2);
         float x=sc.x-origin.x,y=sc.y-origin.y;
         return new PointF(x,y);
