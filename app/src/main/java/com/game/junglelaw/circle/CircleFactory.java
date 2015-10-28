@@ -1,5 +1,7 @@
 package com.game.junglelaw.Circle;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,6 +12,7 @@ import java.util.Random;
  */
 public class CircleFactory {
     private float SCircleDefaultRadius,MCircleDefaultRadius;
+    private String TAG="Circle Factory";
     public CircleFactory () {
         SCircleDefaultRadius=10;
         MCircleDefaultRadius=100;
@@ -18,11 +21,13 @@ public class CircleFactory {
     public List<StaticCircle> BatchWorkForScircle(int x,int y,int num){
         List<StaticCircle> res= new ArrayList<StaticCircle>();
         Random rx,ry,rcolor;
-        rx=new Random(x);
-        ry=new Random(y);
+        rx=new Random();
+        ry=new Random();
         rcolor= new Random(255);
         for(int i=0;i<num;i++){
-            res.add(createStaticCircle(rx.nextInt(),ry.nextInt(),SCircleDefaultRadius,rcolor.nextInt()));
+            StaticCircle tmp=createStaticCircle(rx.nextFloat()*x,ry.nextFloat()*y,SCircleDefaultRadius,rcolor.nextInt());
+            res.add(tmp);
+            Log.d(TAG,tmp.toString());
         }
         return res;
     }
@@ -33,7 +38,7 @@ public class CircleFactory {
         ry=new Random(y);
         rcolor= new Random(255);
         for(int i=0;i<num;i++){
-            res.add(createMovableCircle(rx.nextInt(),ry.nextInt(),MCircleDefaultRadius,rcolor.nextInt()));
+            res.add(createMovableCircle(rx.nextInt(), ry.nextInt(), MCircleDefaultRadius, rcolor.nextInt()));
         }
         return res;
     }

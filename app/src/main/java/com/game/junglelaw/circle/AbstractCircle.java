@@ -34,6 +34,9 @@ public abstract class AbstractCircle extends PointF {
         return color;
     }
 
+    public String toString(){
+        return Float.toString(x)+" "+Float.toString(y);
+    }
     public void draw(Canvas canvas) {
     } // TODO
 

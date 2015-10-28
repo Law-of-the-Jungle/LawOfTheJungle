@@ -23,8 +23,10 @@ public class PlayGround extends Thread{
     private boolean RunState;
     private String TAG="PlayGround";
     static final long FPS=60;
-
-
+    private CircleManager manger;
+    public CircleManager getManger(){
+        return manger;
+    }
 
 
     //public float player_x,player_y;//wrap this into method and seal it,now is just draft
@@ -32,6 +34,7 @@ public class PlayGround extends Thread{
         this.view=view;
         viewholder=view.getHolder();
         RunState=false;
+        manger =new CircleManager();
         Log.d(TAG,"PlayGround object created");
     }
 
@@ -44,6 +47,7 @@ public class PlayGround extends Thread{
             c=viewholder.lockCanvas();
             synchronized (viewholder){
                 if(c!=null){
+                    manger.ControlPopulation(); // manage the points in the map
                     view.onDraw(c);
                 }
             }
@@ -63,9 +67,10 @@ public class PlayGround extends Thread{
         long ticksPS=1000/FPS;
         while(RunState){
             startTime = System.currentTimeMillis();
+            //Log.d(TAG,Float.toString(view.player.x)+" "+Float.toString(view.player.y));
             render();
             sleepTime=(System.currentTimeMillis()-startTime);
-            Log.d(TAG,"SleepTime:"+Long.toString(sleepTime));
+            //Log.d(TAG,"SleepTime:"+Long.toString(sleepTime));
             try {
                 if (sleepTime > 0)
                     sleep(sleepTime);
