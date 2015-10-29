@@ -54,7 +54,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         playground=new PlayGround(this);
         holder=getHolder();
         holder.addCallback(this);
-        player=new PlayerCircle(1000,1000,100,0);
+        player=new PlayerCircle(1000,1000,30,0);
         Log.d(TAG,"GameView created");
     }
     @Override
@@ -63,7 +63,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         Paint p=new Paint();
         p.setColor(Color.BLACK);
         canvas.drawColor(Color.WHITE);
-        canvas.drawCircle(center.x,center.y,100,p);
+        canvas.drawCircle(center.x,center.y,player.getRadius(),p);
         player.moveToDirection();
         SCircle=playground.getManger().ProvideStatic();
         for(int i=0;i<SCircle.size();i++){
@@ -71,7 +71,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             if(inScreen(sc)){
                 PointF circle_center= RelativeCenterLocation(sc);
                 p.setColor(sc.getColor());
-                canvas.drawCircle(circle_center.x, circle_center.y, sc.getRadius(),p);
+                canvas.drawCircle(circle_center.x, circle_center.y,sc.getRadius(),p);
             }
         }
 

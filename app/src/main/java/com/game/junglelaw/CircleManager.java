@@ -54,7 +54,7 @@ public class CircleManager {
     public void ControlPopulation(){
         if(PopulationAlert()){
             Log.d(TAG, "Expending population...");
-            staticCircleList.addAll(circleFactory.BatchWorkForScircle(width_max,height_max,500));
+            staticCircleList.addAll(circleFactory.BatchWorkForScircle(width_max,height_max,5000));
             //Log.d(TAG,Float.toString(staticCircleList.get(0).x)+" "+Float.toString(staticCircleList.get(0).y));
         }
     }

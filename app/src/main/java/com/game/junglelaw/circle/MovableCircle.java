@@ -13,7 +13,7 @@ public class MovableCircle extends AbstractCircle {
     protected MovableCircle(float x, float y, float radius, int color) {
         super(x, y, radius, color);
         direction=new PointF(0,0);
-        speed=15;
+        speed=10;
     }
 
     public void setDirection(float newX, float newY) {
