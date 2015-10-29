@@ -15,7 +15,12 @@ public class MovableCircle extends AbstractCircle {
         direction=new PointF(0,0);
         speed=10;
     }
-
+    public void setSpeed(float new_speed){
+        speed=new_speed;
+    }
+    public float getSpeed(){
+        return speed;
+    }
     public void setDirection(float newX, float newY) {
         direction.set(newX, newY);
     }

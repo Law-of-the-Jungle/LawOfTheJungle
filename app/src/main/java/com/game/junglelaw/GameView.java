@@ -40,6 +40,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     //Draw the circle with location of screen
     /* Testing Data */
     public PlayerCircle player;//User information
+    private float player_on_screen_radius=30;
     private int map_height,map_width;
     List<StaticCircle> SCircle;
     /**-----------**/
@@ -54,7 +55,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         playground=new PlayGround(this);
         holder=getHolder();
         holder.addCallback(this);
-        player=new PlayerCircle(1000,1000,30,0);
+        player=new PlayerCircle(1000,1000,60,0);
         Log.d(TAG,"GameView created");
     }
     @Override
@@ -63,16 +64,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         Paint p=new Paint();
         p.setColor(Color.BLACK);
         canvas.drawColor(Color.WHITE);
-        canvas.drawCircle(center.x,center.y,player.getRadius(),p);
+        canvas.drawCircle(center.x, center.y, player_on_screen_radius, p);
         player.moveToDirection();
         SCircle=playground.getManger().ProvideStatic();
         for(int i=0;i<SCircle.size();i++){
             StaticCircle sc=SCircle.get(i);
-            if(inScreen(sc)){
+            //if(inScreen(sc)){
                 PointF circle_center= RelativeCenterLocation(sc);
                 p.setColor(sc.getColor());
                 canvas.drawCircle(circle_center.x, circle_center.y,sc.getRadius(),p);
-            }
+            //}
         }
 
 
@@ -111,12 +112,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         return false;
 
     }
+
     public PointF RelativeCenterLocation(StaticCircle sc){
-        PointF origin=new PointF(player.x-Screen_width/2,player.y-Screen_height/2);
-        float x=sc.x-origin.x,y=sc.y-origin.y;
-        return new PointF(x,y);
-
-
+        float zoom=player_on_screen_radius/player.getRadius();
+        float x=(sc.x-player.x)*zoom;
+        float y=(sc.y-player.y)*zoom;
+        return new PointF(x+Screen_width/2,y+Screen_height/2);
     }
 
     @Override

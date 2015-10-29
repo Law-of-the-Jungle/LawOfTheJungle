@@ -10,7 +10,6 @@ public class PlayerCircle extends MovableCircle {
     public PlayerCircle(float x, float y, float radius, int color) {
         super(x, y, radius, color);
     }
-
     /** 根据用户点击位置，计算player circle的新direction */
     public void setNewDirection(PointF userClickPoint,PointF center) {
         float newX = userClickPoint.x - center.x;
