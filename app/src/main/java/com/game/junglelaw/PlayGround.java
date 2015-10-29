@@ -48,6 +48,7 @@ public class PlayGround extends Thread{
             synchronized (viewholder){
                 if(c!=null){
                     manger.ControlPopulation(); // manage the points in the map
+                    manger.EliminateConfliction();
                     view.onDraw(c);
                 }
             }

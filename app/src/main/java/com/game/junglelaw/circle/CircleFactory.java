@@ -27,7 +27,7 @@ public class CircleFactory {
         for(int i=0;i<num;i++){
             StaticCircle tmp=createStaticCircle(rx.nextFloat()*x,ry.nextFloat()*y,SCircleDefaultRadius,rcolor.nextInt());
             res.add(tmp);
-            Log.d(TAG,tmp.toString());
+            //Log.d(TAG,tmp.toString());
         }
         return res;
     }

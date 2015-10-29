@@ -12,10 +12,12 @@ public abstract class AbstractCircle extends PointF {
 
     private int color;
     private float radius;
+    private float mass;
     protected AbstractCircle(float x, float y, float radius, int color) {
         super(x, y);
         this.radius = radius;
         this.color = color;
+        mass=radius*radius;
     }
 
     public void setRadius(float radius) {
@@ -23,9 +25,14 @@ public abstract class AbstractCircle extends PointF {
     }
 
     public float getRadius() {
-        return radius;
+        return (float)Math.sqrt(mass);
     }
-
+    public void addMass(float num){
+        mass+=num;
+    }
+    public float getMass(){
+        return mass;
+    }
     public void setColor(int color) {
         this.color = color;
     }

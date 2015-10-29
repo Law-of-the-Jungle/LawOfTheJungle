@@ -92,6 +92,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         map_width=6*Screen_width;
 
         playground.getManger().setSize(map_width,map_height);
+        playground.getManger().ProvideMovable().add(player);
         //give circles for testing,every 500 pix adding one static circle
         /*SCircle= new ArrayList<StaticCricle>();
         Random rand= new Random(255);

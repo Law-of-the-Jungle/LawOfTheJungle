@@ -60,5 +60,16 @@ public class CircleManager {
     }
     // TODO 判断，circle的相互吃情况
     public void EliminateConfliction(){
+        //do for player first
+        for(int i=0;i<movableCircleList.size();i++)
+            for(int j=0;j<staticCircleList.size();j++){
+                MovableCircle ms=movableCircleList.get(i);
+                StaticCircle sc=staticCircleList.get(j);
+                if(Util.circleCenterDistance(ms,sc)<ms.getRadius())
+                    synchronized (staticCircleList){
+                        ms.addMass(sc.getMass());
+                        staticCircleList.remove(sc);
+                    }
+            }
     }
 }
