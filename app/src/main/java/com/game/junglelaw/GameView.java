@@ -89,7 +89,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         p.setColor(Color.BLACK);
         canvas.drawColor(Color.WHITE);
         canvas.drawCircle(center.x, center.y, player.player_on_screen_radius, p);
-        player.moveToDirection();
+        player.moveToDirection(getMap_width(),getMap_height());
         SCircle=playground.getManger().ProvideStatic();
         MCircle=playground.getManger().ProvideMovable();
         drawSCircleList(SCircle,canvas);
@@ -112,12 +112,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
         playground.getManger().setSize(map_width,map_height);
         playground.getManger().ProvideMovable().add(player);
-        //give circles for testing,every 500 pix adding one static circle
-        /*SCircle= new ArrayList<StaticCricle>();
-        Random rand= new Random(255);
-        for(int i=0;i<map_width/200;i++)
-            for(int j=0;j<map_height/200;j++)
-                SCircle.add(new StaticCricle(i*200,j*200,10,Color.argb(255, rand.nextInt(), rand.nextInt(), rand.nextInt())));*/
         surfaceHolder.unlockCanvasAndPost(canvas);
         playground.setRunState(true);
         playground.start();

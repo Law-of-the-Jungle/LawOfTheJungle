@@ -30,9 +30,13 @@ public class MovableCircle extends AbstractCircle {
     }
 
     /** Moves forward to the direction by one unit distance */
-    public void moveToDirection() {
-        x = x+speed*direction.x;
-        y = y+speed*direction.y;
+    public void moveToDirection(int width,int height) {
+        float new_x=x+speed*direction.x;
+        float new_y=y+speed*direction.y;
+        if(new_x>0 && new_x<width)
+            x = new_x;
+        if(new_y>0 && new_y<height)
+            y = new_y;
     }
     public void setNewDirection(PointF userClickPoint,PointF center) {
         float newX = userClickPoint.x - center.x;
