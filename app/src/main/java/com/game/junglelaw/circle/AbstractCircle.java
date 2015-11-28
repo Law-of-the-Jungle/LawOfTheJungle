@@ -9,7 +9,7 @@ import android.graphics.PointF;
  * Declares the common properties of all circles.
  */
 public abstract class AbstractCircle extends PointF {
-    private final float DIGEST_RATE=5;
+    private final double DIGEST_RATE=0.7;
     private int color;
     private float radius;
     private float mass;

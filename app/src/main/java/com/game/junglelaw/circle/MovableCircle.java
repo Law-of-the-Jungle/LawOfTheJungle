@@ -34,6 +34,15 @@ public class MovableCircle extends AbstractCircle {
         x = x+speed*direction.x;
         y = y+speed*direction.y;
     }
+    public void setNewDirection(PointF userClickPoint,PointF center) {
+        float newX = userClickPoint.x - center.x;
+        float newY = userClickPoint.y - center.y;
+        float len = (float) Math.sqrt(Math.pow(newX, 2) + Math.pow(newY, 2)); // for 归一化处理
+        setDirection(newX / len, newY / len);
+    }
+    public void randomMove(){
+
+    }
 
     /**
      * Absorbs the targetCircle into current player circle.

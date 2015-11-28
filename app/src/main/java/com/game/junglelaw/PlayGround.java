@@ -50,6 +50,7 @@ public class PlayGround extends Thread{
                     manger.ControlPopulation(); // manage the points in the map
                     manger.EliminateConfliction();
                     view.player.updateZoom(view);
+                    //let movable move in manger
                     view.onDraw(c);
                 }
             }

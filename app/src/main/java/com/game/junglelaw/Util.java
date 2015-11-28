@@ -47,6 +47,8 @@ public class Util {
      * Pre-assumption: circleLarge's radius is larger than or equal to circle2's
      */
     public static boolean canAbsorb(AbstractCircle circleLarge, AbstractCircle circleSmall) {
+        if (circleLarge.getRadius()<circleSmall.getRadius())
+            return false;
         return circleCenterDistance(circleLarge, circleSmall) + circleSmall.getRadius() <= 1.1 * circleLarge.getRadius();
     }
 

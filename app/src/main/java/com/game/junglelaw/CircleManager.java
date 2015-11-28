@@ -42,25 +42,65 @@ public class CircleManager {
 
 
     // TODO 监控是否需要添加新的static circle
-    public boolean PopulationAlert(){
+    public boolean MCirclePopulationAlert(){
         int SCircle_size=staticCircleList.size();
         int MCircle_size=movableCircleList.size();
-        if(SCircle_size<MCircle_size || SCircle_size<100){
+        if( MCircle_size<10){
+            return true;
+        }
+        return false;
+    }
+    public boolean SCirclePopulationAlert(){
+        int SCircle_size=staticCircleList.size();
+        if(SCircle_size<500){
             return true;
         }
         return false;
     }
     // TODO (如有必要)生成新的static circle
     public void ControlPopulation(){
-        if(PopulationAlert()){
-            Log.d(TAG, "Expending population...");
-            staticCircleList.addAll(circleFactory.BatchWorkForScircle(width_max,height_max,5000));
-            //Log.d(TAG,Float.toString(staticCircleList.get(0).x)+" "+Float.toString(staticCircleList.get(0).y));
+        if(MCirclePopulationAlert()){
+            //Log.d(TAG, "Expending movable population...");
+            movableCircleList.addAll(circleFactory.BatchWorkForPCircle(width_max,height_max,10));
         }
+        if(SCirclePopulationAlert()){
+            //Log.d(TAG, "Expending static population...");
+            //staticCircleList.addAll(circleFactory.BatchWorkForScircle(width_max,height_max,500));
+        }
+    }
+    public void MoveMovable(){
+
     }
     // TODO 判断，circle的相互吃情况
     public void EliminateConfliction(){
         //do for player first
+        boolean collided=true;
+        while(collided){
+            collided=false;
+            synchronized (movableCircleList){
+                for(int i=movableCircleList.size()-2;i>=0;i--)
+                    for(int j=i+1;j<movableCircleList.size();j++){
+                        MovableCircle m1=movableCircleList.get(i);
+                        MovableCircle m2=movableCircleList.get(j);
+
+                        if(Util.canAbsorb(m1,m2)) {
+                            //Log.d("Collide", "m1>m2");
+                            m1.addMass(m2.getMass());
+                            movableCircleList.remove(m2);
+                            collided = true;
+                        }
+                        else if(Util.canAbsorb(m2,m1)){
+                            //Log.d("Collide","m1<m2");
+                            m2.addMass(m1.getMass());
+                            movableCircleList.remove(m1);
+                            collided=true;
+                            break;
+                        }//else
+                            //Log.d("Collide","m1==m2");
+                    }
+            }
+            //Log.d("movablesize",Integer.toString(movableCircleList.size()));
+        }
         for(int i=0;i<movableCircleList.size();i++)
             for(int j=0;j<staticCircleList.size();j++){
                 MovableCircle ms=movableCircleList.get(i);

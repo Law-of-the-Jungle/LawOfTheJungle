@@ -14,8 +14,8 @@ public class CircleFactory {
     private float SCircleDefaultRadius,MCircleDefaultRadius;
     private String TAG="Circle Factory";
     public CircleFactory () {
-        SCircleDefaultRadius=10;
-        MCircleDefaultRadius=100;
+        SCircleDefaultRadius=20;
+        MCircleDefaultRadius=30;
     }
 
     public List<StaticCircle> BatchWorkForScircle(int x,int y,int num){
@@ -38,7 +38,7 @@ public class CircleFactory {
         ry=new Random(y);
         rcolor= new Random(255);
         for(int i=0;i<num;i++){
-            res.add(createMovableCircle(rx.nextInt(), ry.nextInt(), MCircleDefaultRadius, rcolor.nextInt()));
+            res.add(createMovableCircle(rx.nextFloat()*x, ry.nextFloat()*y, MCircleDefaultRadius, rcolor.nextInt()));
         }
         return res;
     }
@@ -46,7 +46,6 @@ public class CircleFactory {
     public MovableCircle createMovableCircle(float x, float y, float radius, int color) {
         return new MovableCircle(x, y, radius, color);
     }
-
     public StaticCircle createStaticCircle(float x, float y, float radius, int color) {
         return new StaticCircle(x, y ,radius, color);
     }
