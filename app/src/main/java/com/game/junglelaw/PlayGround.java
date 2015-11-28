@@ -49,6 +49,7 @@ public class PlayGround extends Thread{
                 if(c!=null){
                     manger.ControlPopulation(); // manage the points in the map
                     manger.EliminateConfliction();
+                    view.player.updateZoom(view);
                     view.onDraw(c);
                 }
             }

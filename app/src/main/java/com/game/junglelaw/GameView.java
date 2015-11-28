@@ -28,10 +28,8 @@ import java.util.Random;
  */
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private PlayGround playground;
-
     private int Screen_height,Screen_width;
     private PointF center;
-
     private SurfaceHolder holder;
     private String TAG="GameView";
 
@@ -40,10 +38,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     //Draw the circle with location of screen
     /* Testing Data */
     public PlayerCircle player;//User information
-    private float player_on_screen_radius=30;
+    //private float player_on_screen_radius=30;
     private int map_height,map_width;
     List<StaticCircle> SCircle;
     /**-----------**/
+    public int getScreen_height(){return Screen_height;}
+    public int getScreen_width(){return Screen_width;}
     public int getMap_height(){
         return map_height;
     }
@@ -64,7 +64,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         Paint p=new Paint();
         p.setColor(Color.BLACK);
         canvas.drawColor(Color.WHITE);
-        canvas.drawCircle(center.x, center.y, player_on_screen_radius, p);
+        canvas.drawCircle(center.x, center.y, player.player_on_screen_radius, p);
         player.moveToDirection();
         SCircle=playground.getManger().ProvideStatic();
         for(int i=0;i<SCircle.size();i++){
@@ -72,7 +72,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             //if(inScreen(sc)){
                 PointF circle_center= RelativeCenterLocation(sc);
                 p.setColor(sc.getColor());
-                canvas.drawCircle(circle_center.x, circle_center.y,sc.getRadius(),p);
+                canvas.drawCircle(circle_center.x, circle_center.y,RelativeScreenSize(sc),p);
             //}
         }
 
@@ -89,8 +89,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
         Log.d(TAG,"height:width="+Integer.toString(Screen_width)+":"+Integer.toString(Screen_height));
         //define map size
-        map_height=6*Screen_height;
-        map_width=6*Screen_width;
+        map_height=10*Screen_height;
+        map_width=10*Screen_width;
 
         playground.getManger().setSize(map_width,map_height);
         playground.getManger().ProvideMovable().add(player);
@@ -113,8 +113,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     }
 
+    public float RelativeScreenSize(AbstractCircle circle){
+        return circle.getRadius()*player.zoom_rate;
+
+    }
     public PointF RelativeCenterLocation(StaticCircle sc){
-        float zoom=player_on_screen_radius/player.getRadius();
+        float zoom=player.zoom_rate;
         float x=(sc.x-player.x)*zoom;
         float y=(sc.y-player.y)*zoom;
         return new PointF(x+Screen_width/2,y+Screen_height/2);
