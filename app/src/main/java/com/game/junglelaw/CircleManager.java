@@ -57,6 +57,13 @@ public class CircleManager {
         }
         return false;
     }
+    public boolean InMovableList(MovableCircle circle ){
+        if(movableCircleList.contains(circle))
+            return true;
+        else
+            return false;
+
+    }
     // TODO (如有必要)生成新的static circle
     public void ControlPopulation(){
         if(MCirclePopulationAlert()){

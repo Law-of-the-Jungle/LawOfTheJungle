@@ -25,6 +25,7 @@ public class PlayGround extends Thread{
     private String TAG="PlayGround";
     static final long FPS=60;
     private CircleManager manger;
+    private boolean GameOverState;
     public CircleManager getManger(){
         return manger;
     }
@@ -38,11 +39,17 @@ public class PlayGround extends Thread{
         this.view=view;
         viewholder=view.getHolder();
         RunState=false;
+        GameOverState=false;
         PauseState=false;
         manger =new CircleManager();
         Log.d(TAG,"PlayGround object created");
     }
-
+    public void setGameOverState(boolean state){
+        GameOverState=state;
+    }
+    public boolean IsGameOver(){
+        return GameOverState;
+    }
     public void setRunState(boolean state){
         RunState=state;
     }
@@ -55,7 +62,11 @@ public class PlayGround extends Thread{
                     manger.ControlPopulation(); // manage the points in the map
                     manger.EliminateConfliction();
                     view.player.updateZoom(view);
-                    //let movable move in manger
+                    if(!manger.InMovableList(view.player)){
+                        setRunState(false);
+                        setGameOverState(true);
+                        Log.d("end","end game");
+                    }
                     manger.MoveMovable();
                     view.onDraw(c);
                 }

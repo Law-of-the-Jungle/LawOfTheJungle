@@ -40,12 +40,12 @@ public class GameActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.end) {
             Intent data= new Intent();
+            float score= gv.getScore();
+            data.putExtra("score",score);
             setResult(1,data);
             finish();
             return true;

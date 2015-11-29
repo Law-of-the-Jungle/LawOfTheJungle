@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Toast;
 
 /***
  * This the main activity for welcome and setting etc
@@ -26,6 +27,10 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //TODO deal with data return from game activity
+        if(resultCode==RESULT_OK){
+            String text=Float.toString(data.getExtras().getFloat("score"));
+            Toast.makeText(this,text,Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -42,12 +47,6 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.end) {
-            return true;
-        }else if(id== R.id.pause){
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
