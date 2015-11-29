@@ -3,6 +3,7 @@ package com.game.junglelaw;
 import com.game.junglelaw.Circle.*;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -11,6 +12,11 @@ import java.util.Random;
  */
 public class Util {
 
+    private static String TAG="Util";
+    public static float getRelativeRadius(float playerRadius,float circleRadius,float player_on_screen_radius){
+        Log.d(TAG,Float.toString(player_on_screen_radius*(circleRadius/playerRadius)));
+        return player_on_screen_radius*circleRadius/playerRadius;
+    }
     public static PointF generateRandomPoint(int xBound, int yBound, Random rand) {
         return new PointF(rand.nextFloat() * xBound, rand.nextFloat() * yBound);
     }
@@ -41,6 +47,8 @@ public class Util {
      * Pre-assumption: circleLarge's radius is larger than or equal to circle2's
      */
     public static boolean canAbsorb(AbstractCircle circleLarge, AbstractCircle circleSmall) {
+        if (circleLarge.getRadius()<circleSmall.getRadius())
+            return false;
         return circleCenterDistance(circleLarge, circleSmall) + circleSmall.getRadius() <= 1.1 * circleLarge.getRadius();
     }
 

@@ -13,9 +13,14 @@ public class MovableCircle extends AbstractCircle {
     protected MovableCircle(float x, float y, float radius, int color) {
         super(x, y, radius, color);
         direction=new PointF(0,0);
-        speed=15;
+        speed=10;
     }
-
+    public void setSpeed(float new_speed){
+        speed=new_speed;
+    }
+    public float getSpeed(){
+        return speed;
+    }
     public void setDirection(float newX, float newY) {
         direction.set(newX, newY);
     }
@@ -25,9 +30,22 @@ public class MovableCircle extends AbstractCircle {
     }
 
     /** Moves forward to the direction by one unit distance */
-    public void moveToDirection() {
-        x = x+speed*direction.x;
-        y = y+speed*direction.y;
+    public void moveToDirection(int width,int height) {
+        float new_x=x+speed*direction.x;
+        float new_y=y+speed*direction.y;
+        if(new_x>0 && new_x<width)
+            x = new_x;
+        if(new_y>0 && new_y<height)
+            y = new_y;
+    }
+    public void setNewDirection(PointF userClickPoint,PointF center) {
+        float newX = userClickPoint.x - center.x;
+        float newY = userClickPoint.y - center.y;
+        float len = (float) Math.sqrt(Math.pow(newX, 2) + Math.pow(newY, 2)); // for 归一化处理
+        setDirection(newX / len, newY / len);
+    }
+    public void randomMove(){
+
     }
 
     /**
