@@ -14,6 +14,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.game.junglelaw.circle.*;
 
@@ -60,6 +63,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         player=new PlayerCircle(1000,1000,DEFAULT_PLAYER_RADIUS,0);
         Log.d(TAG,"GameView created");
     }
+    public float getScore(){
+        return player.getMass();
+    }
+    public void pause(){
+        playground.setPauseState(true);
+    }
+    public void resume(){
+        playground.setPauseState(false);
+    }
     public void drawSCircleList(List<StaticCircle> list,Canvas canvas){
         Paint p=new Paint();
         for(int i=0;i<list.size();i++){
@@ -85,16 +97,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if(playground.IsGameOver()){
+            GameOverScene(canvas);
+            return;
+        }
         Paint p=new Paint();
         p.setColor(Color.BLACK);
         canvas.drawColor(Color.WHITE);
         canvas.drawCircle(center.x, center.y, player.player_on_screen_radius, p);
-        player.moveToDirection(getMap_width(),getMap_height());
+        player.moveToDirection(getMap_width(), getMap_height());
         SCircle=playground.getManger().ProvideStatic();
         MCircle=playground.getManger().ProvideMovable();
-        drawSCircleList(SCircle,canvas);
-        drawMCircleList(MCircle,canvas);
+        String displayText="Score:"+getScore();
+        Paint textPaint= new Paint();
+        textPaint.setColor(Color.BLACK);
+        p.setTextSize(40);
+        canvas.drawText(displayText, 5, canvas.getHeight()-5, p);
+        drawSCircleList(SCircle, canvas);
+        drawMCircleList(MCircle, canvas);
 
+    }
+
+    public void GameOverScene(Canvas canvas){
+        Paint textPaint= new Paint();
+        textPaint.setColor(Color.BLACK);
+        textPaint.setTextSize(150);
+        canvas.drawText("Game Over",0,canvas.getHeight()/2,textPaint);
     }
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {

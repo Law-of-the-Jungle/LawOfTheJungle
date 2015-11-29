@@ -1,11 +1,13 @@
 package com.game.junglelaw;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Toast;
 
 /***
  * This the main activity for welcome and setting etc
@@ -16,32 +18,19 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
+        Intent intent= new Intent(this,GameActivity.class);
+        startActivityForResult(intent,1);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        GameView gv=new GameView(this);
-        setContentView(gv);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG,"OnResume");
-        GameView gv=new GameView(this);
-        setContentView(gv);
-    }
-
-    @Override
-    protected void onPause() {
-        /*On pause is called when home button is call*/
-        super.onPause();
-        Log.d(TAG,"OnPause");
-    }
-
-    @Override
-    protected void onStop() {
-        /*Called after onPause*/
-        super.onStop();
-        Log.d(TAG,"onStop");
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //TODO deal with data return from game activity
+        if(resultCode==RESULT_OK){
+            String text=Float.toString(data.getExtras().getFloat("score"));
+            Toast.makeText(this,text,Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -58,10 +47,6 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
