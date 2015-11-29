@@ -1,47 +1,40 @@
 package com.game.junglelaw;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
+import android.view.View;
+import android.widget.Button;
 
 /***
  * This the main activity for welcome and setting etc
  */
 public class MainActivity extends Activity {
 
-    private String TAG="MainActivity";
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        GameView gv=new GameView(this);
-        setContentView(gv);
-    }
+        setContentView(R.layout.activity_main);
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG,"OnResume");
-        GameView gv=new GameView(this);
-        setContentView(gv);
-    }
+        final Button startButton = (Button) findViewById(R.id.start_button);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, GameActivity.class));
+            }
+        });
 
-    @Override
-    protected void onPause() {
-        /*On pause is called when home button is call*/
-        super.onPause();
-        Log.d(TAG,"OnPause");
-    }
-
-    @Override
-    protected void onStop() {
-        /*Called after onPause*/
-        super.onStop();
-        Log.d(TAG,"onStop");
+        final Button highestScoreButton = (Button) findViewById(R.id.highest_scores_button);
+        highestScoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, HighestScoresActivity.class));
+            }
+        });
     }
 
     @Override

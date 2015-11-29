@@ -5,19 +5,32 @@ import android.graphics.PointF;
 
 /**
  * Created by apple on 10/15/15.
- *
+ * <p/>
  * Declares the common properties of all circles.
  */
-public abstract class AbstractCircle extends PointF {
-    private final double DIGEST_RATE=0.7;
-    private int color;
-    private float radius;
-    private float mass;
+public abstract class AbstractCircle {
+
+    private static final String LOG_TAG = AbstractCircle.class.getSimpleName();
+
+    protected final double DIGEST_RATE = 0.7;
+    protected int color;
+    protected float radius;
+    protected float mass;
+    protected PointF center;
+
     protected AbstractCircle(float x, float y, float radius, int color) {
-        super(x, y);
+        this.center = new PointF(x, y);
         this.radius = radius;
         this.color = color;
-        mass=radius*radius;
+        this.mass = radius * radius;
+    }
+
+    public void setCenter(float x, float y) {
+        center.set(x, y);
+    }
+
+    public PointF getCenter() {
+        return center;
     }
 
     public void setRadius(float radius) {
@@ -25,14 +38,17 @@ public abstract class AbstractCircle extends PointF {
     }
 
     public float getRadius() {
-        return (float)Math.sqrt(mass);
+        return (float) Math.sqrt(mass);
     }
-    public void addMass(float num){
-        mass+=num*DIGEST_RATE;
+
+    public void addMass(float num) {
+        mass += num * DIGEST_RATE;
     }
-    public float getMass(){
+
+    public float getMass() {
         return mass;
     }
+
     public void setColor(int color) {
         this.color = color;
     }
@@ -41,10 +57,13 @@ public abstract class AbstractCircle extends PointF {
         return color;
     }
 
-    public String toString(){
-        return Float.toString(x)+" "+Float.toString(y);
+    public String toString() {
+        return "center: " + center.toString() + "; radius: " + radius;
     }
+
+
+    // TODO
     public void draw(Canvas canvas) {
-    } // TODO
+    }
 
 }
