@@ -3,33 +3,56 @@ package com.game.junglelaw;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
+
+import com.game.junglelaw.data.JungleLawDbAdapter;
 
 /***
  * This the main activity for welcome and setting etc
  */
 public class MainActivity extends Activity {
 
-    private String TAG="MainActivity";
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    private JungleLawDbAdapter mJungleLawDbAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent= new Intent(this,GameActivity.class);
-        startActivityForResult(intent,1);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_main);
+
+        mJungleLawDbAdapter = new JungleLawDbAdapter(MainActivity.this);
+
+        final Button startButton = (Button) findViewById(R.id.start_button);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MainActivity.this, GameActivity.class), 1);
+            }
+        });
+
+        final Button highestScoreButton = (Button) findViewById(R.id.highest_scores_button);
+        highestScoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, HighestScoresActivity.class));
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //TODO deal with data return from game activity
-        if(resultCode==RESULT_OK){
-            String text=Float.toString(data.getExtras().getFloat("score"));
-            Toast.makeText(this,text,Toast.LENGTH_LONG).show();
+        if(requestCode == 1 && resultCode==RESULT_OK){
+            float scores = data.getExtras().getFloat("score");
+            String text=Float.toString(scores);
+            mJungleLawDbAdapter.insert((int) scores);
+            Toast.makeText(this, text, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -47,6 +70,10 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

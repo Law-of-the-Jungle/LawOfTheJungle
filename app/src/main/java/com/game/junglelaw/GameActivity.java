@@ -11,19 +11,20 @@ import android.view.MenuItem;
 public class GameActivity extends Activity {
 
     GameView gv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        gv=new GameView(this);
+        gv = new GameView(this);
         setContentView(gv);
     }
+
     protected void onResume() {
         super.onResume();
         //Log.d(TAG, "OnResume");
-        gv=new GameView(this);
+        gv = new GameView(this);
         setContentView(gv);
     }
 
@@ -43,15 +44,15 @@ public class GameActivity extends Activity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.end) {
-            Intent data= new Intent();
-            float score= gv.getScore();
-            data.putExtra("score",score);
-            setResult(1,data);
+            Intent data = new Intent();
+            float score = gv.getScore();
+            data.putExtra("score", score);
+            setResult(RESULT_OK, data);
             finish();
             return true;
-        }else if(id== R.id.pause){
+        } else if (id == R.id.pause) {
             gv.pause();
-        }else if(id==R.id.resume){
+        } else if (id == R.id.resume) {
             gv.resume();
         }
 
