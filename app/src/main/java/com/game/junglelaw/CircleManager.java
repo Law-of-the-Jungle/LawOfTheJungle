@@ -6,7 +6,6 @@ import com.game.junglelaw.circle.StaticCircle;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by apple on 10/15/15.
@@ -16,7 +15,6 @@ public class CircleManager {
 
     private static final String LOG_TAG = CircleManager.class.getSimpleName();
 
-    private Random rand;
     private CircleFactory circleFactory;
     private List<StaticCircle> staticCircleList;
     private List<MovableCircle> movableCircleList;
@@ -24,7 +22,6 @@ public class CircleManager {
 
 
     public CircleManager() {
-        rand = new Random();
         staticCircleList = new ArrayList<>();
         movableCircleList = new ArrayList<>();
         circleFactory = new CircleFactory();

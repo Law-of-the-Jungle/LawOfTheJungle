@@ -102,7 +102,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         movableCircles = playground.getManger().ProvideMovable();
         drawSCircleList(staticCircles, canvas);
         drawMCircleList(movableCircles, canvas);
+        drawPlayerCircle(canvas);
+    }
 
+    public void drawPlayerCircle (Canvas canvas) {
+        Paint p = new Paint();
+        PointF circle_center = RelativeCenterLocation(player);
+        p.setColor(player.getColor());
+        canvas.drawCircle(circle_center.x, circle_center.y, RelativeScreenSize(player), p);
     }
 
     @Override

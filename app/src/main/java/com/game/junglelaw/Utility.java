@@ -20,19 +20,12 @@ public class Utility {
         return player_on_screen_radius * circleRadius / playerRadius;
     }
 
-    public static PointF generateRandomPoint(int xBound, int yBound, Random rand) {
-        return new PointF(rand.nextFloat() * xBound, rand.nextFloat() * yBound);
+    public static float generateRandomFloat(float lo, float hi) {
+        return lo + (float) (Math.random() * (hi - lo));
     }
 
-    /**
-     * Returns a random radius in range of [lo, hi]
-     */
-    public static double generateRandomRadius(double lo, double hi, Random rand) {
-        return lo + rand.nextInt((int) (hi - lo));
-    }
-
-    public static int generateRandomColor(Random rand) {
-        return Color.argb(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+    public static int generateRandomInt(int lo, int hi) {
+        return lo + (int) (Math.random() * (hi - lo + 1));
     }
 
     /**
