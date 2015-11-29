@@ -2,6 +2,8 @@ package com.game.junglelaw.Circle;
 
 import android.graphics.PointF;
 
+import java.util.Random;
+
 /**
  * Created by apple on 10/15/15.
  */
@@ -44,16 +46,10 @@ public class MovableCircle extends AbstractCircle {
         float len = (float) Math.sqrt(Math.pow(newX, 2) + Math.pow(newY, 2)); // for 归一化处理
         setDirection(newX / len, newY / len);
     }
-    public void randomMove(){
-
-    }
-
-    /**
-     * Absorbs the targetCircle into current player circle.
-     *
-     * Pre-assumption: current player circle's radius is larger than targetCircle's.
-     */
-    public void absorb(AbstractCircle targetCircle) {
-        // TODO stay tuned
+    public void randomMove(int width,int height){
+        Random rand=new Random();
+        PointF fakeClick=new PointF(rand.nextFloat()*width,rand.nextFloat()*height);
+        setNewDirection(fakeClick,this);
+        moveToDirection(width,height);
     }
 }

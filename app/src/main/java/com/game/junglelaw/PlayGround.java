@@ -51,6 +51,7 @@ public class PlayGround extends Thread{
                     manger.EliminateConfliction();
                     view.player.updateZoom(view);
                     //let movable move in manger
+                    manger.MoveMovable();
                     view.onDraw(c);
                 }
             }
