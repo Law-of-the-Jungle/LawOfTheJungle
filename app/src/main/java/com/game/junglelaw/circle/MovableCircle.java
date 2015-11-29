@@ -2,6 +2,9 @@ package com.game.junglelaw.circle;
 
 import android.graphics.PointF;
 
+import com.game.junglelaw.Utility;
+
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -11,11 +14,13 @@ public class MovableCircle extends AbstractCircle {
 
     private PointF direction; // direction vector size should be 1 (i.e. has a unit distance)
     private float speed;
+    private boolean isAttackPlayer;
 
     public MovableCircle(float x, float y, float radius, int color) {
         super(x, y, radius, color);
         direction = new PointF(0, 0);
         speed = 10;
+        isAttackPlayer = false;
     }
 
     public void setSpeed(float new_speed) {
@@ -53,16 +58,34 @@ public class MovableCircle extends AbstractCircle {
         setDirection(newX / len, newY / len);
     }
 
-    public void randomMove(int width, int height) {
+    public void aiMove(int width, int height, MovableCircle playerCircle, List<StaticCircle> staticCircleList) {
+
+        if (isAttackPlayer == true) {
+
+            if (radius > 1.1 * playerCircle.getRadius()) {
+                setNewDirection(new PointF(playerCircle.x, playerCircle.y), this);
+                moveToDirection(width, height);
+                return;
+
+            } else {
+                isAttackPlayer = false;
+            }
+        }
+
+        // When goes to here: isAttackPlayer == false
         double randNumb = Math.random();
 
-        if (randNumb < 0.1) {
-            PointF fakeClick = new PointF((float) (Math.random() * width), (float) (Math.random() * height));
-            setNewDirection(fakeClick, this);
+        if (randNumb < 0.05) {
+            StaticCircle staticCircle = staticCircleList.get(Utility.generateRandomInt(0, staticCircleList.size() - 1));
+            PointF staticCenter = new PointF(staticCircle.x, staticCircle.y);
+            setNewDirection(staticCenter, this);
 
-        } else if (randNumb < 0.5) {
-
+        } else if (randNumb < 0.55 && radius > 1.1 * playerCircle.getRadius()) {
+            isAttackPlayer = true;
+            PointF playerCenter = new PointF(playerCircle.x, playerCircle.y);
+            setNewDirection(playerCenter, this);
         }
+        // else, keep the predefined direction
 
         moveToDirection(width, height);
     }

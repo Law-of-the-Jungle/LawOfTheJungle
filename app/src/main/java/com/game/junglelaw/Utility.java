@@ -1,6 +1,7 @@
 package com.game.junglelaw;
 
 import com.game.junglelaw.circle.*;
+
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.util.Log;
@@ -10,24 +11,17 @@ import java.util.Random;
 /**
  * Created by apple on 10/15/15.
  */
-public class Util {
+public class Utility {
 
-    private static String TAG="Util";
-    public static float getRelativeRadius(float playerRadius,float circleRadius,float player_on_screen_radius){
-        Log.d(TAG,Float.toString(player_on_screen_radius*(circleRadius/playerRadius)));
-        return player_on_screen_radius*circleRadius/playerRadius;
-    }
-    public static PointF generateRandomPoint(int xBound, int yBound, Random rand) {
-        return new PointF(rand.nextFloat() * xBound, rand.nextFloat() * yBound);
+    private static String TAG = "Utility";
+
+    public static float getRelativeRadius(float playerRadius, float circleRadius, float player_on_screen_radius) {
+        Log.d(TAG, Float.toString(player_on_screen_radius * (circleRadius / playerRadius)));
+        return player_on_screen_radius * circleRadius / playerRadius;
     }
 
-    /** Returns a random radius in range of [lo, hi] */
-    public static double generateRandomRadius(double lo, double hi, Random rand) {
-        return lo + rand.nextInt((int) (hi - lo));
-    }
-
-    public static int generateRandomColor(Random rand) {
-        return Color.argb(255, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+    public static int generateRandomInt(int lo, int hi) {
+        return lo + (int) (Math.random() * (hi - lo + 1));
     }
 
     /**
@@ -43,11 +37,11 @@ public class Util {
 
     /**
      * Can circleLarge absorb circle2.
-     *
+     * <p>
      * Pre-assumption: circleLarge's radius is larger than or equal to circle2's
      */
     public static boolean canAbsorb(AbstractCircle circleLarge, AbstractCircle circleSmall) {
-        if (circleLarge.getRadius()<circleSmall.getRadius())
+        if (circleLarge.getRadius() < circleSmall.getRadius())
             return false;
         return circleCenterDistance(circleLarge, circleSmall) + circleSmall.getRadius() <= 1.1 * circleLarge.getRadius();
     }

@@ -1,17 +1,8 @@
 package com.game.junglelaw;
 
-import android.annotation.SuppressLint;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import android.view.View;
-
-import com.game.junglelaw.circle.MovableCircle;
-import com.game.junglelaw.circle.StaticCircle;
-
-import java.util.List;
 
 /**
  * PlayGround is the main class for controlling how the game is going.
@@ -64,7 +55,7 @@ public class PlayGround extends Thread {
             c = viewholder.lockCanvas();
             synchronized (viewholder) {
                 if (c != null) {
-                    manger.ControlPopulation(); // manage the points in the map
+                    manger.controlPopulation(); // manage the points in the map
                     manger.EliminateConfliction();
                     view.player.updateZoom(view);
                     if (!manger.InMovableList(view.player)) {

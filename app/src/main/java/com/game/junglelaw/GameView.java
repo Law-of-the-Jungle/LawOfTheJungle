@@ -23,7 +23,7 @@ import java.util.List;
  * PlayGround class in its constructor for drawing.
  */
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    private int DEFAULT_PLAYER_RADIUS = 50;
+    private int DEFAULT_PLAYER_RADIUS = 40;
     private PlayGround playground;
     private int Screen_height, Screen_width;
     private PointF center;
@@ -110,6 +110,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             GameOverScene(canvas);
             return;
         }
+
         Paint p = new Paint();
         p.setColor(Color.BLACK);
         canvas.drawColor(Color.WHITE);
@@ -121,10 +122,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Paint textPaint = new Paint();
         textPaint.setColor(Color.BLACK);
         p.setTextSize(40);
+        playground.getManger().controlPopulation();
         canvas.drawText(displayText, 5, canvas.getHeight() - 5, p);
         drawSCircleList(SCircle, canvas);
         drawMCircleList(MCircle, canvas);
-
     }
 
     public void GameOverScene(Canvas canvas) {
@@ -145,16 +146,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         Log.d(TAG, "height:width=" + Integer.toString(Screen_width) + ":" + Integer.toString(Screen_height));
         //define map size
-        map_height = 2 * Screen_height;
-        map_width = 2 * Screen_width;
+        map_height = 5 * Screen_height;
+        map_width = 5 * Screen_width;
 
         playground.getManger().setSize(map_width, map_height);
         playground.getManger().ProvideMovable().add(player);
         surfaceHolder.unlockCanvasAndPost(canvas);
         playground.setRunState(true);
         playground.start();
-
-
     }
 
     public boolean inScreen(AbstractCircle sc) {
@@ -207,8 +206,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             player.setNewDirection(new PointF(event.getX(), event.getY()), center);
 
             //Log.d(TAG,"after="+Float.toString(player.x)+":"+Float.toString(player.y));
-
         }
+
         return super.onTouchEvent(event);
     }
 }

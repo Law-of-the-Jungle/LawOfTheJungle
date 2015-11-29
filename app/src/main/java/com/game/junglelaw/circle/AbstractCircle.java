@@ -5,14 +5,14 @@ import android.graphics.PointF;
 
 /**
  * Created by apple on 10/15/15.
- * <p>
+ *
  * Declares the common properties of all circles.
  */
 public abstract class AbstractCircle extends PointF {
-    private final double DIGEST_RATE = 0.1;
-    private int color;
-    private float radius;
-    private float mass;
+    protected final double DIGEST_RATE = 0.1;
+    protected int color;
+    protected float radius;
+    protected float mass;
 
     protected AbstractCircle(float x, float y, float radius, int color) {
         super(x, y);

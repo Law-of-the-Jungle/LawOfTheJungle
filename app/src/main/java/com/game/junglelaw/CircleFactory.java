@@ -19,7 +19,7 @@ public class CircleFactory {
 
     public CircleFactory() {
         SCircleDefaultRadius = 20;
-        MCircleDefaultRadius = 30;
+        MCircleDefaultRadius = 40;
     }
 
     public List<StaticCircle> BatchWorkForScircle(int x, int y, int num) {

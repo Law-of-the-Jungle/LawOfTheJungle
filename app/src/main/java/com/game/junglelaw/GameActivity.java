@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 public class GameActivity extends Activity {
 
-    GameView gv;
+    private GameView gv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

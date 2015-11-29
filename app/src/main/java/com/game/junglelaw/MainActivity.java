@@ -49,10 +49,9 @@ public class MainActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         //TODO deal with data return from game activity
         if(requestCode == 1 && resultCode==RESULT_OK){
-            float scores = data.getExtras().getFloat("score");
-            String text=Float.toString(scores);
-            mJungleLawDbAdapter.insert((int) scores);
-            Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+            int scores = (int) data.getExtras().getFloat("score");
+            mJungleLawDbAdapter.insert(scores);
+            Toast.makeText(this, "Your Score: " + scores, Toast.LENGTH_LONG).show();
         }
     }
 
