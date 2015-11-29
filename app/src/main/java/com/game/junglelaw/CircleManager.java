@@ -69,6 +69,10 @@ public class CircleManager {
         }
     }
     public void MoveMovable(){
+        for(int i=1;i<movableCircleList.size();i++){
+            MovableCircle mc= movableCircleList.get(i);
+            mc.randomMove(width_max,height_max);
+        }
 
     }
     // TODO 判断，circle的相互吃情况
