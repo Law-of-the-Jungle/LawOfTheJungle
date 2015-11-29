@@ -2,7 +2,7 @@ package com.game.junglelaw;
 
 import android.util.Log;
 
-import com.game.junglelaw.Circle.*;
+import com.game.junglelaw.circle.*;
 
 import java.util.ArrayList;
 import java.util.List;

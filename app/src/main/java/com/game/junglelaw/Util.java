@@ -1,6 +1,6 @@
 package com.game.junglelaw;
 
-import com.game.junglelaw.Circle.*;
+import com.game.junglelaw.circle.*;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.util.Log;

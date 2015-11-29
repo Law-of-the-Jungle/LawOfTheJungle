@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 
-import com.game.junglelaw.Circle.MovableCircle;
-import com.game.junglelaw.Circle.StaticCircle;
+import com.game.junglelaw.circle.MovableCircle;
+import com.game.junglelaw.circle.StaticCircle;
 
 import java.util.List;
 

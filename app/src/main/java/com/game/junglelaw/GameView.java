@@ -15,7 +15,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
-import com.game.junglelaw.Circle.*;
+import com.game.junglelaw.circle.*;
 
 import java.util.ArrayList;
 import java.util.List;
