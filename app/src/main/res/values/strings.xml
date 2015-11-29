@@ -3,6 +3,10 @@
 
     <string name="app_name">JungleLaw</string>
     <string name="hello_world">Hello world!</string>
+    <string name="end">End Game</string>
+    <string name="pause">Pause Game</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="resume">Resume Game</string>
     <string name="action_settings">Settings</string>
 
 </resources>

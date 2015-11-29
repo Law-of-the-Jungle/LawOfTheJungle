@@ -60,6 +60,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         player=new PlayerCircle(1000,1000,DEFAULT_PLAYER_RADIUS,0);
         Log.d(TAG,"GameView created");
     }
+    public void pause(){
+        playground.setPauseState(true);
+    }
+    public void resume(){
+        playground.setPauseState(false);
+    }
     public void drawSCircleList(List<StaticCircle> list,Canvas canvas){
         Paint p=new Paint();
         for(int i=0;i<list.size();i++){

@@ -21,6 +21,7 @@ public class PlayGround extends Thread{
     private GameView view;
     private SurfaceHolder viewholder;
     private boolean RunState;
+    private boolean PauseState;
     private String TAG="PlayGround";
     static final long FPS=60;
     private CircleManager manger;
@@ -28,12 +29,16 @@ public class PlayGround extends Thread{
         return manger;
     }
 
+    public void setPauseState(boolean new_state){
+        PauseState=new_state;
+    }
 
     //public float player_x,player_y;//wrap this into method and seal it,now is just draft
     public PlayGround(GameView view){
         this.view=view;
         viewholder=view.getHolder();
         RunState=false;
+        PauseState=false;
         manger =new CircleManager();
         Log.d(TAG,"PlayGround object created");
     }
@@ -70,6 +75,8 @@ public class PlayGround extends Thread{
         long sleepTime;
         long ticksPS=1000/FPS;
         while(RunState){
+            if(PauseState)
+                continue;
             startTime = System.currentTimeMillis();
             //Log.d(TAG,Float.toString(view.player.x)+" "+Float.toString(view.player.y));
             render();
