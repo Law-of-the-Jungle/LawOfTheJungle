@@ -97,23 +97,24 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
 
-        drawCoordinate(canvas);
+        drawCoordinateGrids(canvas);
         drawText(canvas);
+        drawBorder(canvas);
+
         drawPlayerCircle(canvas);
         drawStaticCircles(canvas);
         drawAiCircles(canvas);
-        drawBorder(canvas);
     }
 
     private void drawPlayerCircle(Canvas canvas) {
-        canvas.drawCircle(mScreenCenter.x, mScreenCenter.y, CircleFactory.DEFAULT_PLAYER_CIRCLE_RADIUS, new Paint());
+        canvas.drawCircle(mScreenCenter.x, mScreenCenter.y, mPlayerCircle.getmRadius(), new Paint());
     }
 
     private void drawStaticCircles(Canvas canvas) {
         Paint p = new Paint();
         for (int i = 0; i < mStaticCircles.size(); i++) {
             StaticCircle sc = mStaticCircles.get(i);
-            PointF circle_center = relativeCenterLocation(sc);
+            PointF circle_center = relativePointDistance(sc.getmCenter());
             p.setColor(sc.getmCcolor());
             canvas.drawCircle(circle_center.x, circle_center.y, relativeScreenSize(sc), p);
         }
@@ -123,7 +124,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Paint p = new Paint();
         for (int i = 1; i < mMovableCircles.size(); i++) {
             MovableCircle sc = mMovableCircles.get(i);
-            PointF circle_center = relativeCenterLocation(sc);
+            PointF circle_center = relativePointDistance(sc.getmCenter());
             p.setColor(sc.getmCcolor());
             canvas.drawCircle(circle_center.x, circle_center.y, relativeScreenSize(sc), p);
         }
@@ -138,7 +139,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText(coordinate, 5, canvas.getHeight() - 5, paint);
     }
 
-    private void drawCoordinate(Canvas canvas) {
+    private void drawCoordinateGrids(Canvas canvas) {
         Paint coordinatePaint = new Paint();
         coordinatePaint.setColor(Color.GRAY);
         coordinatePaint.setStrokeWidth(5);
@@ -225,12 +226,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private PointF relativePointDistance(PointF point) {
         float x = (point.x - mPlayerCircle.getmCenter().x) * mPlayerCircle.getmZoomRate();
         float y = (point.y - mPlayerCircle.getmCenter().y) * mPlayerCircle.getmZoomRate();
-        return new PointF(x + mScreenWidth / 2, y + mScreenHeight / 2);
-    }
-
-    private PointF relativeCenterLocation(AbstractCircle sc) {
-        float x = (sc.getmCenter().x - mPlayerCircle.getmCenter().x) * mPlayerCircle.getmZoomRate();
-        float y = (sc.getmCenter().y - mPlayerCircle.getmCenter().y) * mPlayerCircle.getmZoomRate();
         return new PointF(x + mScreenWidth / 2, y + mScreenHeight / 2);
     }
 
