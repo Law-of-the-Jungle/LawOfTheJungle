@@ -23,7 +23,7 @@ public class PlayerCircle extends MovableCircle {
     public float zoom_rate;
 
     public PlayerCircle(float x, float y, float radius, int color) {
-        super(x, y, radius, color);
+        super(x, y, radius, color, "");
         player_on_screen_radius = DEFAULT_SCREEN_RADIUS;
         zoom_rate = MakeZoomRate();
     }

@@ -8,17 +8,28 @@ import android.graphics.PointF;
  *
  * Declares the common properties of all circles.
  */
-public abstract class AbstractCircle extends PointF {
-    protected final double DIGEST_RATE = 0.1;
+public abstract class AbstractCircle {
+
+    protected static final double DIGEST_RATE = 0.5;
+
+    protected PointF center;
     protected int color;
     protected float radius;
     protected float mass;
 
     protected AbstractCircle(float x, float y, float radius, int color) {
-        super(x, y);
+        center = new PointF(x, y);
         this.radius = radius;
         this.color = color;
         mass = radius * radius;
+    }
+
+    public void setCenter(float x, float y) {
+        center = new PointF(x, y);
+    }
+
+    public PointF getCenter() {
+        return center;
     }
 
     public void setRadius(float radius) {
@@ -26,11 +37,12 @@ public abstract class AbstractCircle extends PointF {
     }
 
     public float getRadius() {
-        return (float) Math.sqrt(mass);
+        return radius;
     }
 
     public void addMass(float num) {
         mass += num * DIGEST_RATE;
+        radius = (float) Math.sqrt(mass);
     }
 
     public float getMass() {
@@ -46,7 +58,7 @@ public abstract class AbstractCircle extends PointF {
     }
 
     public String toString() {
-        return Float.toString(x) + " " + Float.toString(y);
+        return "radius = " + radius + "; center = " + center;
     }
 
     public void draw(Canvas canvas) {

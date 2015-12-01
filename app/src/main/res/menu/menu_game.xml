@@ -1,9 +1,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" tools:context="com.game.junglelaw.GameActivity">
-    <item android:id="@+id/end" android:title="@string/end"
-        android:orderInCategory="100" android:showAsAction="never" />
-    <item android:id="@+id/pause" android:title="@string/pause"
-        android:orderInCategory="100" android:showAsAction="never" />
-    <item android:id="@+id/resume" android:title="@string/resume"
-        android:orderInCategory="100" android:showAsAction="never" />
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.game.junglelaw.GameActivity">
+
+    <item
+        android:id="@+id/end"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/end" />
+
+    <item
+        android:id="@+id/pause"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/pause" />
+
+    <item
+        android:id="@+id/resume"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/resume" />
+
 </menu>

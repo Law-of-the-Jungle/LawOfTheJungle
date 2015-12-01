@@ -9,44 +9,44 @@ import android.view.SurfaceHolder;
  * It should implement a thread interface
  */
 public class PlayGround extends Thread {
+
     private GameView view;
     private SurfaceHolder viewholder;
-    private boolean RunState;
-    private boolean PauseState;
+    private boolean runState;
+    private boolean pauseState;
     private String TAG = "PlayGround";
     static final long FPS = 60;
     private CircleManager manger;
-    private boolean GameOverState;
+    private boolean gameOverState;
 
     public CircleManager getManger() {
         return manger;
     }
 
     public void setPauseState(boolean new_state) {
-        PauseState = new_state;
+        pauseState = new_state;
     }
 
     //public float player_x,player_y;//wrap this into method and seal it,now is just draft
-    public PlayGround(GameView view) {
+    public PlayGround(GameView view, String difficulty) {
         this.view = view;
         viewholder = view.getHolder();
-        RunState = false;
-        GameOverState = false;
-        PauseState = false;
-        manger = new CircleManager();
-        Log.d(TAG, "PlayGround object created");
+        runState = false;
+        gameOverState = false;
+        pauseState = false;
+        manger = new CircleManager(difficulty);
     }
 
     public void setGameOverState(boolean state) {
-        GameOverState = state;
+        gameOverState = state;
     }
 
-    public boolean IsGameOver() {
-        return GameOverState;
+    public boolean isGameOver() {
+        return gameOverState;
     }
 
     public void setRunState(boolean state) {
-        RunState = state;
+        runState = state;
     }
 
     public void render() {
@@ -61,17 +61,19 @@ public class PlayGround extends Thread {
                     if (!manger.InMovableList(view.player)) {
                         setRunState(false);
                         setGameOverState(true);
-                        Log.d("end", "end game");
+
+                        Log.d(TAG, "end game");
                     }
                     manger.MoveMovable();
                     view.onDraw(c);
                 }
             }
         } finally {
-            if (c != null)
+            if (c != null) {
                 viewholder.unlockCanvasAndPost(c);
-            else
+            } else {
                 Log.d(TAG, "Empty canvas");
+            }
         }
     }
 
@@ -81,8 +83,8 @@ public class PlayGround extends Thread {
         long startTime;
         long sleepTime;
         long ticksPS = 1000 / FPS;
-        while (RunState) {
-            if (PauseState)
+        while (runState) {
+            if (pauseState)
                 continue;
             startTime = System.currentTimeMillis();
             //Log.d(TAG,Float.toString(view.player.x)+" "+Float.toString(view.player.y));
@@ -90,11 +92,13 @@ public class PlayGround extends Thread {
             sleepTime = (System.currentTimeMillis() - startTime);
             //Log.d(TAG,"SleepTime:"+Long.toString(sleepTime));
             try {
-                if (sleepTime > 0)
+                if (sleepTime > 0) {
                     sleep(sleepTime);
-                else
+                } else {
                     sleep(5);
+                }
             } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
             }
         }
         Log.d(TAG, "Ending main loop...");

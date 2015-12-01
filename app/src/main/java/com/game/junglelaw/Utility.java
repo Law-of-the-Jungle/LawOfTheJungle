@@ -24,6 +24,10 @@ public class Utility {
         return lo + (int) (Math.random() * (hi - lo + 1));
     }
 
+    public static float generateRandomFloat(float lo, float hi) {
+        return lo + (float) (Math.random() * (hi - lo));
+    }
+
     /**
      * If circle1's radius is larger than or equal to circle2's
      *
@@ -47,6 +51,6 @@ public class Utility {
     }
 
     public static double circleCenterDistance(AbstractCircle circle1, AbstractCircle circle2) {
-        return Math.sqrt(Math.pow(circle1.x - circle2.x, 2) + Math.pow(circle1.y - circle2.y, 2));
+        return Math.sqrt(Math.pow(circle1.getCenter().x - circle2.getCenter().x, 2) + Math.pow(circle1.getCenter().y - circle2.getCenter().y, 2));
     }
 }

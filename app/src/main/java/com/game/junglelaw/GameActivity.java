@@ -2,6 +2,7 @@ package com.game.junglelaw;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 public class GameActivity extends Activity {
 
     private GameView gv;
+    private MediaPlayer bgmMusic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +21,17 @@ public class GameActivity extends Activity {
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         gv = new GameView(this);
         setContentView(gv);
+
+        bgmMusic = MediaPlayer.create(GameActivity.this, R.raw.fighting);
+        bgmMusic.setLooping(true);
+        bgmMusic.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        bgmMusic.stop();
+        bgmMusic.release();
     }
 
     protected void onResume() {
@@ -27,7 +40,6 @@ public class GameActivity extends Activity {
         gv = new GameView(this);
         setContentView(gv);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

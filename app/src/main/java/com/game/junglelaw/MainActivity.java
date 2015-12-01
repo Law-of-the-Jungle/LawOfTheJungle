@@ -2,7 +2,9 @@ package com.game.junglelaw;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,13 +19,17 @@ import com.game.junglelaw.data.JungleLawDbAdapter;
 public class MainActivity extends Activity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private MediaPlayer bgmMusic;
 
     private JungleLawDbAdapter mJungleLawDbAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
+        bgmMusic  = MediaPlayer.create(MainActivity.this, R.raw.main);
 
         mJungleLawDbAdapter = new JungleLawDbAdapter(MainActivity.this);
 
@@ -32,6 +38,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(MainActivity.this, GameActivity.class), 1);
+                bgmMusic.stop();
             }
         });
 
@@ -42,6 +49,13 @@ public class MainActivity extends Activity {
                 startActivity(new Intent(MainActivity.this, HighestScoresActivity.class));
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        bgmMusic.setLooping(true);
+        bgmMusic.start();
     }
 
     @Override
@@ -70,9 +84,10 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        if (id == R.id.action_setting) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

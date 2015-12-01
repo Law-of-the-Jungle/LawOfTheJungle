@@ -31,8 +31,8 @@ public class HighestScoresActivity extends Activity {
     }
 
     private void showHighestScoresList() {
-        String[] from = {PlayerScores._ID, PlayerScores.COLUMN_SCORE};
-        int[] to = {R.id.score_entry_id, R.id.score_entry_score};
+        String[] from = {PlayerScores.COLUMN_SCORE};
+        int[] to = {R.id.score_entry_score};
 
         try {
             listView.setAdapter(new SimpleCursorAdapter(this, R.layout.score_entry,

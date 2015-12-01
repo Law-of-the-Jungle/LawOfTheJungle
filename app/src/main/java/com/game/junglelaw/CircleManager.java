@@ -14,16 +14,19 @@ public class CircleManager {
 
     private String TAG = "CircleManger";
 
+    private static final int MIN_STATIC_CIRCLE_NUMBER = 30;
+    private static final int MIN_AI_CIRCLE_NUMBER = 500;
+
     private CircleFactory circleFactory;
     private List<StaticCircle> staticCircleList;
     private List<MovableCircle> movableCircleList;
     private int width_max, height_max;
 
 
-    public CircleManager() {
+    public CircleManager(String difficulty) {
         staticCircleList = new ArrayList<>();
         movableCircleList = new ArrayList<>();
-        circleFactory = new CircleFactory();
+        circleFactory = new CircleFactory(difficulty);
     }
 
     public void setSize(int width_max, int height_max) {
@@ -40,22 +43,23 @@ public class CircleManager {
     }
 
     public boolean InMovableList(MovableCircle circle) {
-        if (movableCircleList.contains(circle))
+        if (movableCircleList.contains(circle)) {
             return true;
-        else
+        } else {
             return false;
+        }
 
     }
 
     // TODO (如有必要)生成新的static circle
     public void controlPopulation() {
-        if (movableCircleList.size() < 30) {
+        if (movableCircleList.size() < MIN_STATIC_CIRCLE_NUMBER) {
             movableCircleList.addAll(circleFactory.BatchWorkForPCircle(width_max, height_max,
-                    30 - staticCircleList.size()));
+                    MIN_STATIC_CIRCLE_NUMBER - staticCircleList.size(), movableCircleList.get(0)));
         }
-        if (staticCircleList.size() < 500) {
+        if (staticCircleList.size() < MIN_AI_CIRCLE_NUMBER) {
             staticCircleList.addAll(circleFactory.BatchWorkForScircle(width_max, height_max,
-                    500 - staticCircleList.size()));
+                    MIN_AI_CIRCLE_NUMBER - staticCircleList.size()));
         }
     }
 
