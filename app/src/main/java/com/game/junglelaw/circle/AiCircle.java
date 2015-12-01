@@ -35,7 +35,6 @@ public class AiCircle extends MovableCircle {
         }
 
         if (mIsAttackingPlayer) {
-
             if (Utility.isAbsorbableLarger(this, playerCircle)) {
                 setDirectTowardPoint(playerCircle.getmCenter());
                 moveToDirection(width, height);

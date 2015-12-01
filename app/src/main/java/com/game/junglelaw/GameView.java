@@ -94,40 +94,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         mMovableCircles = mCircleManager.getmMovableCircles();
 
         canvas.drawColor(Color.WHITE);
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
 
-        drawCoordinateGrids(canvas);
         drawText(canvas);
+        drawCoordinateGrids(canvas);
         drawBorder(canvas);
 
-        drawPlayerCircle(canvas);
-        drawStaticCircles(canvas);
-        drawAiCircles(canvas);
-    }
-
-    private void drawPlayerCircle(Canvas canvas) {
-        canvas.drawCircle(mScreenCenter.x, mScreenCenter.y, mPlayerCircle.getmRadius(), new Paint());
-    }
-
-    private void drawStaticCircles(Canvas canvas) {
-        Paint p = new Paint();
-        for (int i = 0; i < mStaticCircles.size(); i++) {
-            StaticCircle sc = mStaticCircles.get(i);
-            PointF circle_center = relativePointDistance(sc.getmCenter());
-            p.setColor(sc.getmCcolor());
-            canvas.drawCircle(circle_center.x, circle_center.y, relativeScreenSize(sc), p);
-        }
-    }
-
-    private void drawAiCircles(Canvas canvas) {
-        Paint p = new Paint();
-        for (int i = 1; i < mMovableCircles.size(); i++) {
-            MovableCircle sc = mMovableCircles.get(i);
-            PointF circle_center = relativePointDistance(sc.getmCenter());
-            p.setColor(sc.getmCcolor());
-            canvas.drawCircle(circle_center.x, circle_center.y, relativeScreenSize(sc), p);
-        }
+        Paint circlePaint = new Paint();
+        drawPlayerCircle(canvas, circlePaint);
+        drawStaticCircles(canvas, circlePaint);
+        drawAiCircles(canvas, circlePaint);
     }
 
     private void drawText(Canvas canvas) {
@@ -165,6 +140,29 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         PointF topLeft = relativePointDistance(new PointF(0, 0));
         PointF bottomRight = relativePointDistance(new PointF(mMapWidth, mMapHeight));
         canvas.drawRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, borderPaint);
+    }
+
+    private void drawPlayerCircle(Canvas canvas, Paint circlePaint) {
+        circlePaint.setColor(Color.BLACK);
+        canvas.drawCircle(mScreenCenter.x, mScreenCenter.y, mPlayerCircle.getmRadius(), circlePaint);
+    }
+
+    private void drawStaticCircles(Canvas canvas, Paint circlePaint) {
+        for (int i = 0; i < mStaticCircles.size(); i++) {
+            StaticCircle sc = mStaticCircles.get(i);
+            PointF circle_center = relativePointDistance(sc.getmCenter());
+            circlePaint.setColor(sc.getmCcolor());
+            canvas.drawCircle(circle_center.x, circle_center.y, relativeScreenSize(sc), circlePaint);
+        }
+    }
+
+    private void drawAiCircles(Canvas canvas, Paint circlePaint) {
+        for (int i = 1; i < mMovableCircles.size(); i++) {
+            MovableCircle sc = mMovableCircles.get(i);
+            PointF circle_center = relativePointDistance(sc.getmCenter());
+            circlePaint.setColor(sc.getmCcolor());
+            canvas.drawCircle(circle_center.x, circle_center.y, relativeScreenSize(sc), circlePaint);
+        }
     }
 
     private void drawGameOverScene(Canvas canvas) {
