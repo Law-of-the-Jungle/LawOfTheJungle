@@ -27,7 +27,7 @@ public class AiCircle extends MovableCircle {
 
     public void aiMove(int width, int height, MovableCircle playerCircle, List<StaticCircle> staticCircleList) {
 
-        if (mGameDifficulty.equals("easy") && Math.random() < 0.1) {
+        if (mGameDifficulty.equals("easy") && Math.random() < 0.2) {
             PointF p = new PointF(Utility.generateRandomFloat(0, width), Utility.generateRandomFloat(0, height));
             setDirectTowardPoint(p);
             moveToDirection(width, height);
