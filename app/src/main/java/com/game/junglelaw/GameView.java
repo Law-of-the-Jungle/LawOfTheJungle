@@ -35,7 +35,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private PlayGround mPlayground;
     private int mScreenWidth;
     private int mScreenHeight;
-//    private PointF mScreenCenter;
+    private PointF mScreenCenter;
     private SurfaceHolder mSurfaceHolder;
 
     //we need to get the relative location of points to the playerCircle
@@ -122,7 +122,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Paint p = new Paint();
         p.setColor(Color.BLACK);
         canvas.drawColor(Color.WHITE);
-        canvas.drawCircle(mScreenWidth / 2, mScreenHeight / 2, player.mPlayerOnScreenRadius, p);
+        canvas.drawCircle(mScreenCenter.x, mScreenCenter.y, player.mPlayerOnScreenRadius, p);
         player.moveToDirection(getMap_width(), getMap_height());
         SCircle = mPlayground.getmCircleManager().getmStaticCircles();
         MCircle = mPlayground.getmCircleManager().getmMovableCircles();
@@ -149,6 +149,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Canvas canvas = surfaceHolder.lockCanvas();
         mScreenWidth = canvas.getWidth();
         mScreenHeight = canvas.getHeight();
+        mScreenCenter = new PointF(mScreenWidth / 2, mScreenHeight / 2);//Get mCenter of the canvas
 
 
         Log.d(LOG_TAG, "height:width=" + Integer.toString(mScreenWidth) + ":" + Integer.toString(mScreenHeight));
@@ -156,7 +157,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         map_height = HEIGHT_ZOOM_UP_RATE * mScreenHeight;
         map_width = WEIGHT_ZOOM_UP_RATE * mScreenWidth;
 
-        player.setCenter(Utility.generateRandomInt(0, map_width), Utility.generateRandomInt(0, map_height));
+        int newX = Utility.generateRandomInt(0, map_width);
+        int newY = Utility.generateRandomInt(0, map_height);
+        player.setCenter(newX, newY);
 
         mPlayground.getmCircleManager().setSize(map_width, map_height);
         mPlayground.getmCircleManager().getmMovableCircles().add(player);
@@ -209,7 +212,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             player.setDirectTowardPoint(new PointF(event.getX(), event.getY()));
-            Log.i(LOG_TAG, event.toString());
         }
 
         return super.onTouchEvent(event);

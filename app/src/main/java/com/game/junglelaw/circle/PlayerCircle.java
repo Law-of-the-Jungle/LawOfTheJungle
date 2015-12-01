@@ -26,11 +26,10 @@ public class PlayerCircle extends MovableCircle {
     }
 
     public void setDirectTowardPoint(PointF targetPoint) {
-        PointF newDirection = new PointF(targetPoint.x - mCenter.x, targetPoint.y - mCenter.y);
-        Log.e(LOG_TAG, newDirection.toString());
-        float len = newDirection.length(); // normalization
-        mMovingDirection.set(newDirection.x / len, newDirection.y / len);
-        Log.e(LOG_TAG, targetPoint.toString() + ": " + mCenter.toString() + "; " + mMovingDirection.toString());
+        PointF p = new PointF(targetPoint.x - mCenter.x, targetPoint.y - mCenter.y);
+        setmMovingDirection(p);
+        Log.i(LOG_TAG, mCenter.toString() + " -> " + targetPoint.toString() + " ;" + p.toString());
+        Log.v(LOG_TAG, mMovingDirection.toString());
     }
 
     /**
