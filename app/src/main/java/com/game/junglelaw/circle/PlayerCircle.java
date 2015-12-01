@@ -12,8 +12,7 @@ public class PlayerCircle extends MovableCircle {
 
     private static final String LOG_TAG = PlayerCircle.class.getSimpleName();
 
-    private final float DEFAULT_SCREEN_RADIUS = 30;
-    private final double SHIFT_THRESHOLD = 0.25;
+    private static final float DEFAULT_SCREEN_RADIUS = 30;
 
     public float mPlayerOnScreenRadius;
     public float mZoomRate;

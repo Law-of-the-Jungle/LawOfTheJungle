@@ -14,38 +14,38 @@ public class PlayGround extends Thread {
 
     private GameView mGameView;
     private SurfaceHolder mSurfaceHolder;
-    private boolean runState;
-    private boolean pauseState;
     private CircleManager mCircleManager;
+    private boolean mIsRun;
+    private boolean mIsPause;
     private boolean mIsGameOver;
 
     public CircleManager getmCircleManager() {
         return mCircleManager;
     }
 
-    public void setPauseState(boolean new_state) {
-        pauseState = new_state;
+    public void setmIsPause(boolean new_state) {
+        mIsPause = new_state;
     }
 
-    public PlayGround(GameView gameView, String difficulty) {
+    public PlayGround(GameView gameView, String gameDifficulty) {
         mGameView = gameView;
         mSurfaceHolder = gameView.getHolder();
-        runState = false;
+        mIsRun = false;
         mIsGameOver = false;
-        pauseState = false;
-        mCircleManager = new CircleManager(difficulty);
+        mIsPause = false;
+        mCircleManager = new CircleManager(gameDifficulty);
     }
 
-    public void setmIsGameOver(boolean state) {
-        mIsGameOver = state;
+    public void setmIsGameOver(boolean isGameOver) {
+        mIsGameOver = isGameOver;
     }
 
     public boolean isGameOver() {
         return mIsGameOver;
     }
 
-    public void setRunState(boolean state) {
-        runState = state;
+    public void setmIsRun(boolean state) {
+        mIsRun = state;
     }
 
     public void render() {
@@ -58,7 +58,7 @@ public class PlayGround extends Thread {
                     mCircleManager.absorb();
                     mGameView.mPlayerCircle.updateZoom(mGameView);
                     if (!mCircleManager.inMovableList(mGameView.mPlayerCircle)) {
-                        setRunState(false);
+                        setmIsRun(false);
                         setmIsGameOver(true);
 
                         Log.d(LOG_TAG, "end game");
@@ -82,9 +82,10 @@ public class PlayGround extends Thread {
         Log.d(LOG_TAG, "Start main loop...");
         long startTime;
         long sleepTime;
-        while (runState) {
-            if (pauseState)
+        while (mIsRun) {
+            if (mIsPause) {
                 continue;
+            }
             startTime = System.currentTimeMillis();
             //Log.d(LOG_TAG,Float.toString(mGameView.mPlayerCircle.x)+" "+Float.toString(mGameView.mPlayerCircle.y));
             render();

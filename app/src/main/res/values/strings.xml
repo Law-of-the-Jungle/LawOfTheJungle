@@ -7,21 +7,24 @@
     <string name="start_game_button">Start Game</string>
     <string name="highest_scores_button">Highest Scores</string>
 
+    <string name="action_settings">Settings</string>
     <string name="title_setting">Setting</string>
 
     <string name="title_end_game">End Game</string>
     <string name="title_pause_game">Pause Game</string>
     <string name="title_resume_game">Resume Game</string>
 
-    <string name="action_settings">Settings</string>
+    <!-- Highest Scores -->
     <string name="score_entry_score_prefix_content">Score: </string>
     <string name="score_entry_rank_prefix_content">Rank: </string>
+    <string name="score_entry_game_difficulty_prefix_content">Game Difficulty: </string>
     <string name="score_entry_create_time_prefix_content">Create time: </string>
 
-    <string name="pref_diffculty_label">Select Diffculty</string>
-    <string name="pref_diffculty_key">diffculty</string>
-    <string name="pref_diffculty_easy">easy</string>
-    <string name="pref_diffculty_hard">hard</string>
+    <!-- Preference Settings -->
+    <string name="pref_game_diffculty_label">Select Game Diffculty</string>
+    <string name="pref_game_diffculty_key">game_diffculty</string>
+    <string name="pref_game_diffculty_easy">easy</string>
+    <string name="pref_game_diffculty_hard">hard</string>
 
     <string name="pref_mute_key">mute</string>
     <string name="pref_mute_label">Mute Background Music</string>

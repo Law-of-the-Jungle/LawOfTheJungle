@@ -45,6 +45,24 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/score_entry_game_difficulty_prefix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/score_entry_game_difficulty_prefix_content" />
+
+        <TextView
+            android:id="@+id/score_entry_game_difficulty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/score_entry_game_difficulty_prefix" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
             android:id="@+id/score_entry_create_time_prefix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

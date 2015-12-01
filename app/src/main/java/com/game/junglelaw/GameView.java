@@ -1,12 +1,10 @@
 package com.game.junglelaw;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -28,11 +26,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private String LOG_TAG = GameView.class.getSimpleName();
 
-    private static final int HEIGHT_ZOOM_UP_RATE = 5;
-    private static final int WEIGHT_ZOOM_UP_RATE = 5;
+    private static final int MAP_HEIGHT_ZOOM_UP_RATE = 5;
+    private static final int MAP_WEIGHT_ZOOM_UP_RATE = 5;
     private static final int DEFAULT_PLAYER_RADIUS = 40;
 
-    private PlayGround mPlayground;
+    private PlayGround mPlayGround;
     private int mScreenWidth;
     private int mScreenHeight;
     private PointF mScreenCenter;
@@ -68,14 +66,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         return mMapWidth;
     }
 
-    public GameView(Context context) {
+    public GameView(Context context, String gameDifficulty) {
         super(context);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String difficulty =
-            prefs.getString(context.getString(R.string.pref_diffculty_key), context.getString(R.string.pref_diffculty_easy));
-
-        mPlayground = new PlayGround(this, difficulty);
+        mPlayGround = new PlayGround(this, gameDifficulty);
         mSurfaceHolder = getHolder();
         mSurfaceHolder.addCallback(this);
         mPlayerCircle = new PlayerCircle(0, 0, DEFAULT_PLAYER_RADIUS, 0);
@@ -86,11 +80,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void pause() {
-        mPlayground.setPauseState(true);
+        mPlayGround.setmIsPause(true);
     }
 
     public void resume() {
-        mPlayground.setPauseState(false);
+        mPlayGround.setmIsPause(false);
     }
 
     public void drawSCircleList(List<StaticCircle> list, Canvas canvas) {
@@ -115,7 +109,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (mPlayground.isGameOver()) {
+        if (mPlayGround.isGameOver()) {
             gameOverScene(canvas);
             return;
         }
@@ -125,13 +119,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawColor(Color.WHITE);
         canvas.drawCircle(mScreenCenter.x, mScreenCenter.y, mPlayerCircle.mPlayerOnScreenRadius, p);
         mPlayerCircle.moveToDirection(getmMapWidth(), getmMapHeight());
-        mStaticCircles = mPlayground.getmCircleManager().getmStaticCircles();
-        mMovableCircles = mPlayground.getmCircleManager().getmMovableCircles();
+        mStaticCircles = mPlayGround.getmCircleManager().getmStaticCircles();
+        mMovableCircles = mPlayGround.getmCircleManager().getmMovableCircles();
         String displayText = "Score:" + getScore();
         Paint textPaint = new Paint();
         textPaint.setColor(Color.BLACK);
         p.setTextSize(40);
-        mPlayground.getmCircleManager().controlPopulation();
+        mPlayGround.getmCircleManager().controlPopulation();
         canvas.drawText(displayText, 5, canvas.getHeight() - 5, p);
         drawSCircleList(mStaticCircles, canvas);
         drawMCircleList(mMovableCircles, canvas);
@@ -144,6 +138,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText("Game Over", 0, canvas.getHeight() / 2, textPaint);
     }
 
+    // SurfaceHolder.Callback's method, only called by system by once
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         Log.d(LOG_TAG, "Surfaceview created");
@@ -155,18 +150,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         Log.d(LOG_TAG, "height:width=" + Integer.toString(mScreenWidth) + ":" + Integer.toString(mScreenHeight));
         //define map size
-        mMapHeight = HEIGHT_ZOOM_UP_RATE * mScreenHeight;
-        mMapWidth = WEIGHT_ZOOM_UP_RATE * mScreenWidth;
+        mMapHeight = MAP_HEIGHT_ZOOM_UP_RATE * mScreenHeight;
+        mMapWidth = MAP_WEIGHT_ZOOM_UP_RATE * mScreenWidth;
 
         int newX = Utility.generateRandomInt(0, mMapWidth);
         int newY = Utility.generateRandomInt(0, mMapHeight);
         mPlayerCircle.setCenter(newX, newY);
 
-        mPlayground.getmCircleManager().setMapSize(mMapWidth, mMapHeight);
-        mPlayground.getmCircleManager().getmMovableCircles().add(mPlayerCircle);
+        mPlayGround.getmCircleManager().setMapSize(mMapWidth, mMapHeight);
+        mPlayGround.getmCircleManager().getmMovableCircles().add(mPlayerCircle);
         surfaceHolder.unlockCanvasAndPost(canvas);
-        mPlayground.setRunState(true);
-        mPlayground.start();
+        mPlayGround.setmIsRun(true);
+        mPlayGround.start();
     }
 
     public boolean inScreen(AbstractCircle sc) {
@@ -182,9 +177,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public PointF RelativeCenterLocation(AbstractCircle sc) {
-        float zoom = mPlayerCircle.mZoomRate;
-        float x = (sc.getmCenter().x - mPlayerCircle.getmCenter().x) * zoom;
-        float y = (sc.getmCenter().y - mPlayerCircle.getmCenter().y) * zoom;
+        float x = (sc.getmCenter().x - mPlayerCircle.getmCenter().x) * mPlayerCircle.mZoomRate;
+        float y = (sc.getmCenter().y - mPlayerCircle.getmCenter().y) * mPlayerCircle.mZoomRate;
         return new PointF(x + mScreenWidth / 2, y + mScreenHeight / 2);
     }
 
@@ -200,8 +194,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         boolean retry = true;
         while (retry) {
             try {
-                mPlayground.setRunState(false);
-                mPlayground.join();
+                mPlayGround.setmIsRun(false);
+                mPlayGround.join();
                 retry = false;
             } catch (InterruptedException e) {
             }

@@ -9,21 +9,32 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.game.junglelaw.data.JungleLawDbAdapter;
+
+import java.util.Date;
+
 public class GameActivity extends Activity {
 
     private static final String LOG_TAG = GameActivity.class.getSimpleName();
 
-    private boolean mIsMute;
     private GameView mGameView;
     private MediaPlayer mGameBackgroundMusic;
+    private JungleLawDbAdapter mJungleLawDbAdapter;
+    private String mGameDifficulty;
+    private boolean mIsMute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mGameView = new GameView(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GameActivity.this);
+        mGameDifficulty = prefs.getString(getString(R.string.pref_game_diffculty_key), getString(R.string.pref_game_diffculty_easy));
+        mIsMute = prefs.getBoolean(getString(R.string.pref_mute_key), false);
+        mGameView = new GameView(this, mGameDifficulty);
         setContentView(mGameView);
+
+        mJungleLawDbAdapter = new JungleLawDbAdapter(GameActivity.this);
 
         mGameBackgroundMusic = MediaPlayer.create(GameActivity.this, R.raw.fighting);
         mGameBackgroundMusic.setLooping(true);
@@ -32,8 +43,6 @@ public class GameActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GameActivity.this);
-        mIsMute = prefs.getBoolean(getString(R.string.pref_mute_key), false);
 
         if (!mIsMute) {
             mGameBackgroundMusic.start();
@@ -54,9 +63,10 @@ public class GameActivity extends Activity {
         mGameBackgroundMusic.release();
     }
 
+    @Override
     protected void onResume() {
         super.onResume();
-        mGameView = new GameView(this);
+        mGameView = new GameView(GameActivity.this, mGameDifficulty);
         setContentView(mGameView);
     }
 
@@ -73,11 +83,11 @@ public class GameActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
+
         if (id == R.id.end) {
+            mJungleLawDbAdapter.insert((int) mGameView.getScore(), mGameDifficulty, new Date().toString());
             Intent data = new Intent();
-            float score = mGameView.getScore();
-            data.putExtra("score", score);
+            data.putExtra("score", mGameView.getScore());
             setResult(RESULT_OK, data);
             finish();
             return true;

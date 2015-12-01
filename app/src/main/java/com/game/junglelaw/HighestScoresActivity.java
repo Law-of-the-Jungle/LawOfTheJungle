@@ -67,8 +67,8 @@ public class HighestScoresActivity extends Activity {
     }
 
     private void showHighestScoresList() {
-        String[] from = {PlayerScores.COLUMN_SCORE, PlayerScores.COLUMN_SCORE_CREATE_TIME};
-        int[] to = {R.id.score_entry_score, R.id.score_entry_create_time};
+        String[] from = {PlayerScores.COLUMN_SCORE, PlayerScores.COLUMN_GAME_DIFFICULTY, PlayerScores.COLUMN_SCORE_CREATE_TIME};
+        int[] to = {R.id.score_entry_score, R.id.score_entry_game_difficulty, R.id.score_entry_create_time};
 
         try {
             mHighestScoresListView.setAdapter(new ShowRankCursorAdapter(this, R.layout.score_entry,

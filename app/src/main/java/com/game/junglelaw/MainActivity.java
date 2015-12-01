@@ -23,10 +23,9 @@ public class MainActivity extends Activity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+    private static final int GAME_ACTIVITY_RESULT_CODE = 1;
     private boolean mIsMute;
     private MediaPlayer mMainBackgroundMusic;
-
-    private JungleLawDbAdapter mJungleLawDbAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +36,11 @@ public class MainActivity extends Activity {
         mMainBackgroundMusic = MediaPlayer.create(MainActivity.this, R.raw.main);
         mMainBackgroundMusic.setLooping(true);
 
-        mJungleLawDbAdapter = new JungleLawDbAdapter(MainActivity.this);
-
         final Button startButton = (Button) findViewById(R.id.start_button);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(MainActivity.this, GameActivity.class), 1);
+                startActivityForResult(new Intent(MainActivity.this, GameActivity.class), GAME_ACTIVITY_RESULT_CODE);
 
                 if (!mIsMute) {
                     mMainBackgroundMusic.pause();
@@ -78,9 +75,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
+        if (requestCode == GAME_ACTIVITY_RESULT_CODE && resultCode == RESULT_OK) {
             int scores = (int) data.getExtras().getFloat("score");
-            mJungleLawDbAdapter.insert(scores, new Date().toString());
             Toast.makeText(this, "Your Score: " + scores, Toast.LENGTH_LONG).show();
         }
     }

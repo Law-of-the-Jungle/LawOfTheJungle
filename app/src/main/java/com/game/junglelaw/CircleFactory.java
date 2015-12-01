@@ -33,10 +33,9 @@ public class CircleFactory {
 
     public List<StaticCircle> createStaticCircles(int x, int y, int num) {
         List<StaticCircle> res = new ArrayList<>();
-        Random rcolor;
-        rcolor = new Random(255);
         for (int i = 0; i < num; i++) {
-            StaticCircle tmp = createStaticCircle(Utility.generateRandomFloat(0, x), Utility.generateRandomFloat(0, y), STATIC_CIRCLE_RADIUS, rcolor.nextInt());
+            StaticCircle tmp = createStaticCircle(Utility.generateRandomFloat(0, x), Utility.generateRandomFloat(0, y),
+                    STATIC_CIRCLE_RADIUS, Utility.generateRandomNonWhiteNonTransparentColor());
             res.add(tmp);
         }
 
@@ -45,10 +44,10 @@ public class CircleFactory {
 
     public List<MovableCircle> createAiCircles(int x, int y, int num, MovableCircle playerCircle) {
         List<MovableCircle> res = new ArrayList<>();
-        Random rcolor;
-        rcolor = new Random();
         for (int i = 0; i < num; i++) {
-            res.add(createAiCircle(Utility.generateRandomFloat(0, x), Utility.generateRandomFloat(0, y), (float) (playerCircle.getmRadius() * 1.1), rcolor.nextInt()));
+            res.add(createAiCircle(Utility.generateRandomFloat(0, x), Utility.generateRandomFloat(0, y),
+                    (float) (playerCircle.getmRadius() * Utility.ABSORB_THREASHOLD_RATE),
+                    Utility.generateRandomNonWhiteNonTransparentColor()));
         }
 
         return res;

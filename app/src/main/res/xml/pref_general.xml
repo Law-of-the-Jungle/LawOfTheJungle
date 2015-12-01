@@ -6,10 +6,10 @@
         android:title="@string/pref_mute_label" />
 
     <ListPreference
-        android:defaultValue="@string/pref_diffculty_easy"
+        android:defaultValue="@string/pref_game_diffculty_easy"
         android:entries="@array/pref_diffculty_options"
         android:entryValues="@array/pref_diffculty_values"
-        android:key="@string/pref_diffculty_key"
-        android:title="@string/pref_diffculty_label" />
+        android:key="@string/pref_game_diffculty_key"
+        android:title="@string/pref_game_diffculty_label" />
 
 </PreferenceScreen>

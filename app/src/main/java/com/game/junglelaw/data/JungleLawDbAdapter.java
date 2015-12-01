@@ -29,10 +29,11 @@ public class JungleLawDbAdapter {
         return db.query(PlayerScores.TABLE_NAME, null, null, null, null, null, sortOrder);
     }
 
-    public void insert(int score, String createTime) {
+    public void insert(int score, String gameDifficulty, String createTime) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PlayerScores.COLUMN_SCORE, score);
         contentValues.put(PlayerScores.COLUMN_SCORE_CREATE_TIME, createTime);
+        contentValues.put(PlayerScores.COLUMN_GAME_DIFFICULTY, gameDifficulty);
         db.insert(PlayerScores.TABLE_NAME, null, contentValues);
     }
 }

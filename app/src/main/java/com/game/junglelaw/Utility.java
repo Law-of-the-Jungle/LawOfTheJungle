@@ -2,6 +2,7 @@ package com.game.junglelaw;
 
 import com.game.junglelaw.circle.*;
 
+import android.graphics.Color;
 import android.graphics.PointF;
 
 /**
@@ -11,7 +12,7 @@ public class Utility {
 
     private static final String LOG_TAG = Utility.class.getSimpleName();
 
-    private static final float ABSORB_THREASHOLD_RATE = (float) 1.1;
+    public static final float ABSORB_THREASHOLD_RATE = (float) 1.1;
 
     public static int generateRandomInt(int lo, int hi) {
         return lo + (int) (Math.random() * (hi - lo + 1));
@@ -19,6 +20,15 @@ public class Utility {
 
     public static float generateRandomFloat(float lo, float hi) {
         return lo + (float) (Math.random() * (hi - lo));
+    }
+
+    public static int generateRandomNonWhiteNonTransparentColor() {
+        int color = Color.WHITE;
+        while (color == Color.WHITE || color == Color.TRANSPARENT) {
+            color = Color.argb(255, generateRandomInt(0, 255), generateRandomInt(0, 255), generateRandomInt(0, 255));
+        }
+
+        return color;
     }
 
     /**
