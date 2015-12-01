@@ -18,7 +18,7 @@ public class HighestScoresActivity extends Activity {
     private static final String LOG_TAG = HighestScoresActivity.class.getSimpleName();
 
     private JungleLawDbAdapter mJungleLawDbAdapter;
-    private ListView listView;
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +26,16 @@ public class HighestScoresActivity extends Activity {
         setContentView(R.layout.activity_highest_scores);
 
         mJungleLawDbAdapter = new JungleLawDbAdapter(this);
-        listView = (ListView) findViewById(R.id.highest_scores_list);
+        mListView = (ListView) findViewById(R.id.highest_scores_list);
         showHighestScoresList();
     }
 
     private void showHighestScoresList() {
-        String[] from = {PlayerScores.COLUMN_SCORE};
-        int[] to = {R.id.score_entry_score};
+        String[] from = {PlayerScores.COLUMN_SCORE, PlayerScores.COLUMN_SCORE_CREATE_TIME};
+        int[] to = {R.id.score_entry_score, R.id.score_entry_create_time};
 
         try {
-            listView.setAdapter(new SimpleCursorAdapter(this, R.layout.score_entry,
+            mListView.setAdapter(new SimpleCursorAdapter(this, R.layout.score_entry,
                     mJungleLawDbAdapter.query(), from, to, 0));
         } catch (Exception e) {
             e.printStackTrace();

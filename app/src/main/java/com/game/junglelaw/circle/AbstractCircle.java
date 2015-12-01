@@ -1,6 +1,5 @@
 package com.game.junglelaw.circle;
 
-import android.graphics.Canvas;
 import android.graphics.PointF;
 
 /**
@@ -10,58 +9,57 @@ import android.graphics.PointF;
  */
 public abstract class AbstractCircle {
 
+    private static final String LOG_TAG = AbstractCircle.class.getSimpleName();
+
     protected static final double DIGEST_RATE = 0.5;
 
-    protected PointF center;
-    protected int color;
-    protected float radius;
+    protected PointF mCenter;
+    protected int mCcolor;
+    protected float mRadius;
     protected float mass;
 
-    protected AbstractCircle(float x, float y, float radius, int color) {
-        center = new PointF(x, y);
-        this.radius = radius;
-        this.color = color;
+    protected AbstractCircle(float x, float y, float radius, int ccolor) {
+        mCenter = new PointF(x, y);
+        mRadius = radius;
+        mCcolor = ccolor;
         mass = radius * radius;
     }
 
     public void setCenter(float x, float y) {
-        center = new PointF(x, y);
+        mCenter = new PointF(x, y);
     }
 
-    public PointF getCenter() {
-        return center;
+    public PointF getmCenter() {
+        return mCenter;
     }
 
-    public void setRadius(float radius) {
-        this.radius = radius;
+    public void setmRadius(float mRadius) {
+        this.mRadius = mRadius;
     }
 
-    public float getRadius() {
-        return radius;
+    public float getmRadius() {
+        return mRadius;
     }
 
     public void addMass(float num) {
         mass += num * DIGEST_RATE;
-        radius = (float) Math.sqrt(mass);
+        mRadius = (float) Math.sqrt(mass);
     }
 
     public float getMass() {
         return mass;
     }
 
-    public void setColor(int color) {
-        this.color = color;
+    public void setmCcolor(int color) {
+        this.mCcolor = color;
     }
 
-    public int getColor() {
-        return color;
+    public int getmCcolor() {
+        return mCcolor;
     }
 
+    @Override
     public String toString() {
-        return "radius = " + radius + "; center = " + center;
+        return "mRadius = " + mRadius + "; mCenter = " + mCenter;
     }
-
-    public void draw(Canvas canvas) {
-    } // TODO
-
 }

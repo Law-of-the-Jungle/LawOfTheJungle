@@ -25,13 +25,14 @@ public class JungleLawDbAdapter {
      * @return
      */
     public Cursor query() {
-        String sortOrder = PlayerScores.COLUMN_SCORE + " DESC" + " LIMIT 10";
+        String sortOrder = PlayerScores.COLUMN_SCORE + " DESC LIMIT 10";
         return db.query(PlayerScores.TABLE_NAME, null, null, null, null, null, sortOrder);
     }
 
-    public void insert(int score) {
+    public void insert(int score, String createTime) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PlayerScores.COLUMN_SCORE, score);
+        contentValues.put(PlayerScores.COLUMN_SCORE_CREATE_TIME, createTime);
         db.insert(PlayerScores.TABLE_NAME, null, contentValues);
     }
 }

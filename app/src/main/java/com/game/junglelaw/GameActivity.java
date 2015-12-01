@@ -2,43 +2,63 @@ package com.game.junglelaw;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 public class GameActivity extends Activity {
 
-    private GameView gv;
-    private MediaPlayer bgmMusic;
+    private static final String LOG_TAG = GameActivity.class.getSimpleName();
+
+    private boolean isMute;
+    private GameView gameView;
+    private MediaPlayer bkgMusic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        gv = new GameView(this);
-        setContentView(gv);
+        gameView = new GameView(this);
+        setContentView(gameView);
 
-        bgmMusic = MediaPlayer.create(GameActivity.this, R.raw.fighting);
-        bgmMusic.setLooping(true);
-        bgmMusic.start();
+        bkgMusic = MediaPlayer.create(GameActivity.this, R.raw.fighting);
+        bkgMusic.setLooping(true);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GameActivity.this);
+        isMute = prefs.getBoolean(getString(R.string.pref_mute_key), false);
+
+        if (!isMute) {
+            bkgMusic.start();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        bgmMusic.stop();
-        bgmMusic.release();
+        if (!isMute) {
+            bkgMusic.stop();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bkgMusic.release();
     }
 
     protected void onResume() {
         super.onResume();
-        //Log.d(TAG, "OnResume");
-        gv = new GameView(this);
-        setContentView(gv);
+        gameView = new GameView(this);
+        setContentView(gameView);
     }
 
     @Override
@@ -57,15 +77,15 @@ public class GameActivity extends Activity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.end) {
             Intent data = new Intent();
-            float score = gv.getScore();
+            float score = gameView.getScore();
             data.putExtra("score", score);
             setResult(RESULT_OK, data);
             finish();
             return true;
         } else if (id == R.id.pause) {
-            gv.pause();
+            gameView.pause();
         } else if (id == R.id.resume) {
-            gv.resume();
+            gameView.resume();
         }
 
         return super.onOptionsItemSelected(item);

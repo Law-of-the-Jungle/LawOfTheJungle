@@ -1,14 +1,6 @@
 package com.game.junglelaw.circle;
 
-import android.graphics.Movie;
-import android.graphics.PointF;
-import android.util.Log;
-import android.view.View;
-
 import com.game.junglelaw.GameView;
-import com.game.junglelaw.R;
-
-import java.io.InputStream;
 
 /**
  * Created by apple on 10/15/15.
@@ -16,35 +8,37 @@ import java.io.InputStream;
  */
 public class PlayerCircle extends MovableCircle {
 
+    private static final String LOG_TAG = PlayerCircle.class.getSimpleName();
+
     private final float DEFAULT_SCREEN_RADIUS = 30;
     private final double SHIFT_THRESHOLD = 0.25;
 
-    public float player_on_screen_radius;
-    public float zoom_rate;
+    public float mPlayerOnScreenRadius;
+    public float mZoomRate;
 
     public PlayerCircle(float x, float y, float radius, int color) {
         super(x, y, radius, color, "");
-        player_on_screen_radius = DEFAULT_SCREEN_RADIUS;
-        zoom_rate = MakeZoomRate();
+        mPlayerOnScreenRadius = DEFAULT_SCREEN_RADIUS;
+        mZoomRate = calculateZoomRate();
     }
 
     /**
-     * 根据用户点击位置，计算player circle的新direction
+     * 根据用户当前位置，计算player circle的新direction
      */
-    private float MakeZoomRate() {
-        return player_on_screen_radius / getRadius();
+    private float calculateZoomRate() {
+        return mPlayerOnScreenRadius / getmRadius();
     }
 
     public void updateZoom(GameView view) {
         //switch the lan to a border
-        //Log.d("updateZoom",Double.toString(player_on_screen_radius)+" |  "+Double.toString(Math.min(view.getMap_height(),view.getMap_width())*SHIFT_THRESHOLD));
-        //if (player_on_screen_radius*2 > Math.min(view.getScreen_height(),view.getScreen_width())*SHIFT_THRESHOLD){
-        if (player_on_screen_radius >= 80) {
-            //player_on_screen_radius=DEFAULT_SCREEN_RADIUS;
-            player_on_screen_radius *= 0.8;
-            zoom_rate = MakeZoomRate();
+        //Log.d("updateZoom",Double.toString(mPlayerOnScreenRadius)+" |  "+Double.toString(Math.min(view.getMap_height(),view.getMap_width())*SHIFT_THRESHOLD));
+        //if (mPlayerOnScreenRadius*2 > Math.min(view.getScreenHeight(),view.getScreenWidth())*SHIFT_THRESHOLD){
+        if (mPlayerOnScreenRadius >= 80) {
+            //mPlayerOnScreenRadius=DEFAULT_SCREEN_RADIUS;
+            mPlayerOnScreenRadius *= 0.8;
+            mZoomRate = calculateZoomRate();
         } else {
-            player_on_screen_radius = getRadius() * zoom_rate;
+            mPlayerOnScreenRadius = getmRadius() * mZoomRate;
         }
     }
 }

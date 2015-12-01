@@ -14,5 +14,6 @@ public class JungleLawContract {
         public static final String TABLE_NAME = "player_scores";
 
         public static final String COLUMN_SCORE = "score";
+        public static final String COLUMN_SCORE_CREATE_TIME = "score_create_time";
     }
 }

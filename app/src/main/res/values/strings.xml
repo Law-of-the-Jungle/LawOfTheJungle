@@ -17,4 +17,7 @@
     <string name="pref_diffculty_easy">easy</string>
     <string name="pref_diffculty_hard">hard</string>
 
+    <string name="pref_mute_key">mute</string>
+    <string name="pref_mute_label">Mute Background Music</string>
+
 </resources>

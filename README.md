@@ -38,10 +38,10 @@ This is a android game
  	
 - Handler:
 	http://infobloggall.com/2015/03/02/handlers-in-android/
-	our calculation thread and handler should be in the same view class. Then Handler could get access to all UI element, bitmap etc. Handler is thread safe.
+	our calculation thread and handler should be in the same gameView class. Then Handler could get access to all UI element, bitmap etc. Handler is thread safe.
 	- example for moving data from thread to UI thread.
 		http://www.intertech.com/Blog/android-non-ui-to-ui-thread-communications-part-1-of-5/
-- Surface view 
+- Surface gameView
 	- example 
 		http://examples.javacodegeeks.com/android/core/ui/surfaceview/android-surfaceview-example/
 	- zhihu

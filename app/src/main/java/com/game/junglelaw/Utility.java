@@ -2,21 +2,18 @@ package com.game.junglelaw;
 
 import com.game.junglelaw.circle.*;
 
-import android.graphics.Color;
 import android.graphics.PointF;
-import android.util.Log;
-
-import java.util.Random;
 
 /**
  * Created by apple on 10/15/15.
  */
 public class Utility {
 
-    private static String TAG = "Utility";
+    private static final String LOG_TAG = Utility.class.getSimpleName();
+
+    private static final float ABSORB_THREASHOLD_RATE = (float) 1.1;
 
     public static float getRelativeRadius(float playerRadius, float circleRadius, float player_on_screen_radius) {
-        Log.d(TAG, Float.toString(player_on_screen_radius * (circleRadius / playerRadius)));
         return player_on_screen_radius * circleRadius / playerRadius;
     }
 
@@ -29,28 +26,28 @@ public class Utility {
     }
 
     /**
-     * If circle1's radius is larger than or equal to circle2's
+     * Can if largeCircle is large enough to absorb smallCircle.
      *
-     * @param circle1
-     * @param circle2
-     * @return
+     * Pre-assumption: largeCircle's mRadius is larger than or equal to smallCircle's
      */
-    public static boolean isLarger(AbstractCircle circle1, AbstractCircle circle2) {
-        return circle1.getRadius() >= circle2.getRadius();
+    public static boolean isAbsorbableLarger(AbstractCircle largeCircle, AbstractCircle smallCircle) {
+        return largeCircle.getmRadius() >= ABSORB_THREASHOLD_RATE * smallCircle.getmRadius();
     }
 
     /**
-     * Can circleLarge absorb circle2.
-     * <p>
-     * Pre-assumption: circleLarge's radius is larger than or equal to circle2's
+     * Can largeCircle absorb smallCircle.
+     *
+     * Pre-assumption: largeCircle's mRadius is larger than or equal to smallCircle's
      */
-    public static boolean canAbsorb(AbstractCircle circleLarge, AbstractCircle circleSmall) {
-        if (circleLarge.getRadius() < circleSmall.getRadius())
+    public static boolean canAbsorb(AbstractCircle largeCircle, AbstractCircle smallCircle) {
+        if (!isAbsorbableLarger(largeCircle, smallCircle)) {
             return false;
-        return circleCenterDistance(circleLarge, circleSmall) + circleSmall.getRadius() <= 1.1 * circleLarge.getRadius();
+        }
+
+        return pointsDistance(largeCircle.getmCenter(), smallCircle.getmCenter()) + smallCircle.getmRadius() <= 1.1 * largeCircle.getmRadius();
     }
 
-    public static double circleCenterDistance(AbstractCircle circle1, AbstractCircle circle2) {
-        return Math.sqrt(Math.pow(circle1.getCenter().x - circle2.getCenter().x, 2) + Math.pow(circle1.getCenter().y - circle2.getCenter().y, 2));
+    public static float pointsDistance(PointF p1, PointF p2) {
+        return (float) Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
     }
 }

@@ -7,7 +7,9 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_highest_scores"/>
+        android:text="@string/title_highest_scores"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
 
     <ListView
         android:id="@+id/highest_scores_list"

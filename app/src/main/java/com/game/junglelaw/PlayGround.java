@@ -10,17 +10,17 @@ import android.view.SurfaceHolder;
  */
 public class PlayGround extends Thread {
 
-    private GameView view;
-    private SurfaceHolder viewholder;
+    private static final String LOG_TAG = PlayGround.class.getSimpleName();
+
+    private GameView gameView;
+    private SurfaceHolder surfaceHolder;
     private boolean runState;
     private boolean pauseState;
-    private String TAG = "PlayGround";
-    static final long FPS = 60;
-    private CircleManager manger;
-    private boolean gameOverState;
+    private CircleManager mCircleManager;
+    private boolean mIsGameOver;
 
-    public CircleManager getManger() {
-        return manger;
+    public CircleManager getmCircleManager() {
+        return mCircleManager;
     }
 
     public void setPauseState(boolean new_state) {
@@ -28,21 +28,21 @@ public class PlayGround extends Thread {
     }
 
     //public float player_x,player_y;//wrap this into method and seal it,now is just draft
-    public PlayGround(GameView view, String difficulty) {
-        this.view = view;
-        viewholder = view.getHolder();
+    public PlayGround(GameView gameView, String difficulty) {
+        this.gameView = gameView;
+        surfaceHolder = gameView.getHolder();
         runState = false;
-        gameOverState = false;
+        mIsGameOver = false;
         pauseState = false;
-        manger = new CircleManager(difficulty);
+        mCircleManager = new CircleManager(difficulty);
     }
 
-    public void setGameOverState(boolean state) {
-        gameOverState = state;
+    public void setmIsGameOver(boolean state) {
+        mIsGameOver = state;
     }
 
     public boolean isGameOver() {
-        return gameOverState;
+        return mIsGameOver;
     }
 
     public void setRunState(boolean state) {
@@ -50,47 +50,47 @@ public class PlayGround extends Thread {
     }
 
     public void render() {
-        Canvas c = null;
+        Canvas canvas = null;
         try {
-            c = viewholder.lockCanvas();
-            synchronized (viewholder) {
-                if (c != null) {
-                    manger.controlPopulation(); // manage the points in the map
-                    manger.EliminateConfliction();
-                    view.player.updateZoom(view);
-                    if (!manger.InMovableList(view.player)) {
+            canvas = surfaceHolder.lockCanvas();
+            synchronized (surfaceHolder) {
+                if (canvas != null) {
+                    mCircleManager.controlPopulation(); // manage the points in the map
+                    mCircleManager.absorb();
+                    gameView.player.updateZoom(gameView);
+                    if (!mCircleManager.inMovableList(gameView.player)) {
                         setRunState(false);
-                        setGameOverState(true);
+                        setmIsGameOver(true);
 
-                        Log.d(TAG, "end game");
+                        Log.d(LOG_TAG, "end game");
                     }
-                    manger.MoveMovable();
-                    view.onDraw(c);
+                    mCircleManager.moveMovableCircles();
+                    gameView.onDraw(canvas);
                 }
             }
+
         } finally {
-            if (c != null) {
-                viewholder.unlockCanvasAndPost(c);
+            if (canvas != null) {
+                surfaceHolder.unlockCanvasAndPost(canvas);
             } else {
-                Log.d(TAG, "Empty canvas");
+                Log.d(LOG_TAG, "Empty canvas");
             }
         }
     }
 
     @Override
     public void run() {
-        Log.d(TAG, "Start main loop...");
+        Log.d(LOG_TAG, "Start main loop...");
         long startTime;
         long sleepTime;
-        long ticksPS = 1000 / FPS;
         while (runState) {
             if (pauseState)
                 continue;
             startTime = System.currentTimeMillis();
-            //Log.d(TAG,Float.toString(view.player.x)+" "+Float.toString(view.player.y));
+            //Log.d(LOG_TAG,Float.toString(gameView.player.x)+" "+Float.toString(gameView.player.y));
             render();
             sleepTime = (System.currentTimeMillis() - startTime);
-            //Log.d(TAG,"SleepTime:"+Long.toString(sleepTime));
+            //Log.d(LOG_TAG,"SleepTime:"+Long.toString(sleepTime));
             try {
                 if (sleepTime > 0) {
                     sleep(sleepTime);
@@ -98,9 +98,9 @@ public class PlayGround extends Thread {
                     sleep(5);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+                Log.e(LOG_TAG, e.getMessage());
             }
         }
-        Log.d(TAG, "Ending main loop...");
+        Log.d(LOG_TAG, "Ending main loop...");
     }
 }

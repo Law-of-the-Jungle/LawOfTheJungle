@@ -14,7 +14,7 @@ public class JungleLawDbHelper extends SQLiteOpenHelper {
     private static final String LOG_TAG = JungleLawDbHelper.class.getSimpleName();
 
     private static final String DATABASE_NAME = "jungle_law.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // Updates database version, once change schema
 
     public JungleLawDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -23,8 +23,11 @@ public class JungleLawDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         final String SQL_CREATE_EXPENSE_LOG_TABLE = "CREATE TABLE " + PlayerScores.TABLE_NAME + " (" +
+
                 PlayerScores._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 PlayerScores.COLUMN_SCORE + " INT NOT NULL, " +
+                PlayerScores.COLUMN_SCORE_CREATE_TIME + " TEXT NOT NULL, " +
+
                 " UNIQUE (" + PlayerScores._ID + ") ON CONFLICT REPLACE);";
 
         db.execSQL(SQL_CREATE_EXPENSE_LOG_TABLE);

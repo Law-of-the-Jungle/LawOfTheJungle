@@ -1,7 +1,6 @@
 package com.game.junglelaw.circle;
 
 import android.graphics.PointF;
-import android.util.Log;
 
 import com.game.junglelaw.Utility;
 
@@ -15,67 +14,68 @@ import java.util.PriorityQueue;
 public class MovableCircle extends AbstractCircle {
 
     private static final String LOG_TAG = MovableCircle.class.getSimpleName();
+    protected static final float DEAFULT_SPEED = 10;
 
-    private String difficulty;
-    private PointF direction; // direction vector size should be 1 (i.e. has a unit distance)
-    private float speed;
+    private PointF mMovingDirection; // mMovingDirection vector size should be 1 (i.e. has a unit distance)
+    protected float mSpeed;
+    private String mGameDifficulty;
     private boolean isAttackPlayer;
 
-    public MovableCircle(float x, float y, float radius, int color, String difficulty) {
+    public MovableCircle(float x, float y, float radius, int color, String gameDifficulty) {
         super(x, y, radius, color);
-        direction = new PointF(0, 0);
-        speed = 10;
+        mMovingDirection = new PointF((float) Math.random(), (float) Math.random());
+        mSpeed = DEAFULT_SPEED;
         isAttackPlayer = false;
-        this.difficulty = difficulty;
+        this.mGameDifficulty = gameDifficulty;
     }
 
-    public void setSpeed(float new_speed) {
-        speed = new_speed;
+    public void setmSpeed(float new_speed) {
+        mSpeed = new_speed;
     }
 
-    public float getSpeed() {
-        return speed;
+    public float getmSpeed() {
+        return mSpeed;
     }
 
-    public void setDirection(float newX, float newY) {
-        direction.set(newX, newY);
+    public void setmMovingDirection(PointF newDirection) {
+        float len = newDirection.length(); // normalization
+        mMovingDirection = new PointF(newDirection.x / len, newDirection.y / len);
     }
 
-    public PointF getDirection() {
-        return direction;
+    public PointF getmMovingDirection() {
+        return mMovingDirection;
     }
 
     /**
-     * Moves forward to the direction by one unit distance
+     * Moves forward to the mMovingDirection with current mSpeed
      */
     public void moveToDirection(int width, int height) {
-        speed = 10 / (radius / 40);
-        float new_x = center.x + speed * direction.x;
-        float new_y = center.y + speed * direction.y;
-        if ((new_x > 0 && new_x < width) && (new_y > 0 && new_y < height)) {
-            setCenter(new_x, new_y);
+        mSpeed = DEAFULT_SPEED / (mRadius / 40);
+        float newX = mCenter.x + mSpeed * mMovingDirection.x;
+        float newY = mCenter.y + mSpeed * mMovingDirection.y;
+
+        if ((newX > 0 && newX < width) && (newY > 0 && newY < height)) {
+            setCenter(newX, newY);
         }
     }
 
-    public void setNewDirection(PointF userClickPoint, PointF center) {
-        float newX = userClickPoint.x - center.x;
-        float newY = userClickPoint.y - center.y;
-        float len = (float) Math.sqrt(Math.pow(newX, 2) + Math.pow(newY, 2)); // for 归一化处理
-        setDirection(newX / len, newY / len);
+    public void setDirectTowardPoint(PointF targetPoint) {
+        setmMovingDirection(new PointF(targetPoint.x - mCenter.x, targetPoint.y - mCenter.y));
     }
 
     public void aiMove(int width, int height, MovableCircle playerCircle, List<StaticCircle> staticCircleList) {
-        if (difficulty.equals("easy") && Math.random() < 0.1) {
+
+        if (mGameDifficulty.equals("easy") && Math.random() < 0.1) {
             PointF p = new PointF(Utility.generateRandomFloat(0, width), Utility.generateRandomFloat(0, height));
-            setNewDirection(p, center);
+            setDirectTowardPoint(p);
             moveToDirection(width, height);
             return;
         }
 
         if (isAttackPlayer == true) {
 
-            if (radius > 1.1 * playerCircle.getRadius()) {
-                setNewDirection(playerCircle.getCenter(), center);
+            if (Utility.isAbsorbableLarger(this, playerCircle)) {
+                setDirectTowardPoint(playerCircle.getmCenter());
                 moveToDirection(width, height);
                 return;
 
@@ -85,38 +85,32 @@ public class MovableCircle extends AbstractCircle {
         }
 
         // When goes to here: isAttackPlayer == false
-        double randNumb = Math.random();
-
-        if (randNumb < 0.1) {
+        if (Math.random() < 0.1) {
             PointF staticCircleCenter = findNearest(staticCircleList);
-            setNewDirection(staticCircleCenter, center);
+            setDirectTowardPoint(staticCircleCenter);
 
-        } else if (radius > 1.1 * playerCircle.getRadius() && randNumb < 0.6) {
+        } else if (Utility.isAbsorbableLarger(this, playerCircle) && Math.random() < 0.5) {
             isAttackPlayer = true;
-            setNewDirection(playerCircle.getCenter(), center);
+            setDirectTowardPoint(playerCircle.getmCenter());
         }
-        // else, keep the predefined direction
+        // else, keep the predefined mMovingDirection
 
         moveToDirection(width, height);
     }
 
     private PointF findNearest(List<StaticCircle> staticCircleList) {
-        final PointF currentCenter = center;
+        final PointF currentCenter = mCenter;
         PriorityQueue<PointF> minPQ = new PriorityQueue<>(11, new Comparator<PointF>() {
             @Override
             public int compare(PointF lhs, PointF rhs) {
-                return (int) (distance(currentCenter, lhs) - distance(currentCenter, rhs));
+                return (int) (Utility.pointsDistance(currentCenter, lhs) - Utility.pointsDistance(currentCenter, rhs));
             }
         });
 
         for (StaticCircle sc : staticCircleList) {
-            minPQ.add(sc.center);
+            minPQ.add(sc.mCenter);
         }
 
         return minPQ.poll();
-    }
-
-    private float distance(PointF p1, PointF p2) {
-        return (float) Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
     }
 }
