@@ -97,6 +97,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
 
+        drawCoordinate(canvas);
         drawText(canvas);
         drawPlayerCircle(canvas);
         drawStaticCircles(canvas);
@@ -137,12 +138,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText(coordinate, 5, canvas.getHeight() - 5, paint);
     }
 
+    private void drawCoordinate(Canvas canvas) {
+        Paint coordinatePaint = new Paint();
+        coordinatePaint.setColor(Color.GRAY);
+        coordinatePaint.setStrokeWidth(5);
+
+        for (int x = 0; x < mMapWidth; x += 100) {
+            PointF startPoint = relativePointDistance(new PointF(x, 0));
+            PointF stopPoint = relativePointDistance(new PointF(x, mMapHeight));
+            canvas.drawLine(startPoint.x, startPoint.y, stopPoint.x, stopPoint.y, coordinatePaint);
+        }
+
+        for (int y = 0; y < mMapHeight; y += 100) {
+            PointF startPoint = relativePointDistance(new PointF(0, y));
+            PointF stopPoint = relativePointDistance(new PointF(mMapWidth, y));
+            canvas.drawLine(startPoint.x, startPoint.y, stopPoint.x, stopPoint.y, coordinatePaint);
+        }
+    }
+
     private void drawBorder(Canvas canvas) {
         Paint borderPaint = new Paint();
         borderPaint.setStyle(Paint.Style.STROKE);
-        borderPaint.setStrokeWidth(20);
+        borderPaint.setStrokeWidth(5);
         borderPaint.setColor(Color.BLACK);
-        canvas.drawRect(0, 0, mMapWidth, mMapHeight, borderPaint);
+        PointF topLeft = relativePointDistance(new PointF(0, 0));
+        PointF bottomRight = relativePointDistance(new PointF(mMapWidth, mMapHeight));
+        canvas.drawRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, borderPaint);
     }
 
     private void drawGameOverScene(Canvas canvas) {
@@ -199,6 +220,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private float relativeScreenSize(AbstractCircle circle) {
         return circle.getmRadius() * mPlayerCircle.getmZoomRate();
+    }
+
+    private PointF relativePointDistance(PointF point) {
+        float x = (point.x - mPlayerCircle.getmCenter().x) * mPlayerCircle.getmZoomRate();
+        float y = (point.y - mPlayerCircle.getmCenter().y) * mPlayerCircle.getmZoomRate();
+        return new PointF(x + mScreenWidth / 2, y + mScreenHeight / 2);
     }
 
     private PointF relativeCenterLocation(AbstractCircle sc) {

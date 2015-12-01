@@ -53,7 +53,7 @@ public class GameLogic implements Runnable {
             executeGameLogic();
             long renderTime = System.currentTimeMillis() - startTime;
             try {
-                Thread.sleep(Math.max(renderTime, 10));
+                Thread.sleep(Math.max(renderTime, 5));
             } catch (InterruptedException e) {
                 Log.e(LOG_TAG, e.getMessage());
             }
