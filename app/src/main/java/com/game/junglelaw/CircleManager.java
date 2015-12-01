@@ -1,6 +1,8 @@
 package com.game.junglelaw;
 
+import com.game.junglelaw.circle.AiCircle;
 import com.game.junglelaw.circle.MovableCircle;
+import com.game.junglelaw.circle.PlayerCircle;
 import com.game.junglelaw.circle.StaticCircle;
 
 import java.util.ArrayList;
@@ -17,21 +19,21 @@ public class CircleManager {
     private static final int MIN_STATIC_CIRCLE_NUMBER = 30;
     private static final int MIN_AI_CIRCLE_NUMBER = 500;
 
-    private CircleFactory circleFactory;
+    private CircleFactory mCircleFactory;
 
     private List<StaticCircle> mStaticCircles;
     private List<MovableCircle> mMovableCircles;
-    private int width_max, height_max;
+    private int mMaxWidth, mMaxHeight;
 
-    public CircleManager(String difficulty) {
+    public CircleManager(String gameDifficulty) {
         mStaticCircles = new ArrayList<>();
         mMovableCircles = new ArrayList<>();
-        circleFactory = new CircleFactory(difficulty);
+        mCircleFactory = new CircleFactory(gameDifficulty);
     }
 
-    public void setSize(int width_max, int height_max) {
-        this.width_max = width_max;
-        this.height_max = height_max;
+    public void setSize(int maxWidth, int maxHeight) {
+        this.mMaxWidth = maxWidth;
+        this.mMaxHeight = maxHeight;
     }
 
     public List<StaticCircle> getmStaticCircles() {
@@ -50,23 +52,22 @@ public class CircleManager {
         }
     }
 
-    // TODO (如有必要)生成新的static circle
     public void controlPopulation() {
         if (mMovableCircles.size() < MIN_STATIC_CIRCLE_NUMBER) {
-            mMovableCircles.addAll(circleFactory.createAiCircles(width_max, height_max,
+            mMovableCircles.addAll(mCircleFactory.createAiCircles(mMaxWidth, mMaxHeight,
                     MIN_STATIC_CIRCLE_NUMBER - mStaticCircles.size(), mMovableCircles.get(0)));
         }
 
         if (mStaticCircles.size() < MIN_AI_CIRCLE_NUMBER) {
-            mStaticCircles.addAll(circleFactory.createStaticCircles(width_max, height_max,
+            mStaticCircles.addAll(mCircleFactory.createStaticCircles(mMaxWidth, mMaxHeight,
                     MIN_AI_CIRCLE_NUMBER - mStaticCircles.size()));
         }
     }
 
     public void moveMovableCircles() {
         for (int i = 1; i < mMovableCircles.size(); i++) {
-            MovableCircle mc = mMovableCircles.get(i);
-            mc.aiMove(width_max, height_max, mMovableCircles.get(0), mStaticCircles);
+            AiCircle mc = (AiCircle) mMovableCircles.get(i);
+            mc.aiMove(mMaxWidth, mMaxHeight, mMovableCircles.get(0), mStaticCircles);
         }
     }
 

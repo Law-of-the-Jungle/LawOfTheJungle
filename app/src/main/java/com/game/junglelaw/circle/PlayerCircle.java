@@ -1,5 +1,8 @@
 package com.game.junglelaw.circle;
 
+import android.graphics.PointF;
+import android.util.Log;
+
 import com.game.junglelaw.GameView;
 
 /**
@@ -17,9 +20,17 @@ public class PlayerCircle extends MovableCircle {
     public float mZoomRate;
 
     public PlayerCircle(float x, float y, float radius, int color) {
-        super(x, y, radius, color, "");
+        super(x, y, radius, color);
         mPlayerOnScreenRadius = DEFAULT_SCREEN_RADIUS;
         mZoomRate = calculateZoomRate();
+    }
+
+    public void setDirectTowardPoint(PointF targetPoint) {
+        PointF newDirection = new PointF(targetPoint.x - mCenter.x, targetPoint.y - mCenter.y);
+        Log.e(LOG_TAG, newDirection.toString());
+        float len = newDirection.length(); // normalization
+        mMovingDirection.set(newDirection.x / len, newDirection.y / len);
+        Log.e(LOG_TAG, targetPoint.toString() + ": " + mCenter.toString() + "; " + mMovingDirection.toString());
     }
 
     /**
@@ -32,7 +43,7 @@ public class PlayerCircle extends MovableCircle {
     public void updateZoom(GameView view) {
         //switch the lan to a border
         //Log.d("updateZoom",Double.toString(mPlayerOnScreenRadius)+" |  "+Double.toString(Math.min(view.getMap_height(),view.getMap_width())*SHIFT_THRESHOLD));
-        //if (mPlayerOnScreenRadius*2 > Math.min(view.getScreenHeight(),view.getScreenWidth())*SHIFT_THRESHOLD){
+        //if (mPlayerOnScreenRadius*2 > Math.min(view.getmScreenHeight(),view.getmScreenWidth())*SHIFT_THRESHOLD){
         if (mPlayerOnScreenRadius >= 80) {
             //mPlayerOnScreenRadius=DEFAULT_SCREEN_RADIUS;
             mPlayerOnScreenRadius *= 0.8;

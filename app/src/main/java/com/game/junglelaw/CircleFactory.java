@@ -1,6 +1,8 @@
 package com.game.junglelaw;
 
+import com.game.junglelaw.circle.AiCircle;
 import com.game.junglelaw.circle.MovableCircle;
+import com.game.junglelaw.circle.PlayerCircle;
 import com.game.junglelaw.circle.StaticCircle;
 
 import java.util.ArrayList;
@@ -26,8 +28,8 @@ public class CircleFactory {
         return new StaticCircle(x, y, radius, color);
     }
 
-    public MovableCircle createMovableCircle(float x, float y, float radius, int color) {
-        return new MovableCircle(x, y, radius, color, mGameDifficulty);
+    public AiCircle createAiCircle(float x, float y, float radius, int color) {
+        return new AiCircle(x, y, radius, color, mGameDifficulty);
     }
 
     public List<StaticCircle> createStaticCircles(int x, int y, int num) {
@@ -40,6 +42,7 @@ public class CircleFactory {
             StaticCircle tmp = createStaticCircle(rx.nextFloat() * x, ry.nextFloat() * y, STATIC_CIRCLE_RADIUS, rcolor.nextInt());
             res.add(tmp);
         }
+
         return res;
     }
 
@@ -50,8 +53,9 @@ public class CircleFactory {
         ry = new Random();
         rcolor = new Random();
         for (int i = 0; i < num; i++) {
-            res.add(createMovableCircle(rx.nextFloat() * x, ry.nextFloat() * y, (float) (playerCircle.getmRadius() * 1.1), rcolor.nextInt()));
+            res.add(createAiCircle(rx.nextFloat() * x, ry.nextFloat() * y, (float) (playerCircle.getmRadius() * 1.1), rcolor.nextInt()));
         }
+
         return res;
     }
 }
