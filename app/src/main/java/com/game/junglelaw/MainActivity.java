@@ -12,10 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.game.junglelaw.data.JungleLawDbAdapter;
-
-import java.util.Date;
-
 /***
  * This the main activity for welcome and setting etc
  */
@@ -24,8 +20,9 @@ public class MainActivity extends Activity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private static final int GAME_ACTIVITY_RESULT_CODE = 1;
-    private boolean mIsMute;
+
     private MediaPlayer mMainBackgroundMusic;
+    private boolean mIsMute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +64,7 @@ public class MainActivity extends Activity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         mIsMute = prefs.getBoolean(getString(R.string.pref_mute_key), false);
 
-        if (!mIsMute) {
+        if (!mIsMute && !mMainBackgroundMusic.isPlaying()) {
             mMainBackgroundMusic.start();
         }
     }
@@ -76,8 +73,8 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GAME_ACTIVITY_RESULT_CODE && resultCode == RESULT_OK) {
-            int scores = (int) data.getExtras().getFloat("score");
-            Toast.makeText(this, "Your Score: " + scores, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Your Score: " + data.getExtras().getInt("score") +
+                    ";\n Game Difficulty: " + data.getExtras().getString("game_difficulty"), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -85,7 +82,7 @@ public class MainActivity extends Activity {
     protected void onStop() {
         super.onStop();
 
-        if (!mIsMute) {
+        if (!mIsMute && mMainBackgroundMusic.isPlaying()) {
             mMainBackgroundMusic.stop();
         }
     }

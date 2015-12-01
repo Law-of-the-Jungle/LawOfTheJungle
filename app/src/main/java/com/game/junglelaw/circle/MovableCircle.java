@@ -19,14 +19,6 @@ public abstract class MovableCircle extends AbstractCircle {
         mMovingDirection = new PointF((float) Math.random(), (float) Math.random());
     }
 
-    public void setmMovingSpeed(float new_speed) {
-        mMovingSpeed = new_speed;
-    }
-
-    public float getmMovingSpeed() {
-        return mMovingSpeed;
-    }
-
     public void setmMovingDirection(PointF newDirection) {
         float len = newDirection.length(); // normalization
         mMovingDirection.set(newDirection.x / len, newDirection.y / len);
@@ -40,15 +32,12 @@ public abstract class MovableCircle extends AbstractCircle {
         setmMovingDirection(new PointF(targetPoint.x - mCenter.x, targetPoint.y - mCenter.y));
     }
 
-    /**
-     * Moves forward to the mMovingDirection with current mMovingSpeed
-     */
-    public void moveToDirection(int width, int height) {
+    public void moveToDirection(int mapWidth, int mapHeight) {
         mMovingSpeed = DEAFULT_SPEED / (mRadius / 40);
         float newX = mCenter.x + mMovingSpeed * mMovingDirection.x;
         float newY = mCenter.y + mMovingSpeed * mMovingDirection.y;
 
-        if ((newX > 0 && newX < width) && (newY > 0 && newY < height)) {
+        if ((newX > 0 && newX < mapWidth) && (newY > 0 && newY < mapHeight)) {
             setCenter(newX, newY);
         }
     }

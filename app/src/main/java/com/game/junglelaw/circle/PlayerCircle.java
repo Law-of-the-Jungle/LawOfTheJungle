@@ -6,42 +6,48 @@ import com.game.junglelaw.GameView;
 
 /**
  * Created by apple on 10/15/15.
- * Take charge of lan control
  */
 public class PlayerCircle extends MovableCircle {
 
     private static final String LOG_TAG = PlayerCircle.class.getSimpleName();
 
-    private static final float DEFAULT_SCREEN_RADIUS = 30;
-
-    public float mPlayerOnScreenRadius;
-    public float mZoomRate;
+    private float mPlayerOnScreenRadius;
+    private float mZoomRate;
+    private boolean mIsAbsorbed;
 
     public PlayerCircle(float x, float y, float radius, int color) {
         super(x, y, radius, color);
-        mPlayerOnScreenRadius = DEFAULT_SCREEN_RADIUS;
+        mPlayerOnScreenRadius = radius;
         mZoomRate = calculateZoomRate();
     }
 
-    /**
-     * 根据用户当前位置，计算player circle的新direction
-     */
+    public float getmZoomRate() {
+        return mZoomRate;
+    }
+
+    public boolean getmIsAbsorbed() {
+        return mIsAbsorbed;
+    }
+
+    public void setmIsAbsorbed(boolean isAbsorbed) {
+        mIsAbsorbed = isAbsorbed;
+    }
+
+    /** 根据player circle 当前大小，计算player zoom rate */
     private float calculateZoomRate() {
         return mPlayerOnScreenRadius / getmRadius();
     }
 
-    public void newDirection(PointF userClick, PointF screenCenter) {
-        setmMovingDirection(new PointF(userClick.x - screenCenter.x, userClick.y - screenCenter.y));
+    public void newDirection(PointF userClickPosition, PointF screenCenter) {
+        setmMovingDirection(new PointF(userClickPosition.x - screenCenter.x, userClickPosition.y - screenCenter.y));
     }
 
-    public void updateZoom(GameView view) {
+    public void updateZoomRate(GameView view) {
         //switch the lan to a border
-        //Log.d("updateZoom",Double.toString(mPlayerOnScreenRadius)+" |  "+Double.toString(Math.min(view.getmMapHeight(),view.getmMapWidth())*SHIFT_THRESHOLD));
-        //if (mPlayerOnScreenRadius*2 > Math.min(view.getmScreenHeight(),view.getmScreenWidth())*SHIFT_THRESHOLD){
         if (mPlayerOnScreenRadius >= 80) {
-            //mPlayerOnScreenRadius=DEFAULT_SCREEN_RADIUS;
             mPlayerOnScreenRadius *= 0.8;
             mZoomRate = calculateZoomRate();
+
         } else {
             mPlayerOnScreenRadius = getmRadius() * mZoomRate;
         }

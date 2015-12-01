@@ -2,6 +2,7 @@ package com.game.junglelaw;
 
 import com.game.junglelaw.circle.AiCircle;
 import com.game.junglelaw.circle.MovableCircle;
+import com.game.junglelaw.circle.PlayerCircle;
 import com.game.junglelaw.circle.StaticCircle;
 
 import java.util.ArrayList;
@@ -18,8 +19,9 @@ public class CircleManager {
     private static final int MIN_STATIC_CIRCLE_NUMBER = 30;
     private static final int MIN_AI_CIRCLE_NUMBER = 500;
 
-    private CircleFactory mCircleFactory;
+    private final CircleFactory mCircleFactory;
 
+    private final PlayerCircle mPlayerCircle;
     private List<StaticCircle> mStaticCircles;
     private List<MovableCircle> mMovableCircles;
     private int mMapWidth;
@@ -29,6 +31,11 @@ public class CircleManager {
         mStaticCircles = new ArrayList<>();
         mMovableCircles = new ArrayList<>();
         mCircleFactory = new CircleFactory(gameDifficulty);
+        mPlayerCircle = mCircleFactory.createPlayerCircle(0, 0);
+    }
+
+    public PlayerCircle getmPlayerCircle() {
+        return mPlayerCircle;
     }
 
     public void setMapSize(int mapWidth, int mapHeight) {
@@ -64,6 +71,10 @@ public class CircleManager {
         }
     }
 
+    public void movePlayerCircle() {
+        mPlayerCircle.moveToDirection(mMapWidth, mMapHeight);
+    }
+
     public void moveMovableCircles() {
         for (int i = 1; i < mMovableCircles.size(); i++) {
             AiCircle mc = (AiCircle) mMovableCircles.get(i);
@@ -73,26 +84,23 @@ public class CircleManager {
 
     // TODO 判断，circle的相互吃情况
     public void absorb() {
-        //do for mPlayerCircle first
         boolean collided = true;
         while (collided) {
             collided = false;
-            synchronized (mMovableCircles) {
-                for (int i = mMovableCircles.size() - 2; i >= 0; i--) {
-                    for (int j = i + 1; j < mMovableCircles.size(); j++) {
-                        MovableCircle m1 = mMovableCircles.get(i);
-                        MovableCircle m2 = mMovableCircles.get(j);
+            for (int i = mMovableCircles.size() - 2; i >= 0; i--) {
+                for (int j = i + 1; j < mMovableCircles.size(); j++) {
+                    MovableCircle m1 = mMovableCircles.get(i);
+                    MovableCircle m2 = mMovableCircles.get(j);
 
-                        if (Utility.canAbsorb(m1, m2)) {
-                            m1.addMass(m2.getMass());
-                            mMovableCircles.remove(m2);
-                            collided = true;
-                        } else if (Utility.canAbsorb(m2, m1)) {
-                            m2.addMass(m1.getMass());
-                            mMovableCircles.remove(m1);
-                            collided = true;
-                            break;
-                        }
+                    if (Utility.canAbsorb(m1, m2)) {
+                        m1.addMass(m2.getMass());
+                        mMovableCircles.remove(m2);
+                        collided = true;
+                    } else if (Utility.canAbsorb(m2, m1)) {
+                        m2.addMass(m1.getMass());
+                        mMovableCircles.remove(m1);
+                        collided = true;
+                        break;
                     }
                 }
             }

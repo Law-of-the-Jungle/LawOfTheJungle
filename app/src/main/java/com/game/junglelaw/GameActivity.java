@@ -44,7 +44,7 @@ public class GameActivity extends Activity {
     protected void onStart() {
         super.onStart();
 
-        if (!mIsMute) {
+        if (!mIsMute && !mGameBackgroundMusic.isPlaying()) {
             mGameBackgroundMusic.start();
         }
     }
@@ -87,14 +87,15 @@ public class GameActivity extends Activity {
         if (id == R.id.end) {
             mJungleLawDbAdapter.insert((int) mGameView.getScore(), mGameDifficulty, new Date().toString());
             Intent data = new Intent();
-            data.putExtra("score", mGameView.getScore());
+            data.putExtra("score", (int) mGameView.getScore());
+            data.putExtra("game_difficulty", mGameDifficulty);
             setResult(RESULT_OK, data);
             finish();
             return true;
         } else if (id == R.id.pause) {
-            mGameView.pause();
+            mGameView.pauseGame();
         } else if (id == R.id.resume) {
-            mGameView.resume();
+            mGameView.resumeGame();
         }
 
         return super.onOptionsItemSelected(item);

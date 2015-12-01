@@ -22,9 +22,9 @@ public class Utility {
         return lo + (float) (Math.random() * (hi - lo));
     }
 
-    public static int generateRandomNonWhiteNonTransparentColor() {
+    public static int generateRandomNonWhite_Transparent_BlackColor() {
         int color = Color.WHITE;
-        while (color == Color.WHITE || color == Color.TRANSPARENT) {
+        while (color == Color.WHITE || color == Color.TRANSPARENT || color == Color.BLACK) {
             color = Color.argb(255, generateRandomInt(0, 255), generateRandomInt(0, 255), generateRandomInt(0, 255));
         }
 
