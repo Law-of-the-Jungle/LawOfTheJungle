@@ -20,7 +20,7 @@ public class AiCircle extends MovableCircle {
 
     public AiCircle(float x, float y, float radius, int color, String gameDifficulty) {
         super(x, y, radius, color);
-        mSpeed = DEAFULT_SPEED;
+        mMovingSpeed = DEAFULT_SPEED;
         mIsAttackingPlayer = false;
         mGameDifficulty = gameDifficulty;
     }

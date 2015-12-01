@@ -2,12 +2,6 @@ package com.game.junglelaw.circle;
 
 import android.graphics.PointF;
 
-import com.game.junglelaw.Utility;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
-
 /**
  * Created by apple on 10/15/15.
  */
@@ -18,19 +12,19 @@ public abstract class MovableCircle extends AbstractCircle {
     protected static final float DEAFULT_SPEED = 10;
 
     protected PointF mMovingDirection; // mMovingDirection vector size should be 1 (i.e. has a unit distance)
-    protected float mSpeed;
+    protected float mMovingSpeed;
 
     public MovableCircle(float x, float y, float radius, int color) {
         super(x, y, radius, color);
         mMovingDirection = new PointF((float) Math.random(), (float) Math.random());
     }
 
-    public void setmSpeed(float new_speed) {
-        mSpeed = new_speed;
+    public void setmMovingSpeed(float new_speed) {
+        mMovingSpeed = new_speed;
     }
 
-    public float getmSpeed() {
-        return mSpeed;
+    public float getmMovingSpeed() {
+        return mMovingSpeed;
     }
 
     public void setmMovingDirection(PointF newDirection) {
@@ -47,12 +41,12 @@ public abstract class MovableCircle extends AbstractCircle {
     }
 
     /**
-     * Moves forward to the mMovingDirection with current mSpeed
+     * Moves forward to the mMovingDirection with current mMovingSpeed
      */
     public void moveToDirection(int width, int height) {
-        mSpeed = DEAFULT_SPEED / (mRadius / 40);
-        float newX = mCenter.x + mSpeed * mMovingDirection.x;
-        float newY = mCenter.y + mSpeed * mMovingDirection.y;
+        mMovingSpeed = DEAFULT_SPEED / (mRadius / 40);
+        float newX = mCenter.x + mMovingSpeed * mMovingDirection.x;
+        float newY = mCenter.y + mMovingSpeed * mMovingDirection.y;
 
         if ((newX > 0 && newX < width) && (newY > 0 && newY < height)) {
             setCenter(newX, newY);

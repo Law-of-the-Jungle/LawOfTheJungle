@@ -12,8 +12,8 @@ public class PlayGround extends Thread {
 
     private static final String LOG_TAG = PlayGround.class.getSimpleName();
 
-    private GameView gameView;
-    private SurfaceHolder surfaceHolder;
+    private GameView mGameView;
+    private SurfaceHolder mSurfaceHolder;
     private boolean runState;
     private boolean pauseState;
     private CircleManager mCircleManager;
@@ -27,10 +27,9 @@ public class PlayGround extends Thread {
         pauseState = new_state;
     }
 
-    //public float player_x,player_y;//wrap this into method and seal it,now is just draft
     public PlayGround(GameView gameView, String difficulty) {
-        this.gameView = gameView;
-        surfaceHolder = gameView.getHolder();
+        mGameView = gameView;
+        mSurfaceHolder = gameView.getHolder();
         runState = false;
         mIsGameOver = false;
         pauseState = false;
@@ -52,26 +51,26 @@ public class PlayGround extends Thread {
     public void render() {
         Canvas canvas = null;
         try {
-            canvas = surfaceHolder.lockCanvas();
-            synchronized (surfaceHolder) {
+            canvas = mSurfaceHolder.lockCanvas();
+            synchronized (mSurfaceHolder) {
                 if (canvas != null) {
                     mCircleManager.controlPopulation(); // manage the points in the map
                     mCircleManager.absorb();
-                    gameView.player.updateZoom(gameView);
-                    if (!mCircleManager.inMovableList(gameView.player)) {
+                    mGameView.mPlayerCircle.updateZoom(mGameView);
+                    if (!mCircleManager.inMovableList(mGameView.mPlayerCircle)) {
                         setRunState(false);
                         setmIsGameOver(true);
 
                         Log.d(LOG_TAG, "end game");
                     }
                     mCircleManager.moveMovableCircles();
-                    gameView.onDraw(canvas);
+                    mGameView.onDraw(canvas);
                 }
             }
 
         } finally {
             if (canvas != null) {
-                surfaceHolder.unlockCanvasAndPost(canvas);
+                mSurfaceHolder.unlockCanvasAndPost(canvas);
             } else {
                 Log.d(LOG_TAG, "Empty canvas");
             }
@@ -87,7 +86,7 @@ public class PlayGround extends Thread {
             if (pauseState)
                 continue;
             startTime = System.currentTimeMillis();
-            //Log.d(LOG_TAG,Float.toString(gameView.player.x)+" "+Float.toString(gameView.player.y));
+            //Log.d(LOG_TAG,Float.toString(mGameView.mPlayerCircle.x)+" "+Float.toString(mGameView.mPlayerCircle.y));
             render();
             sleepTime = (System.currentTimeMillis() - startTime);
             //Log.d(LOG_TAG,"SleepTime:"+Long.toString(sleepTime));

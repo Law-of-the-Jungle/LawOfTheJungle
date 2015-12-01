@@ -2,7 +2,6 @@ package com.game.junglelaw;
 
 import com.game.junglelaw.circle.AiCircle;
 import com.game.junglelaw.circle.MovableCircle;
-import com.game.junglelaw.circle.PlayerCircle;
 import com.game.junglelaw.circle.StaticCircle;
 
 import java.util.ArrayList;
@@ -23,7 +22,8 @@ public class CircleManager {
 
     private List<StaticCircle> mStaticCircles;
     private List<MovableCircle> mMovableCircles;
-    private int mMaxWidth, mMaxHeight;
+    private int mMapWidth;
+    private int mMapHeight;
 
     public CircleManager(String gameDifficulty) {
         mStaticCircles = new ArrayList<>();
@@ -31,9 +31,9 @@ public class CircleManager {
         mCircleFactory = new CircleFactory(gameDifficulty);
     }
 
-    public void setSize(int maxWidth, int maxHeight) {
-        this.mMaxWidth = maxWidth;
-        this.mMaxHeight = maxHeight;
+    public void setMapSize(int mapWidth, int mapHeight) {
+        mMapWidth = mapWidth;
+        mMapHeight = mapHeight;
     }
 
     public List<StaticCircle> getmStaticCircles() {
@@ -54,12 +54,12 @@ public class CircleManager {
 
     public void controlPopulation() {
         if (mMovableCircles.size() < MIN_STATIC_CIRCLE_NUMBER) {
-            mMovableCircles.addAll(mCircleFactory.createAiCircles(mMaxWidth, mMaxHeight,
+            mMovableCircles.addAll(mCircleFactory.createAiCircles(mMapWidth, mMapHeight,
                     MIN_STATIC_CIRCLE_NUMBER - mStaticCircles.size(), mMovableCircles.get(0)));
         }
 
         if (mStaticCircles.size() < MIN_AI_CIRCLE_NUMBER) {
-            mStaticCircles.addAll(mCircleFactory.createStaticCircles(mMaxWidth, mMaxHeight,
+            mStaticCircles.addAll(mCircleFactory.createStaticCircles(mMapWidth, mMapHeight,
                     MIN_AI_CIRCLE_NUMBER - mStaticCircles.size()));
         }
     }
@@ -67,13 +67,13 @@ public class CircleManager {
     public void moveMovableCircles() {
         for (int i = 1; i < mMovableCircles.size(); i++) {
             AiCircle mc = (AiCircle) mMovableCircles.get(i);
-            mc.aiMove(mMaxWidth, mMaxHeight, mMovableCircles.get(0), mStaticCircles);
+            mc.aiMove(mMapWidth, mMapHeight, mMovableCircles.get(0), mStaticCircles);
         }
     }
 
     // TODO 判断，circle的相互吃情况
     public void absorb() {
-        //do for player first
+        //do for mPlayerCircle first
         boolean collided = true;
         while (collided) {
             collided = false;

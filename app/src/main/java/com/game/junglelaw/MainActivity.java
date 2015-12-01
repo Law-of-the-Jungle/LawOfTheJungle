@@ -23,8 +23,8 @@ public class MainActivity extends Activity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private boolean isMute;
-    private MediaPlayer bkgMusic;
+    private boolean mIsMute;
+    private MediaPlayer mMainBackgroundMusic;
 
     private JungleLawDbAdapter mJungleLawDbAdapter;
 
@@ -34,8 +34,8 @@ public class MainActivity extends Activity {
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-        bkgMusic = MediaPlayer.create(MainActivity.this, R.raw.main);
-        bkgMusic.setLooping(true);
+        mMainBackgroundMusic = MediaPlayer.create(MainActivity.this, R.raw.main);
+        mMainBackgroundMusic.setLooping(true);
 
         mJungleLawDbAdapter = new JungleLawDbAdapter(MainActivity.this);
 
@@ -45,8 +45,8 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 startActivityForResult(new Intent(MainActivity.this, GameActivity.class), 1);
 
-                if (!isMute) {
-                    bkgMusic.pause();
+                if (!mIsMute) {
+                    mMainBackgroundMusic.pause();
                 }
             }
         });
@@ -57,8 +57,8 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, HighestScoresActivity.class));
 
-                if (!isMute) {
-                    bkgMusic.pause();
+                if (!mIsMute) {
+                    mMainBackgroundMusic.pause();
                 }
             }
         });
@@ -68,10 +68,10 @@ public class MainActivity extends Activity {
     protected void onStart() {
         super.onStart();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        isMute = prefs.getBoolean(getString(R.string.pref_mute_key), false);
+        mIsMute = prefs.getBoolean(getString(R.string.pref_mute_key), false);
 
-        if (!isMute) {
-            bkgMusic.start();
+        if (!mIsMute) {
+            mMainBackgroundMusic.start();
         }
     }
 
@@ -86,18 +86,11 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
 
-        if (!isMute) {
-            bkgMusic.stop();
+        if (!mIsMute) {
+            mMainBackgroundMusic.stop();
         }
     }
 
@@ -105,9 +98,16 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (!isMute) {
-            bkgMusic.release();
+        if (!mIsMute) {
+            mMainBackgroundMusic.release();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override

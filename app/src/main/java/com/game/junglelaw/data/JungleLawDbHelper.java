@@ -14,7 +14,7 @@ public class JungleLawDbHelper extends SQLiteOpenHelper {
     private static final String LOG_TAG = JungleLawDbHelper.class.getSimpleName();
 
     private static final String DATABASE_NAME = "jungle_law.db";
-    private static final int DATABASE_VERSION = 2; // Updates database version, once change schema
+    private static final int DATABASE_VERSION = 2; // Once changed schema, must update database schema
 
     public JungleLawDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

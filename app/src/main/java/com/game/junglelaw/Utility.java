@@ -13,10 +13,6 @@ public class Utility {
 
     private static final float ABSORB_THREASHOLD_RATE = (float) 1.1;
 
-    public static float getRelativeRadius(float playerRadius, float circleRadius, float player_on_screen_radius) {
-        return player_on_screen_radius * circleRadius / playerRadius;
-    }
-
     public static int generateRandomInt(int lo, int hi) {
         return lo + (int) (Math.random() * (hi - lo + 1));
     }

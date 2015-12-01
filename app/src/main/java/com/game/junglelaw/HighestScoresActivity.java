@@ -1,11 +1,14 @@
 package com.game.junglelaw;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import com.game.junglelaw.data.JungleLawDbAdapter;
 import com.game.junglelaw.data.JungleLawContract.PlayerScores;
@@ -18,16 +21,49 @@ public class HighestScoresActivity extends Activity {
     private static final String LOG_TAG = HighestScoresActivity.class.getSimpleName();
 
     private JungleLawDbAdapter mJungleLawDbAdapter;
-    private ListView mListView;
+    private ListView mHighestScoresListView;
+    private MediaPlayer mHighestScoresBackgroundMusic;
+    private boolean mIsMute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highest_scores);
 
+        mHighestScoresBackgroundMusic = MediaPlayer.create(HighestScoresActivity.this, R.raw.score_board);
+        mHighestScoresBackgroundMusic.setLooping(true);
+
         mJungleLawDbAdapter = new JungleLawDbAdapter(this);
-        mListView = (ListView) findViewById(R.id.highest_scores_list);
+        mHighestScoresListView = (ListView) findViewById(R.id.highest_scores_list);
         showHighestScoresList();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(HighestScoresActivity.this);
+        mIsMute = prefs.getBoolean(getString(R.string.pref_mute_key), false);
+
+        if(!mIsMute) {
+            mHighestScoresBackgroundMusic.start();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(!mIsMute) {
+            mHighestScoresBackgroundMusic.stop();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (!mIsMute) {
+            mHighestScoresBackgroundMusic.release();
+        }
     }
 
     private void showHighestScoresList() {
@@ -35,7 +71,7 @@ public class HighestScoresActivity extends Activity {
         int[] to = {R.id.score_entry_score, R.id.score_entry_create_time};
 
         try {
-            mListView.setAdapter(new SimpleCursorAdapter(this, R.layout.score_entry,
+            mHighestScoresListView.setAdapter(new ShowRankCursorAdapter(this, R.layout.score_entry,
                     mJungleLawDbAdapter.query(), from, to, 0));
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,10 +92,10 @@ public class HighestScoresActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        if (id == R.id.action_setting) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

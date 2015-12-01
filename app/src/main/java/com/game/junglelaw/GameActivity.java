@@ -15,7 +15,7 @@ public class GameActivity extends Activity {
 
     private boolean mIsMute;
     private GameView mGameView;
-    private MediaPlayer mBackgroundMusic;
+    private MediaPlayer mGameBackgroundMusic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +25,8 @@ public class GameActivity extends Activity {
         mGameView = new GameView(this);
         setContentView(mGameView);
 
-        mBackgroundMusic = MediaPlayer.create(GameActivity.this, R.raw.fighting);
-        mBackgroundMusic.setLooping(true);
+        mGameBackgroundMusic = MediaPlayer.create(GameActivity.this, R.raw.fighting);
+        mGameBackgroundMusic.setLooping(true);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class GameActivity extends Activity {
         mIsMute = prefs.getBoolean(getString(R.string.pref_mute_key), false);
 
         if (!mIsMute) {
-            mBackgroundMusic.start();
+            mGameBackgroundMusic.start();
         }
     }
 
@@ -44,14 +44,14 @@ public class GameActivity extends Activity {
     protected void onStop() {
         super.onStop();
         if (!mIsMute) {
-            mBackgroundMusic.stop();
+            mGameBackgroundMusic.stop();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBackgroundMusic.release();
+        mGameBackgroundMusic.release();
     }
 
     protected void onResume() {
