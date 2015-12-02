@@ -26,7 +26,6 @@ public class GameActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GameActivity.this);
         mGameDifficulty = prefs.getString(getString(R.string.pref_game_diffculty_key), getString(R.string.pref_game_diffculty_easy));
@@ -86,10 +85,10 @@ public class GameActivity extends Activity {
 
         if (id == R.id.save_score_and_end_game) {
             mJungleLawDbAdapter.insert(mGameView.getScore(), mGameDifficulty, new Date().toString());
-            Intent data = new Intent();
-            data.putExtra("score", mGameView.getScore());
-            data.putExtra("game_difficulty", mGameDifficulty);
-            setResult(RESULT_OK, data);
+            Intent sharedIntent = new Intent();
+            sharedIntent.putExtra(Utility.INTENT_EXTRA_SCORE, mGameView.getScore());
+            sharedIntent.putExtra(Utility.INTENT_EXTRA_GAME_DIFFICULTY, mGameDifficulty);
+            setResult(RESULT_OK, sharedIntent);
             finish();
             return true;
         } else if (id == R.id.pause_game) {

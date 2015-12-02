@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.PointF;
 
 import com.game.junglelaw.circle.AbstractCircle;
+import com.game.junglelaw.circle.MovableCircle;
 
 /**
  * Created by apple on 10/15/15.
@@ -12,7 +13,8 @@ public class Utility {
 
     private static final String LOG_TAG = Utility.class.getSimpleName();
 
-    public static final float ABSORB_THREASHOLD_RATE = (float) 1.1;
+    public static final String INTENT_EXTRA_SCORE = "com.game.junglelaw.intent.extra.SCORE";
+    public static final String INTENT_EXTRA_GAME_DIFFICULTY = "com.game.junglelaw.intent.GAME_DIFFICULTY";
 
     public static int generateRandomInt(int lo, int hi) {
         return lo + (int) (Math.random() * (hi - lo + 1));
@@ -22,7 +24,7 @@ public class Utility {
         return lo + (float) (Math.random() * (hi - lo));
     }
 
-    public static int generateRandomNonWhite_Transparent_BlackColor() {
+    public static int generateRandomNonWhiteTransparentBlackColor() {
         int color = Color.WHITE;
         while (color == Color.WHITE || color == Color.TRANSPARENT || color == Color.BLACK) {
             color = Color.argb(255, generateRandomInt(0, 255), generateRandomInt(0, 255), generateRandomInt(0, 255));
@@ -32,16 +34,16 @@ public class Utility {
     }
 
     /**
-     * If largeCircle is large enough to movableCirclesAbsorb smallCircle.
+     * If largeCircle is large enough to movableCirclesAbsorbCircles smallCircle.
      *
      * Pre-assumption: largeCircle's mRadius is larger than or equal to smallCircle's
      */
     public static boolean isAbsorbableLarger(AbstractCircle largeCircle, AbstractCircle smallCircle) {
-        return largeCircle.getmRadius() >= ABSORB_THREASHOLD_RATE * smallCircle.getmRadius();
+        return largeCircle.getmRadius() >= MovableCircle.ABSORB_THREASHOLD_RATE * smallCircle.getmRadius();
     }
 
     /**
-     * Can largeCircle movableCirclesAbsorb smallCircle.
+     * Can largeCircle movableCirclesAbsorbCircles smallCircle.
      *
      * Pre-assumption: largeCircle's mRadius is larger than or equal to smallCircle's
      */

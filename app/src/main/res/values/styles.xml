@@ -1,8 +1,13 @@
 <resources>
 
-     <!--Base application theme.-->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:actionBarStyle">@style/AppTheme.Light.ActionBar</item>
+    </style>
+
+    <!-- Semi-Transparent ActionBar Style -->
+    <style name="AppTheme.Light.ActionBar" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/transparent_action_bar_background</item>
     </style>
 
 </resources>

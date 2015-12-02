@@ -1,5 +1,6 @@
 package com.game.junglelaw.circle;
 
+import android.graphics.Color;
 import android.graphics.PointF;
 
 /**
@@ -8,16 +9,18 @@ import android.graphics.PointF;
 public class PlayerCircle extends MovableCircle {
 
     private static final String LOG_TAG = PlayerCircle.class.getSimpleName();
-
     private static final float ON_SCREEN_RADIUS_SHRINK_RATE = (float) 0.8;
+
+    public static final float PLAYER_CIRCLE_DEFAULT_RADIUS = 40;
+    public static final int PLAYER_CIRCLE_DEFAULT_COLOR = Color.BLACK;
 
     private float mZoomRate; // the whole game view's zoom rate
     private float mOnScreenRadius; // player circle's on screen radius
     private boolean mIsAbsorbed;
 
-    public PlayerCircle(float x, float y, float radius, int color) {
-        super(x, y, radius, color);
-        mOnScreenRadius = radius;
+    public PlayerCircle(float x, float y) {
+        super(x, y, PLAYER_CIRCLE_DEFAULT_RADIUS, PLAYER_CIRCLE_DEFAULT_COLOR);
+        mOnScreenRadius = mRadius;
         mZoomRate = mOnScreenRadius / mRadius;
     }
 

@@ -13,13 +13,11 @@ import android.view.SurfaceView;
 import com.game.junglelaw.circle.AiCircle;
 import com.game.junglelaw.circle.StaticCircle;
 
-import java.util.List;
-
 /**
  * This class is used for rendering the view of game drawing the points in the GameLogic class
  * GameLogic instance is included in this view class, then we need to pass this view class to
  * GameLogic class in its constructor for drawing.
- * <p/>
+ * <p>
  * GameView size range:
  * 0 <= x <= mMapWidth;
  * 0 <= y <= mMapHeight.
@@ -37,11 +35,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private final GameLogic mGameLogic;
     private final Thread mGameLogicThread;
     private final SurfaceHolder mSurfaceHolder;
+    private final String mGameDifficulty;
 
     //we need to get the relative location of points to the playerCircle
     //then check if these circle could appear on map or not
     //Draw the circle with location of screen
-    private String mGameDifficulty;
     private int mMapWidth;
     private int mMapHeight;
 
@@ -78,12 +76,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void drawGamePlayView() {
         Canvas canvas = mSurfaceHolder.lockCanvas();
+
+        if (canvas == null) { // This will be executed only when surfaceDestroyed() get called
+            return;
+        }
+
         draw(canvas);
         mSurfaceHolder.unlockCanvasAndPost(canvas);
     }
 
     public void drawGameOverView() {
         Canvas canvas = mSurfaceHolder.lockCanvas();
+
+        if (canvas == null) { // This will be executed only when surfaceDestroyed() get called
+            return;
+        }
+
         draw(canvas);
         Paint textPaint = new Paint();
         textPaint.setColor(Color.BLACK);
@@ -95,17 +103,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-
         canvas.drawColor(Color.WHITE);
 
         drawHintText(canvas);
         drawCoordinateGrids(canvas);
         drawBorder(canvas);
-
-        Paint circlePaint = new Paint();
-        drawPlayerCircle(canvas, circlePaint);
-        drawAiCircles(canvas, circlePaint, mCircleManager.getmAiCircles());
-        drawStaticCircles(canvas, circlePaint, mCircleManager.getmStaticCircles());
+        drawCircles(canvas);
     }
 
     private void drawHintText(Canvas canvas) {
@@ -121,13 +124,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         coordinateGridsPaint.setColor(Color.GRAY);
         coordinateGridsPaint.setStrokeWidth(5);
 
-        for (int x = 0; x < mMapWidth; x += COORDINATE_GRIDS_X_AXIS_UNIT) {
+        for (int x = COORDINATE_GRIDS_X_AXIS_UNIT; x < mMapWidth; x += COORDINATE_GRIDS_X_AXIS_UNIT) {
             PointF startPoint = zoomedOnScreenRelativeDistance(new PointF(x, 0));
             PointF stopPoint = zoomedOnScreenRelativeDistance(new PointF(x, mMapHeight));
             canvas.drawLine(startPoint.x, startPoint.y, stopPoint.x, stopPoint.y, coordinateGridsPaint);
         }
 
-        for (int y = 0; y < mMapHeight; y += COORDINATE_GRIDS_Y_AXIS_UNIT) {
+        for (int y = COORDINATE_GRIDS_Y_AXIS_UNIT; y < mMapHeight; y += COORDINATE_GRIDS_Y_AXIS_UNIT) {
             PointF startPoint = zoomedOnScreenRelativeDistance(new PointF(0, y));
             PointF stopPoint = zoomedOnScreenRelativeDistance(new PointF(mMapWidth, y));
             canvas.drawLine(startPoint.x, startPoint.y, stopPoint.x, stopPoint.y, coordinateGridsPaint);
@@ -161,26 +164,25 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, borderPaint);
     }
 
-    private void drawPlayerCircle(Canvas canvas, Paint circlePaint) {
+    private void drawCircles(Canvas canvas) {
+        Paint circlePaint = new Paint();
+
+        // Draw player circle
         circlePaint.setColor(Color.BLACK);
         canvas.drawCircle(mScreenCenterPoint.x, mScreenCenterPoint.y, mCircleManager.getmPlayerCircle().getmOnScreenRadius(), circlePaint);
-    }
 
-    private void drawStaticCircles(Canvas canvas, Paint circlePaint, List<StaticCircle> mStaticCircles) {
-        for (int i = 0; i < mStaticCircles.size(); i++) {
-            StaticCircle staticCircle = mStaticCircles.get(i);
-            PointF circle_center = zoomedOnScreenRelativeDistance(staticCircle.getmCenter());
-            circlePaint.setColor(staticCircle.getmColor());
-            canvas.drawCircle(circle_center.x, circle_center.y, zoomedOnScreenLength(staticCircle.getmRadius()), circlePaint);
-        }
-    }
-
-    private void drawAiCircles(Canvas canvas, Paint circlePaint, List<AiCircle> mAiCircles) {
-        for (int i = 0; i < mAiCircles.size(); i++) {
-            AiCircle aiCircle = mAiCircles.get(i);
-            PointF circle_center = zoomedOnScreenRelativeDistance(aiCircle.getmCenter());
+        // Draw ai circles
+        for (AiCircle aiCircle : mCircleManager.getmAiCircles()) {
             circlePaint.setColor(aiCircle.getmColor());
-            canvas.drawCircle(circle_center.x, circle_center.y, zoomedOnScreenLength(aiCircle.getmRadius()), circlePaint);
+            PointF onScreenCenter = zoomedOnScreenRelativeDistance(aiCircle.getmCenter());
+            canvas.drawCircle(onScreenCenter.x, onScreenCenter.y, zoomedOnScreenLength(aiCircle.getmRadius()), circlePaint);
+        }
+
+        // Draw static circles
+        for (StaticCircle staticCircle : mCircleManager.getmStaticCircles()) {
+            circlePaint.setColor(staticCircle.getmColor());
+            PointF onScreenCenter = zoomedOnScreenRelativeDistance(staticCircle.getmCenter());
+            canvas.drawCircle(onScreenCenter.x, onScreenCenter.y, zoomedOnScreenLength(staticCircle.getmRadius()), circlePaint);
         }
     }
 
@@ -193,7 +195,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         return super.onTouchEvent(event);
     }
 
-    // SurfaceHolder.Callback's method, only called by system by once
+    // SurfaceHolder.Callback's method, only called by android system
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         Log.d(LOG_TAG, "Surfaceview created");
@@ -202,38 +204,37 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         mScreenHeight = canvas.getHeight();
         surfaceHolder.unlockCanvasAndPost(canvas);
 
-        mScreenCenterPoint = new PointF(mScreenWidth / 2, mScreenHeight / 2);
-
         Log.d(LOG_TAG, "screen width, screen height = " +
                 Integer.toString(mScreenWidth) + ", " + Integer.toString(mScreenHeight));
+
+        mScreenCenterPoint = new PointF(mScreenWidth / 2, mScreenHeight / 2);
 
         // Take advantage of integer division to guarantee mMapWidth is an integer-multiple of COORDINATE_GRIDS_X_AXIS_UNIT
         mMapWidth = ((mScreenWidth * MAP_WEIGHT_ZOOM_UP_RATE) / COORDINATE_GRIDS_X_AXIS_UNIT) * COORDINATE_GRIDS_X_AXIS_UNIT;
         mMapHeight = ((mScreenHeight * MAP_HEIGHT_ZOOM_UP_RATE) / COORDINATE_GRIDS_Y_AXIS_UNIT) * COORDINATE_GRIDS_Y_AXIS_UNIT;
 
-        mCircleManager.getmPlayerCircle().setCenter(Utility.generateRandomInt(0, mMapWidth), Utility.generateRandomInt(0, mMapHeight));
-
         mCircleManager.setMapSize(mMapWidth, mMapHeight);
 
+        // Put player circle to a random position
+        mCircleManager.getmPlayerCircle().setCenter(Utility.generateRandomFloat(0, mMapWidth), Utility.generateRandomFloat(0, mMapHeight));
+
+        // Start the game
         mGameLogic.setmIsGamePlaying(true);
         mGameLogicThread.start();
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
         Log.d(LOG_TAG, "Surfaceview changed");
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         Log.d(LOG_TAG, "Surfaceview destroyed");
-        while (true) {
-            try {
-                mGameLogic.setmIsGamePlaying(false);
-                mGameLogicThread.join();
-                break;
-            } catch (InterruptedException e) {
-            }
+        try {
+            mGameLogic.setmIsGamePlaying(false);
+            mGameLogicThread.join();
+        } catch (InterruptedException e) {
         }
     }
 }

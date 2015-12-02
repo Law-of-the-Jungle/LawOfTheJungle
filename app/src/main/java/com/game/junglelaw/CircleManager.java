@@ -19,18 +19,20 @@ public class CircleManager {
     private static final int MIN_AI_CIRCLES_NUMBER = 500;
 
     private final CircleFactory mCircleFactory;
-
+    private final String mGameDifficulty;
     private final PlayerCircle mPlayerCircle;
-    private List<StaticCircle> mStaticCircles;
-    private List<AiCircle> mAiCircles;
+    private final List<AiCircle> mAiCircles;
+    private final List<StaticCircle> mStaticCircles;
+
     private int mMapWidth;
     private int mMapHeight;
 
     public CircleManager(String gameDifficulty) {
-        mStaticCircles = new ArrayList<>();
-        mAiCircles = new ArrayList<>();
         mCircleFactory = new CircleFactory(gameDifficulty);
-        mPlayerCircle = mCircleFactory.createPlayerCircle(0, 0);
+        mGameDifficulty = gameDifficulty;
+        mPlayerCircle = mCircleFactory.createRandomPlayerCircle(0, 0);
+        mAiCircles = new ArrayList<>();
+        mStaticCircles = new ArrayList<>();
     }
 
     public void setMapSize(int mapWidth, int mapHeight) {
@@ -53,18 +55,18 @@ public class CircleManager {
     public void controlCirclesPopulation() {
         // Controls ai circles population
         if (mAiCircles.size() < MIN_STATIC_CIRCLES_NUMBER) {
-            mAiCircles.addAll(mCircleFactory.createAiCircles(mMapWidth, mMapHeight,
+            mAiCircles.addAll(mCircleFactory.createRandomAiCircles(mMapWidth, mMapHeight,
                     MIN_STATIC_CIRCLES_NUMBER - mStaticCircles.size(), mPlayerCircle));
         }
 
         // Controls static circles population
         if (mStaticCircles.size() < MIN_AI_CIRCLES_NUMBER) {
-            mStaticCircles.addAll(mCircleFactory.createStaticCircles(mMapWidth, mMapHeight,
+            mStaticCircles.addAll(mCircleFactory.createRandomStaticCircles(mMapWidth, mMapHeight,
                     MIN_AI_CIRCLES_NUMBER - mStaticCircles.size()));
         }
     }
 
-    public void moveMovableCirclesToDirection() {
+    public void moveMovableCirclesToTheirDirection() {
         // Moves player circle toward its direction
         mPlayerCircle.moveToDirection(mMapWidth, mMapHeight);
 
@@ -74,13 +76,13 @@ public class CircleManager {
         }
     }
 
-    public void movableCirclesAbsorb() {
-        playerCircleAbsorb();
-        aiCirclesAbsorb();
+    public void movableCirclesAbsorbCircles() {
+        playerCircleAbsorbCircles();
+        aiCirclesAbsorbCircles();
     }
 
     /** Player circle absorbs other circles */
-    private void playerCircleAbsorb() {
+    private void playerCircleAbsorbCircles() {
         // Player circle absorbs ai circle(s)
         for (int i = mAiCircles.size() - 1; i >= 0; i--) {
             AiCircle aiCircle = mAiCircles.get(i);
@@ -101,7 +103,7 @@ public class CircleManager {
     }
 
     /** Ai circles absorb other circles */
-    private void aiCirclesAbsorb() {
+    private void aiCirclesAbsorbCircles() {
         // Ai circles absorb each other
         boolean canAbsorb = true;
         while (canAbsorb) {

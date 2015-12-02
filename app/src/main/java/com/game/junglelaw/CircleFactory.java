@@ -1,7 +1,5 @@
 package com.game.junglelaw;
 
-import android.graphics.Color;
-
 import com.game.junglelaw.circle.AiCircle;
 import com.game.junglelaw.circle.PlayerCircle;
 import com.game.junglelaw.circle.StaticCircle;
@@ -17,46 +15,42 @@ public class CircleFactory {
 
     private static final String LOG_TAG = CircleFactory.class.getSimpleName();
 
-    public static final float DEFAULT_STATIC_CIRCLE_RADIUS = 20;
-    public static final float DEFAULT_PLAYER_CIRCLE_RADIUS = 40;
-
-    private String mGameDifficulty;
+    private final String mGameDifficulty;
 
     public CircleFactory(String gameDifficulty) {
         this.mGameDifficulty = gameDifficulty;
     }
 
-    public PlayerCircle createPlayerCircle(float mapWidth, float mapHeight) {
-        return new PlayerCircle(mapWidth, mapHeight, DEFAULT_PLAYER_CIRCLE_RADIUS, Color.BLACK);
+    public PlayerCircle createRandomPlayerCircle(float mapWidth, float mapHeight) {
+        return new PlayerCircle(Utility.generateRandomFloat(0, mapWidth), Utility.generateRandomFloat(0, mapHeight));
     }
 
-    public StaticCircle createStaticCircle(float mapWidth, float mapHeight, float radius, int color) {
-        return new StaticCircle(mapWidth, mapHeight, radius, color);
+    public StaticCircle createStaticCircle(float x, float y, int color) {
+        return new StaticCircle(x, y, StaticCircle.STATIC_CIRCLE_DEFAULT_RADIUS, color);
     }
 
-    public AiCircle createAiCircle(float mapWidth, float mapHeight, float radius, int color) {
-        return new AiCircle(mapWidth, mapHeight, radius, color, mGameDifficulty);
+    public AiCircle createAiCircle(float x, float y, float radius, int color) {
+        return new AiCircle(x, y, radius, color, mGameDifficulty);
     }
 
-    public List<StaticCircle> createStaticCircles(int mapWidth, int mapHeight, int num) {
-        List<StaticCircle> rst = new ArrayList<>();
+    public List<StaticCircle> createRandomStaticCircles(int mapWidth, int mapHeight, int num) {
+        List<StaticCircle> staticCircles = new ArrayList<>();
         for (int i = 0; i < num; i++) {
-            StaticCircle tmp = createStaticCircle(Utility.generateRandomFloat(0, mapWidth), Utility.generateRandomFloat(0, mapHeight),
-                    DEFAULT_STATIC_CIRCLE_RADIUS, Utility.generateRandomNonWhite_Transparent_BlackColor());
-            rst.add(tmp);
+            staticCircles.add(createStaticCircle(Utility.generateRandomFloat(0, mapWidth), Utility.generateRandomFloat(0, mapHeight),
+                    Utility.generateRandomNonWhiteTransparentBlackColor()));
         }
 
-        return rst;
+        return staticCircles;
     }
 
-    public List<AiCircle> createAiCircles(int mapWidth, int mapHeight, int num, PlayerCircle playerCircle) {
-        List<AiCircle> rst = new ArrayList<>();
+    public List<AiCircle> createRandomAiCircles(int mapWidth, int mapHeight, int num, PlayerCircle playerCircle) {
+        List<AiCircle> aiCircles = new ArrayList<>();
         for (int i = 0; i < num; i++) {
-            rst.add(createAiCircle(Utility.generateRandomFloat(0, mapWidth), Utility.generateRandomFloat(0, mapHeight),
-                    playerCircle.getmRadius() * Utility.ABSORB_THREASHOLD_RATE,
-                    Utility.generateRandomNonWhite_Transparent_BlackColor()));
+            aiCircles.add(createAiCircle(Utility.generateRandomFloat(0, mapWidth), Utility.generateRandomFloat(0, mapHeight),
+                    playerCircle.getmRadius() * AiCircle.AI_CIRCLE_DEFAULT_RADIUS_RATE,
+                    Utility.generateRandomNonWhiteTransparentBlackColor()));
         }
 
-        return rst;
+        return aiCircles;
     }
 }

@@ -3,13 +3,13 @@
 
     <CheckBoxPreference
         android:key="@string/pref_mute_key"
-        android:title="@string/pref_mute_label" />
+        android:title="@string/title_pref_mute" />
 
     <ListPreference
         android:defaultValue="@string/pref_game_diffculty_easy"
         android:entries="@array/pref_diffculty_options"
         android:entryValues="@array/pref_diffculty_values"
         android:key="@string/pref_game_diffculty_key"
-        android:title="@string/pref_game_diffculty_label" />
+        android:title="@string/title_pref_game_diffculty" />
 
 </PreferenceScreen>

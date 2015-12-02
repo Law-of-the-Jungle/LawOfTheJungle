@@ -9,7 +9,8 @@ public class GameLogic implements Runnable {
 
     private static final String LOG_TAG = GameLogic.class.getSimpleName();
 
-    private GameView mGameView;
+    private final GameView mGameView;
+
     private boolean mIsGamePlaying; // If the game is still playing
     private boolean mIsPause; // If the game is paused
 
@@ -35,10 +36,9 @@ public class GameLogic implements Runnable {
             if (mIsPause) {
                 try {
                     Thread.sleep(100);
+                    continue;
                 } catch (InterruptedException e) {
-                    Log.e(LOG_TAG, e.getMessage());
                 }
-                continue;
             }
 
             executeGameLogic();
@@ -47,7 +47,6 @@ public class GameLogic implements Runnable {
             try {
                 Thread.sleep(5);
             } catch (InterruptedException e) {
-                Log.e(LOG_TAG, e.getMessage());
             }
         }
 
@@ -58,8 +57,8 @@ public class GameLogic implements Runnable {
 
     private void executeGameLogic() {
         mGameView.getmCircleManager().getmPlayerCircle().updateZoomRate();
-        mGameView.getmCircleManager().moveMovableCirclesToDirection();
-        mGameView.getmCircleManager().movableCirclesAbsorb();
+        mGameView.getmCircleManager().moveMovableCirclesToTheirDirection();
+        mGameView.getmCircleManager().movableCirclesAbsorbCircles();
         mGameView.getmCircleManager().controlCirclesPopulation();
 
         // If player circle get absorbed

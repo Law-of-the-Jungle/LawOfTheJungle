@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 /***
- * This the main activity for welcome and setting etc
+ * This the main activity for welcome and settings
  */
 public class MainActivity extends Activity {
 
@@ -73,8 +73,8 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GAME_ACTIVITY_RESULT_CODE && resultCode == RESULT_OK) {
-            Toast.makeText(this, "Your Score: " + data.getExtras().getInt("score") +
-                    ";\n Game Difficulty: " + data.getExtras().getString("game_difficulty"), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Your Score: " + data.getExtras().getInt(Utility.INTENT_EXTRA_SCORE) +
+                    ";\n Game Difficulty: " + data.getExtras().getString(Utility.INTENT_EXTRA_GAME_DIFFICULTY), Toast.LENGTH_LONG).show();
         }
     }
 
