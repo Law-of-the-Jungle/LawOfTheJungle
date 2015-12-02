@@ -15,8 +15,8 @@ public class CircleManager {
 
     private static final String LOG_TAG = CircleManager.class.getSimpleName();
 
-    private static final int MIN_STATIC_CIRCLE_NUMBER = 30;
-    private static final int MIN_AI_CIRCLE_NUMBER = 500;
+    private static final int MIN_STATIC_CIRCLES_NUMBER = 30;
+    private static final int MIN_AI_CIRCLES_NUMBER = 500;
 
     private final CircleFactory mCircleFactory;
 
@@ -52,15 +52,15 @@ public class CircleManager {
 
     public void controlCirclesPopulation() {
         // Controls ai circles population
-        if (mAiCircles.size() < MIN_STATIC_CIRCLE_NUMBER) {
+        if (mAiCircles.size() < MIN_STATIC_CIRCLES_NUMBER) {
             mAiCircles.addAll(mCircleFactory.createAiCircles(mMapWidth, mMapHeight,
-                    MIN_STATIC_CIRCLE_NUMBER - mStaticCircles.size(), mPlayerCircle));
+                    MIN_STATIC_CIRCLES_NUMBER - mStaticCircles.size(), mPlayerCircle));
         }
 
         // Controls static circles population
-        if (mStaticCircles.size() < MIN_AI_CIRCLE_NUMBER) {
+        if (mStaticCircles.size() < MIN_AI_CIRCLES_NUMBER) {
             mStaticCircles.addAll(mCircleFactory.createStaticCircles(mMapWidth, mMapHeight,
-                    MIN_AI_CIRCLE_NUMBER - mStaticCircles.size()));
+                    MIN_AI_CIRCLES_NUMBER - mStaticCircles.size()));
         }
     }
 

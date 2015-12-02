@@ -1,6 +1,5 @@
 package com.game.junglelaw;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,7 +9,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import com.game.junglelaw.circle.AiCircle;
 import com.game.junglelaw.circle.StaticCircle;
@@ -37,7 +35,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private final CircleManager mCircleManager;
     private final GameLogic mGameLogic;
-    private final Thread mGameThread;
+    private final Thread mGameLogicThread;
     private final SurfaceHolder mSurfaceHolder;
 
     //we need to get the relative location of points to the playerCircle
@@ -49,14 +47,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private int mScreenWidth;
     private int mScreenHeight;
-    private PointF mScreenCenter;
+    private PointF mScreenCenterPoint;
 
     public GameView(Context context, String gameDifficulty) {
         super(context);
 
         mGameDifficulty = gameDifficulty;
         mGameLogic = new GameLogic(this);
-        mGameThread = new Thread(mGameLogic);
+        mGameLogicThread = new Thread(mGameLogic);
         mSurfaceHolder = getHolder();
         mSurfaceHolder.addCallback(this);
         mCircleManager = new CircleManager(gameDifficulty);
@@ -67,7 +65,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public int getScore() {
-        return (int) mCircleManager.getmPlayerCircle().getmRadius();
+        return (int) Math.pow(mCircleManager.getmPlayerCircle().getmRadius(), 2);
     }
 
     public void pauseGame() {
@@ -91,7 +89,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         textPaint.setColor(Color.BLACK);
         textPaint.setTextSize(150);
         canvas.drawText("Game Over", 0, canvas.getHeight() / 2, textPaint);
-
         mSurfaceHolder.unlockCanvasAndPost(canvas);
     }
 
@@ -137,12 +134,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    /** Returns the length should be shown on screen, after zooming up */
+    /**
+     * Returns the length should be shown on screen, after zooming up
+     */
     private float zoomedOnScreenLength(float len) {
         return len * mCircleManager.getmPlayerCircle().getmZoomRate();
     }
 
-    /** Relative distance from a point to player circle center, after zooming up */
+    /**
+     * Relative distance from a point to player circle center, after zooming up
+     */
     private PointF zoomedOnScreenRelativeDistance(PointF point) {
         float x = (point.x - mCircleManager.getmPlayerCircle().getmCenter().x) * mCircleManager.getmPlayerCircle().getmZoomRate();
         float y = (point.y - mCircleManager.getmPlayerCircle().getmCenter().y) * mCircleManager.getmPlayerCircle().getmZoomRate();
@@ -162,7 +163,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void drawPlayerCircle(Canvas canvas, Paint circlePaint) {
         circlePaint.setColor(Color.BLACK);
-        canvas.drawCircle(mScreenCenter.x, mScreenCenter.y, mCircleManager.getmPlayerCircle().getmOnScreenRadius(), circlePaint);
+        canvas.drawCircle(mScreenCenterPoint.x, mScreenCenterPoint.y, mCircleManager.getmPlayerCircle().getmOnScreenRadius(), circlePaint);
     }
 
     private void drawStaticCircles(Canvas canvas, Paint circlePaint, List<StaticCircle> mStaticCircles) {
@@ -186,7 +187,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            mCircleManager.getmPlayerCircle().newDirection(new PointF(event.getX(), event.getY()), mScreenCenter);
+            mCircleManager.getmPlayerCircle().newDirection(new PointF(event.getX(), event.getY()), mScreenCenterPoint);
         }
 
         return super.onTouchEvent(event);
@@ -201,7 +202,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         mScreenHeight = canvas.getHeight();
         surfaceHolder.unlockCanvasAndPost(canvas);
 
-        mScreenCenter = new PointF(mScreenWidth / 2, mScreenHeight / 2);
+        mScreenCenterPoint = new PointF(mScreenWidth / 2, mScreenHeight / 2);
 
         Log.d(LOG_TAG, "screen width, screen height = " +
                 Integer.toString(mScreenWidth) + ", " + Integer.toString(mScreenHeight));
@@ -215,7 +216,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         mCircleManager.setMapSize(mMapWidth, mMapHeight);
 
         mGameLogic.setmIsGamePlaying(true);
-        mGameThread.start();
+        mGameLogicThread.start();
     }
 
     @Override
@@ -229,7 +230,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         while (true) {
             try {
                 mGameLogic.setmIsGamePlaying(false);
-                mGameThread.join();
+                mGameLogicThread.join();
                 break;
             } catch (InterruptedException e) {
             }

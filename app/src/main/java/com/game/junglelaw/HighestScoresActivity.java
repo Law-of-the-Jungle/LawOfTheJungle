@@ -1,7 +1,6 @@
 package com.game.junglelaw;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -10,8 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import com.game.junglelaw.data.JungleLawDbAdapter;
 import com.game.junglelaw.data.JungleLawContract.PlayerScores;
+import com.game.junglelaw.data.JungleLawDbAdapter;
 
 /**
  * Created by apple on 11/28/15.
