@@ -84,17 +84,17 @@ public class GameActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.end) {
-            mJungleLawDbAdapter.insert((int) mGameView.getScore(), mGameDifficulty, new Date().toString());
+        if (id == R.id.save_score_and_end_game) {
+            mJungleLawDbAdapter.insert(mGameView.getScore(), mGameDifficulty, new Date().toString());
             Intent data = new Intent();
-            data.putExtra("score", (int) mGameView.getScore());
+            data.putExtra("score", mGameView.getScore());
             data.putExtra("game_difficulty", mGameDifficulty);
             setResult(RESULT_OK, data);
             finish();
             return true;
-        } else if (id == R.id.pause) {
+        } else if (id == R.id.pause_game) {
             mGameView.pauseGame();
-        } else if (id == R.id.resume) {
+        } else if (id == R.id.resume_game) {
             mGameView.resumeGame();
         }
 

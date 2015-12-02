@@ -1,9 +1,9 @@
 package com.game.junglelaw;
 
-import com.game.junglelaw.circle.*;
-
 import android.graphics.Color;
 import android.graphics.PointF;
+
+import com.game.junglelaw.circle.AbstractCircle;
 
 /**
  * Created by apple on 10/15/15.
@@ -32,7 +32,7 @@ public class Utility {
     }
 
     /**
-     * Can if largeCircle is large enough to absorb smallCircle.
+     * If largeCircle is large enough to movableCirclesAbsorb smallCircle.
      *
      * Pre-assumption: largeCircle's mRadius is larger than or equal to smallCircle's
      */
@@ -41,7 +41,7 @@ public class Utility {
     }
 
     /**
-     * Can largeCircle absorb smallCircle.
+     * Can largeCircle movableCirclesAbsorb smallCircle.
      *
      * Pre-assumption: largeCircle's mRadius is larger than or equal to smallCircle's
      */
@@ -50,7 +50,8 @@ public class Utility {
             return false;
         }
 
-        return pointsDistance(largeCircle.getmCenter(), smallCircle.getmCenter()) <= largeCircle.getmRadius() - smallCircle.getmRadius();
+        return pointsDistance(largeCircle.getmCenter(), smallCircle.getmCenter()) <=
+                1.1 * largeCircle.getmRadius() - smallCircle.getmRadius();
     }
 
     public static float pointsDistance(PointF p1, PointF p2) {

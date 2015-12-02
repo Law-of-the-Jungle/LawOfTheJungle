@@ -11,18 +11,14 @@ public abstract class AbstractCircle {
 
     private static final String LOG_TAG = AbstractCircle.class.getSimpleName();
 
-    protected static final double DIGEST_RATE = 0.5;
-
     protected PointF mCenter;
-    protected int mCcolor;
+    protected int mColor;
     protected float mRadius;
-    protected float mass;
 
     protected AbstractCircle(float x, float y, float radius, int ccolor) {
         mCenter = new PointF(x, y);
         mRadius = radius;
-        mCcolor = ccolor;
-        mass = radius * radius;
+        mColor = ccolor;
     }
 
     public void setCenter(float x, float y) {
@@ -33,33 +29,16 @@ public abstract class AbstractCircle {
         return mCenter;
     }
 
-    public void setmRadius(float mRadius) {
-        this.mRadius = mRadius;
-    }
-
     public float getmRadius() {
         return mRadius;
     }
 
-    public void addMass(float num) {
-        mass += num * DIGEST_RATE;
-        mRadius = (float) Math.sqrt(mass);
-    }
-
-    public float getMass() {
-        return mass;
-    }
-
-    public void setmCcolor(int color) {
-        this.mCcolor = color;
-    }
-
-    public int getmCcolor() {
-        return mCcolor;
+    public int getmColor() {
+        return mColor;
     }
 
     @Override
     public String toString() {
-        return "mRadius = " + mRadius + "; mCenter = " + mCenter;
+        return "mCenter = " + mCenter + "; mRadius = " + mRadius;
     }
 }

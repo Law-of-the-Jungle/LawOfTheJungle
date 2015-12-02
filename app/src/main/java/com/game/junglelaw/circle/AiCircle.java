@@ -20,24 +20,24 @@ public class AiCircle extends MovableCircle {
 
     public AiCircle(float x, float y, float radius, int color, String gameDifficulty) {
         super(x, y, radius, color);
-        mMovingSpeed = DEAFULT_SPEED;
+        mMovingSpeed = DEAFULT_MOVING_SPEED;
         mIsAttackingPlayer = false;
         mGameDifficulty = gameDifficulty;
     }
 
-    public void aiMove(int width, int height, MovableCircle playerCircle, List<StaticCircle> staticCircleList) {
+    public void aiMove(int mapWidth, int mapHeight, PlayerCircle playerCircle, List<StaticCircle> staticCircles) {
 
         if (mGameDifficulty.equals("easy") && Math.random() < 0.2) {
-            PointF p = new PointF(Utility.generateRandomFloat(0, width), Utility.generateRandomFloat(0, height));
+            PointF p = new PointF(Utility.generateRandomFloat(0, mapWidth), Utility.generateRandomFloat(0, mapHeight));
             setDirectTowardPoint(p);
-            moveToDirection(width, height);
+            moveToDirection(mapWidth, mapHeight);
             return;
         }
 
         if (mIsAttackingPlayer) {
             if (Utility.isAbsorbableLarger(this, playerCircle)) {
                 setDirectTowardPoint(playerCircle.getmCenter());
-                moveToDirection(width, height);
+                moveToDirection(mapWidth, mapHeight);
                 return;
 
             } else {
@@ -47,7 +47,7 @@ public class AiCircle extends MovableCircle {
 
         // When goes to here: mIsAttackingPlayer == false
         if (Math.random() < 0.1) {
-            PointF staticCircleCenter = findNearestStaticCircle(staticCircleList);
+            PointF staticCircleCenter = findNearestStaticCircle(staticCircles);
             setDirectTowardPoint(staticCircleCenter);
 
         } else if (Utility.isAbsorbableLarger(this, playerCircle) && Math.random() < 0.5) {
@@ -56,7 +56,7 @@ public class AiCircle extends MovableCircle {
         }
         // else, keep the predefined mMovingDirection
 
-        moveToDirection(width, height);
+        moveToDirection(mapWidth, mapHeight);
     }
 
     private PointF findNearestStaticCircle(List<StaticCircle> staticCircleList) {

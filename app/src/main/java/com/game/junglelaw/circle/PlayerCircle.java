@@ -2,8 +2,6 @@ package com.game.junglelaw.circle;
 
 import android.graphics.PointF;
 
-import com.game.junglelaw.GameView;
-
 /**
  * Created by apple on 10/15/15.
  */
@@ -11,14 +9,16 @@ public class PlayerCircle extends MovableCircle {
 
     private static final String LOG_TAG = PlayerCircle.class.getSimpleName();
 
-    private float mPlayerOnScreenRadius;
-    private float mZoomRate;
+    private static final float ON_SCREEN_RADIUS_SHRINK_RATE = (float) 0.8;
+
+    private float mZoomRate; // the whole game view's zoom rate
+    private float mOnScreenRadius; // player circle's on screen radius
     private boolean mIsAbsorbed;
 
     public PlayerCircle(float x, float y, float radius, int color) {
         super(x, y, radius, color);
-        mPlayerOnScreenRadius = radius;
-        mZoomRate = calculateZoomRate();
+        mOnScreenRadius = radius;
+        mZoomRate = mOnScreenRadius / mRadius;
     }
 
     public float getmZoomRate() {
@@ -33,27 +33,21 @@ public class PlayerCircle extends MovableCircle {
         mIsAbsorbed = isAbsorbed;
     }
 
-    public float getmPlayerOnScreenRadius() {
-        return mPlayerOnScreenRadius;
+    public float getmOnScreenRadius() {
+        return mOnScreenRadius;
     }
 
     public void newDirection(PointF userClickPosition, PointF screenCenter) {
         setmMovingDirection(new PointF(userClickPosition.x - screenCenter.x, userClickPosition.y - screenCenter.y));
     }
 
-    public void updateZoomRate(GameView view) {
-        //switch the lan to a border
-        if (mPlayerOnScreenRadius >= 80) {
-            mPlayerOnScreenRadius *= 0.8;
-            mZoomRate = calculateZoomRate();
+    public void updateZoomRate() {
+        if (mOnScreenRadius >= 80) {
+            mOnScreenRadius *= ON_SCREEN_RADIUS_SHRINK_RATE;
+            mZoomRate = mOnScreenRadius / mRadius;
 
         } else {
-            mPlayerOnScreenRadius = getmRadius() * mZoomRate;
+            mOnScreenRadius = getmRadius() * mZoomRate;
         }
-    }
-
-    /** 根据player circle 当前大小，计算player zoom rate */
-    private float calculateZoomRate() {
-        return mPlayerOnScreenRadius / getmRadius();
     }
 }

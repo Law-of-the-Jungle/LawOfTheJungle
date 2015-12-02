@@ -17,7 +17,7 @@ public class JungleLawDbAdapter {
 
     public JungleLawDbAdapter(Context context) {
         JungleLawDbHelper mJungleLawDbHelper = new JungleLawDbHelper(context);
-        db = mJungleLawDbHelper.getReadableDatabase();
+        db = mJungleLawDbHelper.getWritableDatabase();
     }
 
     /**

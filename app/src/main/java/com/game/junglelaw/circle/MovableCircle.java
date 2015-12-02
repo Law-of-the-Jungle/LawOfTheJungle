@@ -9,9 +9,10 @@ public abstract class MovableCircle extends AbstractCircle {
 
     private static final String LOG_TAG = MovableCircle.class.getSimpleName();
 
-    protected static final float DEAFULT_SPEED = 10;
+    protected static final float DIGEST_RATE = (float) 0.5; // portion of the absorbed circle mass can be added into the absorber circle
+    protected static final float DEAFULT_MOVING_SPEED = 10;
 
-    protected PointF mMovingDirection; // mMovingDirection vector size should be 1 (i.e. has a unit distance)
+    protected PointF mMovingDirection; // mMovingDirection vector length should be 1 (i.e. has a unit length)
     protected float mMovingSpeed;
 
     public MovableCircle(float x, float y, float radius, int color) {
@@ -24,8 +25,8 @@ public abstract class MovableCircle extends AbstractCircle {
         mMovingDirection.set(newDirection.x / len, newDirection.y / len);
     }
 
-    public PointF getmMovingDirection() {
-        return mMovingDirection;
+    public void absorbCircle(AbstractCircle circle) {
+        mRadius += (float) (Math.sqrt(circle.getmRadius()) * DIGEST_RATE);
     }
 
     public void setDirectTowardPoint(PointF targetPoint) {
@@ -33,7 +34,7 @@ public abstract class MovableCircle extends AbstractCircle {
     }
 
     public void moveToDirection(int mapWidth, int mapHeight) {
-        mMovingSpeed = DEAFULT_SPEED / (mRadius / 40);
+        mMovingSpeed = DEAFULT_MOVING_SPEED / (mRadius / 40);
         float newX = mCenter.x + mMovingSpeed * mMovingDirection.x;
         float newY = mCenter.y + mMovingSpeed * mMovingDirection.y;
 

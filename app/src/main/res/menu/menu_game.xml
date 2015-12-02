@@ -3,19 +3,19 @@
     tools:context=".GameActivity">
 
     <item
-        android:id="@+id/end"
+        android:id="@+id/save_score_and_end_game"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/title_end_game" />
 
     <item
-        android:id="@+id/pause"
+        android:id="@+id/pause_game"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/title_pause_game" />
 
     <item
-        android:id="@+id/resume"
+        android:id="@+id/resume_game"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/title_resume_game" />
