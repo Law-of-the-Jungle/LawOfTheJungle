@@ -50,7 +50,7 @@ public class Utility {
             return false;
         }
 
-        return pointsDistance(largeCircle.getmCenter(), smallCircle.getmCenter()) + smallCircle.getmRadius() <= 1.1 * largeCircle.getmRadius();
+        return pointsDistance(largeCircle.getmCenter(), smallCircle.getmCenter()) <= largeCircle.getmRadius() - smallCircle.getmRadius();
     }
 
     public static float pointsDistance(PointF p1, PointF p2) {

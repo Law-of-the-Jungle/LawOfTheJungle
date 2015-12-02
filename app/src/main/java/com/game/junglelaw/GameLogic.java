@@ -67,9 +67,9 @@ public class GameLogic implements Runnable {
 
         if (canvas != null) {
             synchronized (mSurfaceHolder) {
+                mGameView.getmPlayerCircle().updateZoomRate(mGameView);
                 mGameView.getmCircleManager().absorb();
                 mGameView.getmCircleManager().controlPopulation();
-                mGameView.getmPlayerCircle().updateZoomRate(mGameView);
 
                 if (!mGameView.getmCircleManager().inMovableList(mGameView.getmPlayerCircle())) {
                     setmIsRun(false);

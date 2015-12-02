@@ -144,7 +144,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private void drawPlayerCircle(Canvas canvas, Paint circlePaint) {
         circlePaint.setColor(Color.BLACK);
-        canvas.drawCircle(mScreenCenter.x, mScreenCenter.y, mPlayerCircle.getmRadius(), circlePaint);
+        canvas.drawCircle(mScreenCenter.x, mScreenCenter.y, mPlayerCircle.getmPlayerOnScreenRadius(), circlePaint);
     }
 
     private void drawStaticCircles(Canvas canvas, Paint circlePaint) {

@@ -33,9 +33,8 @@ public class PlayerCircle extends MovableCircle {
         mIsAbsorbed = isAbsorbed;
     }
 
-    /** 根据player circle 当前大小，计算player zoom rate */
-    private float calculateZoomRate() {
-        return mPlayerOnScreenRadius / getmRadius();
+    public float getmPlayerOnScreenRadius() {
+        return mPlayerOnScreenRadius;
     }
 
     public void newDirection(PointF userClickPosition, PointF screenCenter) {
@@ -51,5 +50,10 @@ public class PlayerCircle extends MovableCircle {
         } else {
             mPlayerOnScreenRadius = getmRadius() * mZoomRate;
         }
+    }
+
+    /** 根据player circle 当前大小，计算player zoom rate */
+    private float calculateZoomRate() {
+        return mPlayerOnScreenRadius / getmRadius();
     }
 }
