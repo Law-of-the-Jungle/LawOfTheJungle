@@ -17,10 +17,10 @@ import com.game.junglelaw.circle.StaticCircle;
  * This class is used for rendering the view of game drawing the points in the GameLogic class
  * GameLogic instance is included in this view class, then we need to pass this view class to
  * GameLogic class in its constructor for drawing.
- * <p>
+ *
  * GameView size range:
- * 0 <= x <= mMapWidth;
- * 0 <= y <= mMapHeight.
+ *     0 <= x <= mMapWidth;
+ *     0 <= y <= mMapHeight.
  */
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -50,12 +50,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public GameView(Context context, String gameDifficulty) {
         super(context);
 
-        mGameDifficulty = gameDifficulty;
+        mCircleManager = new CircleManager(gameDifficulty);
         mGameLogic = new GameLogic(this);
         mGameLogicThread = new Thread(mGameLogic);
         mSurfaceHolder = getHolder();
         mSurfaceHolder.addCallback(this);
-        mCircleManager = new CircleManager(gameDifficulty);
+        mGameDifficulty = gameDifficulty;
     }
 
     public CircleManager getmCircleManager() {

@@ -1,12 +1,16 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light">
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:actionBarStyle">@style/AppTheme.Light.ActionBar</item>
+    <!-- The default theme -->
+    <style name="SolidActionBarTheme" parent="android:Theme.Holo.Light">
     </style>
 
-    <!-- Semi-Transparent ActionBar Style -->
-    <style name="AppTheme.Light.ActionBar" parent="@android:style/Widget.Holo.ActionBar">
+    <!-- Semi-Transparent ActionBar Style, used by the game -->
+    <style name="TransparentActionBarTheme" parent="android:Theme.Holo.Light">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:actionBarStyle">@style/TransparentActionBarTheme.Light.ActionBar</item>
+    </style>
+
+    <style name="TransparentActionBarTheme.Light.ActionBar" parent="@android:style/Widget.Holo.ActionBar">
         <item name="android:background">@color/transparent_action_bar_background</item>
     </style>
 

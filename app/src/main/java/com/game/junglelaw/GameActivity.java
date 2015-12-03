@@ -1,6 +1,9 @@
 package com.game.junglelaw;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
@@ -27,6 +30,7 @@ public class GameActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setTheme(R.style.TransparentActionBarTheme);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(GameActivity.this);
         mGameDifficulty = prefs.getString(getString(R.string.pref_game_diffculty_key), getString(R.string.pref_game_diffculty_easy));
         mIsMute = prefs.getBoolean(getString(R.string.pref_mute_key), false);
