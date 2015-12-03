@@ -73,8 +73,8 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GAME_ACTIVITY_RESULT_CODE && resultCode == RESULT_OK) {
-            Toast.makeText(this, "Your Score: " + data.getExtras().getInt(Utility.INTENT_EXTRA_SCORE) +
-                    ";\n Game Difficulty: " + data.getExtras().getString(Utility.INTENT_EXTRA_GAME_DIFFICULTY), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Your Score: " + data.getExtras().getInt(Utility.INTENT_EXTRA_SCORE_KEY) +
+                    ";\n Game Difficulty: " + data.getExtras().getString(Utility.INTENT_EXTRA_GAME_DIFFICULTY_KEY), Toast.LENGTH_LONG).show();
         }
     }
 

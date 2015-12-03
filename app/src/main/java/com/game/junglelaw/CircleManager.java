@@ -24,20 +24,12 @@ public class CircleManager {
     private final List<AiCircle> mAiCircles;
     private final List<StaticCircle> mStaticCircles;
 
-    private int mMapWidth;
-    private int mMapHeight;
-
-    public CircleManager(String gameDifficulty) {
-        mCircleFactory = new CircleFactory(gameDifficulty);
+    public CircleManager(String gameDifficulty, float mapWidth, float mapHeight) {
+        mCircleFactory = new CircleFactory(gameDifficulty, mapWidth, mapHeight);
         mGameDifficulty = gameDifficulty;
-        mPlayerCircle = mCircleFactory.createRandomPlayerCircle(0, 0);
+        mPlayerCircle = mCircleFactory.createRandomPlayerCircle();
         mAiCircles = new ArrayList<>();
         mStaticCircles = new ArrayList<>();
-    }
-
-    public void setMapSize(int mapWidth, int mapHeight) {
-        mMapWidth = mapWidth;
-        mMapHeight = mapHeight;
     }
 
     public PlayerCircle getmPlayerCircle() {
@@ -55,24 +47,24 @@ public class CircleManager {
     public void controlCirclesPopulation() {
         // Controls ai circles population
         if (mAiCircles.size() < MIN_STATIC_CIRCLES_NUMBER) {
-            mAiCircles.addAll(mCircleFactory.createRandomAiCircles(mMapWidth, mMapHeight,
+            mAiCircles.addAll(mCircleFactory.createRandomAiCircles(
                     MIN_STATIC_CIRCLES_NUMBER - mStaticCircles.size(), mPlayerCircle));
         }
 
         // Controls static circles population
         if (mStaticCircles.size() < MIN_AI_CIRCLES_NUMBER) {
-            mStaticCircles.addAll(mCircleFactory.createRandomStaticCircles(mMapWidth, mMapHeight,
+            mStaticCircles.addAll(mCircleFactory.createRandomStaticCircles(
                     MIN_AI_CIRCLES_NUMBER - mStaticCircles.size()));
         }
     }
 
     public void moveMovableCirclesToTheirDirection() {
         // Moves player circle toward its direction
-        mPlayerCircle.moveToDirection(mMapWidth, mMapHeight);
+        mPlayerCircle.moveToDirection();
 
         // Move ai circles toward its direction
         for (AiCircle aiCircle : mAiCircles) {
-            aiCircle.aiMove(mMapWidth, mMapHeight, mPlayerCircle, mStaticCircles);
+            aiCircle.aiMove(mPlayerCircle, mStaticCircles);
         }
     }
 

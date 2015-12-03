@@ -21,25 +21,25 @@ public class AiCircle extends MovableCircle {
     private String mGameDifficulty;
     private boolean mIsAttackingPlayer;
 
-    public AiCircle(float x, float y, float radius, int color, String gameDifficulty) {
-        super(x, y, radius, color);
+    public AiCircle(float x, float y, float radius, int color, String gameDifficulty, float mapWidth, float mapHeight) {
+        super(x, y, radius, color, mapWidth, mapHeight);
         mIsAttackingPlayer = false;
         mGameDifficulty = gameDifficulty;
     }
 
-    public void aiMove(int mapWidth, int mapHeight, PlayerCircle playerCircle, List<StaticCircle> staticCircles) {
+    public void aiMove(PlayerCircle playerCircle, List<StaticCircle> staticCircles) {
 
         if (mGameDifficulty.equals("easy") && Math.random() < 0.1) {
-            PointF p = new PointF(Utility.generateRandomFloat(0, mapWidth), Utility.generateRandomFloat(0, mapHeight));
+            PointF p = new PointF(Utility.generateRandomFloat(0, mMapWidth), Utility.generateRandomFloat(0, mMapHeight));
             setDirectTowardPoint(p);
-            moveToDirection(mapWidth, mapHeight);
+            moveToDirection();
             return;
         }
 
         if (mIsAttackingPlayer) {
             if (Utility.isAbsorbableLarger(this, playerCircle)) {
                 setDirectTowardPoint(playerCircle.getmCenter());
-                moveToDirection(mapWidth, mapHeight);
+                moveToDirection();
                 return;
 
             } else {
@@ -59,7 +59,7 @@ public class AiCircle extends MovableCircle {
         }
         // else, keep the predefined mMovingDirection
 
-        moveToDirection(mapWidth, mapHeight);
+        moveToDirection();
     }
 
     private PointF findNearestStaticCircle(List<StaticCircle> staticCircleList) {

@@ -13,8 +13,8 @@ public class Utility {
 
     private static final String LOG_TAG = Utility.class.getSimpleName();
 
-    public static final String INTENT_EXTRA_SCORE = "com.game.junglelaw.intent.extra.SCORE";
-    public static final String INTENT_EXTRA_GAME_DIFFICULTY = "com.game.junglelaw.intent.GAME_DIFFICULTY";
+    public static final String INTENT_EXTRA_SCORE_KEY = "com.game.junglelaw.intent.extra.SCORE";
+    public static final String INTENT_EXTRA_GAME_DIFFICULTY_KEY = "com.game.junglelaw.intent.GAME_DIFFICULTY";
 
     public static int generateRandomInt(int lo, int hi) {
         return lo + (int) (Math.random() * (hi - lo + 1));

@@ -1,9 +1,6 @@
 package com.game.junglelaw;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
@@ -90,8 +87,8 @@ public class GameActivity extends Activity {
         if (id == R.id.save_score_and_end_game) {
             mJungleLawDbAdapter.insert(mGameView.getScore(), mGameDifficulty, new Date().toString());
             Intent sharedIntent = new Intent();
-            sharedIntent.putExtra(Utility.INTENT_EXTRA_SCORE, mGameView.getScore());
-            sharedIntent.putExtra(Utility.INTENT_EXTRA_GAME_DIFFICULTY, mGameDifficulty);
+            sharedIntent.putExtra(Utility.INTENT_EXTRA_SCORE_KEY, mGameView.getScore());
+            sharedIntent.putExtra(Utility.INTENT_EXTRA_GAME_DIFFICULTY_KEY, mGameDifficulty);
             setResult(RESULT_OK, sharedIntent);
             finish();
             return true;

@@ -3,8 +3,13 @@ package com.game.junglelaw.circle;
 import android.graphics.Color;
 import android.graphics.PointF;
 
+import com.game.junglelaw.Utility;
+
 /**
  * Created by apple on 10/15/15.
+ *
+ * Note: there is no need to keep this player circle class as a singleton.
+ *       since the game activity will repeatly start again and again, each game start, we must create a new player circle.
  */
 public class PlayerCircle extends MovableCircle {
 
@@ -18,8 +23,8 @@ public class PlayerCircle extends MovableCircle {
     private float mOnScreenRadius; // player circle's on screen radius
     private boolean mIsAbsorbed;
 
-    public PlayerCircle(float x, float y) {
-        super(x, y, PLAYER_CIRCLE_DEFAULT_RADIUS, PLAYER_CIRCLE_DEFAULT_COLOR);
+    public PlayerCircle(float x, float y, float mapWidth, float mapHeight) {
+        super(x, y, PLAYER_CIRCLE_DEFAULT_RADIUS, PLAYER_CIRCLE_DEFAULT_COLOR, mapWidth, mapHeight);
         mOnScreenRadius = mRadius;
         mZoomRate = mOnScreenRadius / mRadius;
     }

@@ -31,7 +31,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private static final int COORDINATE_GRIDS_X_AXIS_UNIT = 100;
     private static final int COORDINATE_GRIDS_Y_AXIS_UNIT = 100;
 
-    private final CircleManager mCircleManager;
     private final GameLogic mGameLogic;
     private final Thread mGameLogicThread;
     private final SurfaceHolder mSurfaceHolder;
@@ -40,17 +39,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     //we need to get the relative location of points to the playerCircle
     //then check if these circle could appear on map or not
     //Draw the circle with location of screen
-    private int mMapWidth;
-    private int mMapHeight;
+    private CircleManager mCircleManager;
+    private float mMapWidth;
+    private float mMapHeight;
 
-    private int mScreenWidth;
-    private int mScreenHeight;
+    private float mScreenWidth;
+    private float mScreenHeight;
     private PointF mScreenCenterPoint;
 
     public GameView(Context context, String gameDifficulty) {
         super(context);
 
-        mCircleManager = new CircleManager(gameDifficulty);
         mGameLogic = new GameLogic(this);
         mGameLogicThread = new Thread(mGameLogic);
         mSurfaceHolder = getHolder();
@@ -204,19 +203,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         mScreenHeight = canvas.getHeight();
         surfaceHolder.unlockCanvasAndPost(canvas);
 
-        Log.d(LOG_TAG, "screen width, screen height = " +
-                Integer.toString(mScreenWidth) + ", " + Integer.toString(mScreenHeight));
+        Log.d(LOG_TAG, "screen width, screen height = " + mScreenWidth + ", " + mScreenHeight);
 
         mScreenCenterPoint = new PointF(mScreenWidth / 2, mScreenHeight / 2);
 
         // Take advantage of integer division to guarantee mMapWidth is an integer-multiple of COORDINATE_GRIDS_X_AXIS_UNIT
-        mMapWidth = ((mScreenWidth * MAP_WEIGHT_ZOOM_UP_RATE) / COORDINATE_GRIDS_X_AXIS_UNIT) * COORDINATE_GRIDS_X_AXIS_UNIT;
-        mMapHeight = ((mScreenHeight * MAP_HEIGHT_ZOOM_UP_RATE) / COORDINATE_GRIDS_Y_AXIS_UNIT) * COORDINATE_GRIDS_Y_AXIS_UNIT;
+        mMapWidth = (((int) mScreenWidth * MAP_WEIGHT_ZOOM_UP_RATE) / COORDINATE_GRIDS_X_AXIS_UNIT) * COORDINATE_GRIDS_X_AXIS_UNIT;
+        mMapHeight = (((int) mScreenHeight * MAP_HEIGHT_ZOOM_UP_RATE) / COORDINATE_GRIDS_Y_AXIS_UNIT) * COORDINATE_GRIDS_Y_AXIS_UNIT;
 
-        mCircleManager.setMapSize(mMapWidth, mMapHeight);
-
-        // Put player circle to a random position
-        mCircleManager.getmPlayerCircle().setCenter(Utility.generateRandomFloat(0, mMapWidth), Utility.generateRandomFloat(0, mMapHeight));
+        mCircleManager = new CircleManager(mGameDifficulty, mMapWidth, mMapHeight);
 
         // Start the game
         mGameLogic.setmIsGamePlaying(true);

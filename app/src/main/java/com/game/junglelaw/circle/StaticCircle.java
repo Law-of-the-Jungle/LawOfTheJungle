@@ -9,7 +9,7 @@ public class StaticCircle extends AbstractCircle {
 
     public static final float STATIC_CIRCLE_DEFAULT_RADIUS = 20;
 
-    public StaticCircle(float x, float y, float radius, int color) {
-        super(x, y, radius, color);
+    public StaticCircle(float x, float y, int color) {
+        super(x, y, STATIC_CIRCLE_DEFAULT_RADIUS, color);
     }
 }
